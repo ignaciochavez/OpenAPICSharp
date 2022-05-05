@@ -17,6 +17,9 @@ namespace WebAPIUnitTest
 
         #region Select
 
+        /// <summary>
+        /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros vacios
+        /// </summary>
         [TestMethod]
         public void SelectMethodIsEmptyParameters()
         {
@@ -26,6 +29,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, selectMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros invalidos
+        /// </summary>
         [TestMethod]
         public void SelectMethodIsInvalidParameters()
         {
@@ -35,6 +41,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, selectMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros correctos en donde la entidad no existe
+        /// </summary>
         [TestMethod]
         public void SelectMethodIsCorrectAndNotExist()
         {
@@ -44,6 +53,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.OK, selectMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros correctos en donde la entidad existe
+        /// </summary>
         [TestMethod]
         public void SelectMethodIsCorrect()
         {
@@ -57,6 +69,9 @@ namespace WebAPIUnitTest
 
         #region Exist
 
+        /// <summary>
+        /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros vacios
+        /// </summary>
         [TestMethod]
         public void ExistMethodIsEmptyParameters()
         {
@@ -66,6 +81,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, existMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros invalidos
+        /// </summary>
         [TestMethod]
         public void ExistMethodIsInvalidParameters()
         {
@@ -75,6 +93,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, existMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros correctos en donde la entidad no existe
+        /// </summary>
         [TestMethod]
         public void ExistMethodIsCorrectAndNotExist()
         {
@@ -84,6 +105,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.OK, existMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros correctos en donde la entidad existe
+        /// </summary>
         [TestMethod]
         public void ExistMethodIsCorrect()
         {
@@ -97,6 +121,9 @@ namespace WebAPIUnitTest
 
         #region Insert
 
+        /// <summary>
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto nulo
+        /// </summary>
         [TestMethod]
         public void InsertMethodIsNullObject()
         {
@@ -106,6 +133,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros vacios
+        /// </summary>
         [TestMethod]
         public void InsertMethodIsEmptyParametersOfObject()
         {
@@ -115,6 +145,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros invalidos
+        /// </summary>
         [TestMethod]
         public void InsertMethodIsInvalidParametersOfObject()
         {
@@ -124,6 +157,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe y no se inserta
+        /// </summary>
         [TestMethod]
         public void InsertMethodIsExist()
         {
@@ -133,6 +169,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe y se inserta
+        /// </summary>
         [TestMethod]
         public void InsertMethodIsCorrect()
         {
@@ -146,6 +185,9 @@ namespace WebAPIUnitTest
 
         #region Update
 
+        /// <summary>
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto nulo
+        /// </summary>
         [TestMethod]
         public void UpdateMethodIsNullObject()
         {
@@ -154,7 +196,10 @@ namespace WebAPIUnitTest
             Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
         }
-        
+
+        /// <summary>
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros vacios
+        /// </summary>
         [TestMethod]
         public void UpdateMethodIsEmptyParametersOfObject()
         {
@@ -164,6 +209,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros invalidos
+        /// </summary>
         [TestMethod]
         public void UpdateMethodIsInvalidParametersOfObject()
         {
@@ -172,7 +220,10 @@ namespace WebAPIUnitTest
             Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
         }
-        
+
+        /// <summary>
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe y no se actualiza
+        /// </summary>
         [TestMethod]
         public void UpdateMethodIsNotExist()
         {
@@ -182,6 +233,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe y se actualiza
+        /// </summary>
         [TestMethod]
         public void UpdateMethodIsCorrect()
         {
@@ -195,6 +249,9 @@ namespace WebAPIUnitTest
 
         #region Delete
 
+        /// <summary>
+        /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros vacios
+        /// </summary>
         [TestMethod]
         public void DeleteMethodIsEmptyParameters()
         {
@@ -204,6 +261,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, deleteMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros invalidos
+        /// </summary>
         [TestMethod]
         public void DeleteMethodIsInvalidParameters()
         {
@@ -213,6 +273,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, deleteMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros correctos en donde la entidad no existe
+        /// </summary>
         [TestMethod]
         public void DeleteMethodIsCorrectAndNotExist()
         {
@@ -222,6 +285,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.OK, deleteMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros correctos en donde la entidad existe
+        /// </summary>
         [TestMethod]
         public void DeleteMethodIsCorrect()
         {
@@ -235,6 +301,9 @@ namespace WebAPIUnitTest
 
         #region List
 
+        /// <summary>
+        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objecto nulo
+        /// </summary>
         [TestMethod]
         public void ListMethodIsNullObject()
         {
@@ -244,6 +313,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objecto con parametros invalidos
+        /// </summary>
         [TestMethod]
         public void ListMethodIsInvalidParametersOfObject()
         {
@@ -253,6 +325,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objecto con parametros correctos
+        /// </summary>
         [TestMethod]
         public void ListMethodIsCorrect()
         {

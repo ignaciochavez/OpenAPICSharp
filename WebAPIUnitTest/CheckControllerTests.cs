@@ -13,6 +13,9 @@ namespace WebAPIUnitTest
     {
         CheckController checkController = new CheckController();
                 
+        /// <summary>
+        /// Verificar que el metodo api/check/check funciona correctamente
+        /// </summary>
         [TestMethod]
         public void CheckMethodIsCorrect()
         {            
@@ -22,6 +25,9 @@ namespace WebAPIUnitTest
             Assert.AreEqual(HttpStatusCode.OK, checkMethod.StatusCode);     
         }
 
+        /// <summary>
+        /// Verificar que el metodo api/check/checkauth funciona correctamente
+        /// </summary>
         [TestMethod]
         public void CheckAuthMethodIsCorrect()
         {
