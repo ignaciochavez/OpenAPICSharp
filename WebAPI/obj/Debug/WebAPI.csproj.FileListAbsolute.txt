@@ -1,0 +1,126 @@
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\csc.exe
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\Microsoft.CSharp.Core.targets
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\Microsoft.VisualBasic.Core.targets
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\System.Collections.Immutable.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\System.Reflection.Metadata.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\vbc.exe
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\VBCSCompiler.exe
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\roslyn\VBCSCompiler.exe.config
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\WebAPI.dll.config
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\WebAPI.XML
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\WebAPI.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\WebAPI.pdb
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Business.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Microsoft.Web.Infrastructure.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Newtonsoft.Json.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Swashbuckle.Core.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\System.Net.Http.Formatting.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\System.Web.Http.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\System.Web.Http.WebHost.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\WebActivatorEx.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\HtmlAgilityPack.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Business.pdb
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\Newtonsoft.Json.xml
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\System.Net.Http.Formatting.xml
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\System.Web.Http.xml
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\System.Web.Http.WebHost.xml
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\HtmlAgilityPack.pdb
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\HtmlAgilityPack.xml
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\es\System.Net.Http.Formatting.resources.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\es\System.Web.Http.resources.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\bin\es\System.Web.Http.WebHost.resources.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\obj\Debug\WebAPI.csprojResolveAssemblyReference.cache
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\obj\Debug\WebAPI.dll
+c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\WebAPI\obj\Debug\WebAPI.pdb
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\csc.exe
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\vbc.exe
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\VBCSCompiler.exe
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\WebAPI.dll.config
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\WebAPI.XML
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\WebAPI.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\WebAPI.pdb
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Business.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Newtonsoft.Json.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Swashbuckle.Core.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Net.Http.Formatting.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Cors.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Http.Cors.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Http.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Http.WebHost.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\WebActivatorEx.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\HtmlAgilityPack.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Business.pdb
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Net.Http.Formatting.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Http.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Http.Cors.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\Newtonsoft.Json.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\System.Web.Http.WebHost.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\HtmlAgilityPack.pdb
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\HtmlAgilityPack.xml
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\es\System.Net.Http.Formatting.resources.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\es\System.Web.Http.resources.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\bin\es\System.Web.Http.WebHost.resources.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\obj\Debug\WebAPI.csprojResolveAssemblyReference.cache
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\obj\Debug\WebAPI.dll
+C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\WebAPI\obj\Debug\WebAPI.pdb
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\csc.exe
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\System.Collections.Immutable.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\System.Reflection.Metadata.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\vbc.exe
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\VBCSCompiler.exe
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\roslyn\VBCSCompiler.exe.config
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\WebAPI.dll.config
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\WebAPI.XML
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\WebAPI.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\WebAPI.pdb
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Business.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Microsoft.Web.Infrastructure.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Newtonsoft.Json.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Swashbuckle.Core.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Net.Http.Formatting.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Cors.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Http.Cors.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Http.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Http.WebHost.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\WebActivatorEx.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\HtmlAgilityPack.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Business.pdb
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Net.Http.Formatting.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Http.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Http.Cors.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Newtonsoft.Json.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\System.Web.Http.WebHost.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\HtmlAgilityPack.pdb
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\HtmlAgilityPack.xml
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\es\System.Net.Http.Formatting.resources.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\es\System.Web.Http.resources.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\es\System.Web.Http.WebHost.resources.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\obj\Debug\WebAPI.csprojResolveAssemblyReference.cache
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\obj\Debug\WebAPI.dll
+D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\obj\Debug\WebAPI.pdb

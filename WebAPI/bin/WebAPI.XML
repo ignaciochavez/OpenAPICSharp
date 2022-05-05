@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:WebAPI.APIKeyAuthAttribute">
+            <summary>
+            APIKeyAuthAttribute
+            </summary>
+        </member>
+        <member name="M:WebAPI.APIKeyAuthAttribute.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            OnAuthorization
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="T:WebAPI.SwaggerConfig">
+            <summary>
+            Clase SwaggerConfig
+            </summary>
+        </member>
+        <member name="M:WebAPI.SwaggerConfig.Register">
+            <summary>
+            Metodo Register
+            </summary>
+        </member>
+        <member name="M:WebAPI.SwaggerConfig.GetXmlCommentsPath">
+            <summary>
+            Metodo GetXmlCommentsPath
+            </summary>
+        </member>
+        <member name="T:WebAPI.WebApiConfig">
+            <summary>
+            Clase WebApiConfig
+            </summary>
+        </member>
+        <member name="M:WebAPI.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Metodo Register
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:WebAPI.Controllers.CheckController">
+            <summary>
+             Controlador api/check
+            </summary>    
+        </member>
+        <member name="M:WebAPI.Controllers.CheckController.Check">
+            <summary>
+            Metodo para verificar conectividad al servicio
+            </summary>
+            <remarks>
+            api/check/Check
+            </remarks>
+            <returns>MessageVO</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.CheckController.CheckAuth">
+            <summary>
+            Metodo para verificar funcionalidad de autenticacion
+            </summary>
+            <remarks>
+            api/check/CheckAuth
+            </remarks>
+            <returns>MessageVO</returns>  
+        </member>
+        <member name="T:WebAPI.Controllers.ExampleController">
+            <summary>
+             Controlador api/example
+            </summary> 
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Select(System.String)">
+            <summary>
+            Metodo para seleccionar Example
+            </summary>
+            <remarks>
+            api/example/Select?rut=1-9
+            </remarks>
+            <param name="rut">Parametro rut</param>
+            <returns>Entidad Example</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Exist(System.String)">
+            <summary>
+            Metodo para verificar existencia de entidad Example por rut
+            </summary>
+            <remarks>
+            api/example/Exist?rut=1-9
+            </remarks>
+            <param name="rut">Parametro rut</param>
+            <returns>Verdadero o Falso</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Insert(Business.DTO.ExampleInsertDTO)">
+             <summary>
+             Metodo para insertar Example
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Rut": "18-3",
+                    "Name": "Emanuel",
+                    "LastName": "Leiva",
+                    "BirthDate": "1995-12-25T00:00:00.0000007-04:00",
+                    "Active": true,
+                    "Password": "4321rewq"
+                 }
+            
+             </remarks>
+             <param name="exampleInsertDTO">Objeto</param>
+             <returns>Entidad Example</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Update(Business.DTO.ExampleUpdateDTO)">
+             <summary>
+             Metodo para actualizar Example
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Rut": "18-3",
+                    "Name": "Emanuel",
+                    "LastName": "Leiva",
+                    "BirthDate": "1995-12-25T00:00:00.0000007-04:00",
+                    "Active": true,
+                    "Password": "vcxz7894"
+                 }
+            
+             </remarks>
+             <param name="exampleUpdateDTO">Objeto</param>
+             <returns>Verdadero o Falso</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Delete(System.String)">
+            <summary>
+            Metodo para eliminar entidad Example por rut
+            </summary>
+            <remarks>
+            api/example/Delete?rut=1-9
+            </remarks>
+            <param name="rut">Parametro rut</param>
+            <returns>Verdadero o Falso</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.List(Business.DTO.ExampleListDTO)">
+             <summary>
+             Metodo para listar Example
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "PageIndex": 0,
+                    "PageSize": 10
+                 }
+            
+             </remarks>
+             <param name="exampleListDTO">Objeto</param>
+             <returns>Lista Entidad Example</returns>
+        </member>
+        <member name="T:WebAPI.WebApiApplication">
+            <summary>
+            Clase WebApiApplication
+            </summary>
+        </member>
+        <member name="M:WebAPI.WebApiApplication.Application_Start">
+            <summary>
+            Metodo Application_start
+            </summary>
+        </member>
+    </members>
+</doc>
