@@ -1,5 +1,6 @@
 ﻿using Business.DTO;
 using Business.Entity;
+using Business.Interface;
 using Business.Tool;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Business.DAO
 {
-    public class ExampleDAO
+    public class ExampleDAO : IExample
     {
         List<Example> listExampleData = new List<Example>();
         public ExampleDAO()

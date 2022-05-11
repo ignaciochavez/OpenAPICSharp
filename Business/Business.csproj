@@ -49,6 +49,7 @@
     <Compile Include="DTO\ExampleDTO.cs" />
     <Compile Include="Entity\Example.cs" />
     <Compile Include="Implementation\ExampleImpl.cs" />
+    <Compile Include="Interface\IExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\ExceptionExtension.cs" />
     <Compile Include="Tool\MessageHTML.cs" />
