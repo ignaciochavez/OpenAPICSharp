@@ -20,10 +20,10 @@ namespace WebAPI.Controllers
     public class ExampleController : ApiController
     {
         MessageVO messageVO = new MessageVO();
-        MessageHTML messageHTML = new MessageHTML(Useful.GetMessagesDirectory());
+        MessageHTML messageHTML = new MessageHTML();
 
         /// <summary>
-        /// Metodo para seleccionar Example
+        /// Metodo para seleccionar Example por rut
         /// </summary>
         /// <remarks>
         /// api/example/Select?rut=1-9
@@ -225,14 +225,8 @@ namespace WebAPI.Controllers
                     messageVO.SetIdTitle(1, messageHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
-
-                if (!ExampleImpl.Exist(exampleUpdateDTO.Rut))
-                {
-                    messageVO.SetMessage(2, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Example").Replace("{1}", "Rut"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-
-                var update = ExampleImpl.Udpdate(exampleUpdateDTO);
+                
+                var update = ExampleImpl.Update(exampleUpdateDTO);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -311,9 +305,9 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (exampleListDTO.PageIndex < 0)
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("parameterLessThanZero").Replace("{0}", "PageIndex"));
-                if (exampleListDTO.PageSize <= 0 && exampleListDTO.PageSize > Useful.GetPageSizeMaximun())
+                if (exampleListDTO.PageIndex <= 0) 
+                    messageVO.Messages.Add(messageHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                if (exampleListDTO.PageSize <= 0 || exampleListDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(messageHTML.GetInnerTextById("parameterGreaterThanAndLessThan").Replace("{0}", "PageIndex").Replace("{1}", "0").Replace("{2}", Useful.GetPageSizeMaximun().ToString()));
 
                 if (messageVO.Messages.Count() > 0)
@@ -324,6 +318,33 @@ namespace WebAPI.Controllers
 
                 var list = ExampleImpl.List(exampleListDTO);
                 return Content(HttpStatusCode.OK, list);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para contar registros de entidad Example 
+        /// </summary>
+        /// <remarks>
+        /// api/example/Count
+        /// </remarks>
+        /// <returns>Conteo de registros</returns>
+        [HttpGet]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(long))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("Count")]
+        public IHttpActionResult Count()
+        {
+            try
+            {
+                var count = ExampleImpl.Count();
+                return Content(HttpStatusCode.OK, count);
             }
             catch (Exception ex)
             {

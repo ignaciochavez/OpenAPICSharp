@@ -47,6 +47,6 @@ namespace Business.Tool
         {
             Id = id;
             Title = title;
-        }        
+        }
     }
 }

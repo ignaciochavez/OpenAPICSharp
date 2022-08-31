@@ -11,9 +11,9 @@ namespace Business.Tool
     {
         public string Path { get; set; }
         public HtmlDocument Document { get; set; }
-        public MessageHTML(string path)
+        public MessageHTML()
         {
-            Path = path;
+            Path = Useful.GetApplicationDirectory() + @"Contents\Useful\Messages.html";
             Document = null;
         }
 

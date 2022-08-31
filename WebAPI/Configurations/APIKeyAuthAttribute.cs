@@ -16,7 +16,7 @@ namespace WebAPI
     public class APIKeyAuthAttribute : AuthorizationFilterAttribute
     {
         MessageVO messageVO = new MessageVO();
-        MessageHTML messageHTML = new MessageHTML(Useful.GetMessagesDirectory());
+        MessageHTML messageHTML = new MessageHTML();
 
         private static bool GetAPIKeyHeader(System.Web.Http.Controllers.HttpActionContext actionContext, out string apiKeyHeader)
         {

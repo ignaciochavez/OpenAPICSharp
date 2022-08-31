@@ -8,7 +8,7 @@ namespace Business.Entity
 {
     public class Example
     {
-        public int Index { get; set; }
+        public int Id { get; set; }
         public string Rut { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }

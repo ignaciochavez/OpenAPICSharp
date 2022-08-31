@@ -18,6 +18,5 @@ D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\Business.pd
 D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.dll
 D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.pdb
 D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.xml
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
 D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.dll
 D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.pdb

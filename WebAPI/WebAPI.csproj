@@ -107,12 +107,24 @@
     <Content Include="Contents\api-200.png" />
     <Content Include="Contents\CSS\bootstrap.css" />
     <Content Include="Contents\CSS\style.css" />
+    <Content Include="Contents\Img\A-64.png" />
+    <Content Include="Contents\Img\aquaman.png" />
+    <Content Include="Contents\Img\batman.png" />
+    <Content Include="Contents\Img\daredevil.png" />
+    <Content Include="Contents\Img\DC.png" />
+    <Content Include="Contents\Img\hulk.png" />
+    <Content Include="Contents\Img\linterna-verde.png" />
+    <Content Include="Contents\Img\Marvel.png" />
+    <Content Include="Contents\Img\spiderman.png" />
+    <Content Include="Contents\Img\wolverine.png" />
     <Content Include="Contents\JS\useful.js" />
     <Content Include="Contents\Useful\Messages.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\APIKeyAuthAttribute.cs" />
@@ -120,6 +132,7 @@
     <Compile Include="Configurations\WebApiConfig.cs" />
     <Compile Include="Controllers\CheckController.cs" />
     <Compile Include="Controllers\ExampleController.cs" />
+    <Compile Include="Controllers\HeroeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

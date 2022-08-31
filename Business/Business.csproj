@@ -46,10 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\ExampleDAO.cs" />
+    <Compile Include="DAO\HeroeDAO.cs" />
     <Compile Include="DTO\ExampleDTO.cs" />
+    <Compile Include="DTO\HeroeDTO.cs" />
     <Compile Include="Entity\Example.cs" />
+    <Compile Include="Entity\Heroe.cs" />
     <Compile Include="Implementation\ExampleImpl.cs" />
+    <Compile Include="Implementation\HeroeImpl.cs" />
     <Compile Include="Interface\IExample.cs" />
+    <Compile Include="Interface\IHeroe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\ExceptionExtension.cs" />
     <Compile Include="Tool\MessageHTML.cs" />

@@ -17,7 +17,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/check/check funciona correctamente
         /// </summary>
         [TestMethod]
-        public void CheckMethodIsCorrect()
+        public void CheckControllerCheckMethodIsCorrect()
         {            
             NegotiatedContentResult<MessageVO> checkMethod = checkController.Check() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkMethod);
@@ -29,7 +29,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/check/checkauth funciona correctamente
         /// </summary>
         [TestMethod]
-        public void CheckAuthMethodIsCorrect()
+        public void CheckControllerCheckAuthMethodIsCorrect()
         {
             NegotiatedContentResult<MessageVO> checkAuthMethod = checkController.CheckAuth() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkAuthMethod);

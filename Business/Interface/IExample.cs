@@ -13,7 +13,7 @@ namespace Business.Interface
         Example Select(string rut);
         bool Exist(string rut);
         Example Insert(ExampleInsertDTO exampleInsertDTO);
-        bool Udpdate(ExampleUpdateDTO exampleUpdateDTO);
+        bool Update(ExampleUpdateDTO exampleUpdateDTO);
         bool Delete(string rut);
         List<Example> List(ExampleListDTO exampleListDTO);
     }

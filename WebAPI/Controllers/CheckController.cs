@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class CheckController : ApiController
     {
         MessageVO messageVO = new MessageVO();
-        MessageHTML messageHTML = new MessageHTML(Useful.GetMessagesDirectory());
+        MessageHTML messageHTML = new MessageHTML();
         
 
         /// <summary>

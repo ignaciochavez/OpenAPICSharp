@@ -28,9 +28,9 @@ namespace Business.Implementation
             return exampleDAO.Insert(exampleInsertDTO);
         }
 
-        public static bool Udpdate(ExampleUpdateDTO exampleUpdateDTO)
+        public static bool Update(ExampleUpdateDTO exampleUpdateDTO)
         {
-            return exampleDAO.Udpdate(exampleUpdateDTO);
+            return exampleDAO.Update(exampleUpdateDTO);
         }
 
         public static bool Delete(string rut)
@@ -41,6 +41,11 @@ namespace Business.Implementation
         public static List<Example> List(ExampleListDTO exampleListDTO)
         {
             return exampleDAO.List(exampleListDTO);
+        }
+
+        public static long Count()
+        {
+            return exampleDAO.Count();
         }
     }
 }

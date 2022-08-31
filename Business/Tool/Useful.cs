@@ -19,17 +19,19 @@ namespace Business.Tool
         {
             return System.AppDomain.CurrentDomain.BaseDirectory.Replace("WebAPIUnitTest\\bin\\Debug", "WebAPI\\");
         }
-        
-        public static string GetMessagesDirectory()
-        {
-            return GetApplicationDirectory() + @"Contents\Useful\Messages.html";
-        }
-        
+                
         public static string GetAppSettings(string keyWebConfig)
         {
             return ConfigurationManager.AppSettings[keyWebConfig];
         }
-        
+
+        public static string GetPngToBase64String(string path)
+        {
+            byte[] imageBytes = System.IO.File.ReadAllBytes(path);
+            string base64String = Convert.ToBase64String(imageBytes);
+            return String.Format("data:image/png;base64,{0}", base64String);
+        }
+
         public static int GetPageSizeMaximun()
         {
             return Convert.ToInt32(GetAppSettings("PageSizeMaximun"));

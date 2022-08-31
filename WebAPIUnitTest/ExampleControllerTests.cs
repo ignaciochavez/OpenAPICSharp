@@ -21,7 +21,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros vacios
         /// </summary>
         [TestMethod]
-        public void SelectMethodIsEmptyParameters()
+        public void ExampleControllerSelectMethodIsEmptyParameters()
         {
             NegotiatedContentResult<MessageVO> selectMethod = exampleController.Select(string.Empty) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(selectMethod);
@@ -33,7 +33,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros invalidos
         /// </summary>
         [TestMethod]
-        public void SelectMethodIsInvalidParameters()
+        public void ExampleControllerSelectMethodIsInvalidParameters()
         {
             NegotiatedContentResult<MessageVO> selectMethod = exampleController.Select("12332231") as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(selectMethod);
@@ -45,7 +45,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros correctos en donde la entidad no existe
         /// </summary>
         [TestMethod]
-        public void SelectMethodIsCorrectAndNotExist()
+        public void ExampleControllerSelectMethodIsCorrectAndNotExist()
         {
             NegotiatedContentResult<Example> selectMethod = exampleController.Select("21-3") as NegotiatedContentResult<Example>;
             Assert.IsNotNull(selectMethod);
@@ -57,7 +57,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros correctos en donde la entidad existe
         /// </summary>
         [TestMethod]
-        public void SelectMethodIsCorrect()
+        public void ExampleControllerSelectMethodIsCorrect()
         {
             NegotiatedContentResult<Example> selectMethod = exampleController.Select("1-9") as NegotiatedContentResult<Example>;
             Assert.IsNotNull(selectMethod);
@@ -73,7 +73,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros vacios
         /// </summary>
         [TestMethod]
-        public void ExistMethodIsEmptyParameters()
+        public void ExampleControllerExistMethodIsEmptyParameters()
         {
             NegotiatedContentResult<MessageVO> existMethod = exampleController.Exist(string.Empty) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(existMethod);
@@ -85,7 +85,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros invalidos
         /// </summary>
         [TestMethod]
-        public void ExistMethodIsInvalidParameters()
+        public void ExampleControllerExistMethodIsInvalidParameters()
         {
             NegotiatedContentResult<MessageVO> existMethod = exampleController.Exist("12332231") as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(existMethod);
@@ -97,7 +97,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros correctos en donde la entidad no existe
         /// </summary>
         [TestMethod]
-        public void ExistMethodIsCorrectAndNotExist()
+        public void ExampleControllerExistMethodIsCorrectAndNotExist()
         {
             NegotiatedContentResult<bool> existMethod = exampleController.Exist("21-3") as NegotiatedContentResult<bool>;
             Assert.IsNotNull(existMethod);
@@ -109,7 +109,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/exist funciona segun lo necesitado al enviar parametros correctos en donde la entidad existe
         /// </summary>
         [TestMethod]
-        public void ExistMethodIsCorrect()
+        public void ExampleControllerExistMethodIsCorrect()
         {
             NegotiatedContentResult<bool> existMethod = exampleController.Exist("1-9") as NegotiatedContentResult<bool>;
             Assert.IsNotNull(existMethod);
@@ -122,10 +122,10 @@ namespace WebAPIUnitTest
         #region Insert
 
         /// <summary>
-        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto nulo
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objeto nulo
         /// </summary>
         [TestMethod]
-        public void InsertMethodIsNullObject()
+        public void ExampleControllerInsertMethodIsNullObject()
         {
             NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
@@ -134,10 +134,10 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros vacios
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objeto con parametros vacios
         /// </summary>
         [TestMethod]
-        public void InsertMethodIsEmptyParametersOfObject()
+        public void ExampleControllerInsertMethodIsEmptyParametersOfObject()
         {
             NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = string.Empty, Name = string.Empty, LastName = string.Empty, BirthDate = DateTimeOffset.MinValue, Active = false, Password = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
@@ -146,10 +146,10 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros invalidos
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objeto con parametros invalidos
         /// </summary>
         [TestMethod]
-        public void InsertMethodIsInvalidParametersOfObject()
+        public void ExampleControllerInsertMethodIsInvalidParametersOfObject()
         {
             NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = "12332231", Name = string.Empty, LastName = string.Empty, BirthDate = DateTimeOffset.MinValue, Active = false, Password = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
@@ -158,10 +158,10 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe y no se inserta
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objeto con parametros correctos en donde la entidad existe y no se inserta
         /// </summary>
         [TestMethod]
-        public void InsertMethodIsExist()
+        public void ExampleControllerInsertMethodIsExist()
         {
             NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = "1-9", Name = "Pedro", LastName = "Gutierrez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "1234qwer" }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
@@ -170,10 +170,10 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe y se inserta
+        /// Verificar que el metodo api/example/insert funciona segun lo necesitado al enviar el objeto con parametros correctos en donde la entidad no existe y se inserta
         /// </summary>
         [TestMethod]
-        public void InsertMethodIsCorrect()
+        public void ExampleControllerInsertMethodIsCorrect()
         {
             NegotiatedContentResult<Example> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = "18-3", Name = "Emanuel", LastName = "Leiva", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "4321rewq" }) as NegotiatedContentResult<Example>;
             Assert.IsNotNull(insertMethod);
@@ -186,10 +186,10 @@ namespace WebAPIUnitTest
         #region Update
 
         /// <summary>
-        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto nulo
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objeto nulo
         /// </summary>
         [TestMethod]
-        public void UpdateMethodIsNullObject()
+        public void ExampleControllerUpdateMethodIsNullObject()
         {
             NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
@@ -198,10 +198,10 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros vacios
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objeto con parametros vacios
         /// </summary>
         [TestMethod]
-        public void UpdateMethodIsEmptyParametersOfObject()
+        public void ExampleControllerUpdateMethodIsEmptyParametersOfObject()
         {
             NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new ExampleUpdateDTO() { Rut = string.Empty, Name = string.Empty, LastName = string.Empty, BirthDate = DateTimeOffset.MinValue, Active = false, Password = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
@@ -210,10 +210,10 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros invalidos
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objeto con parametros invalidos
         /// </summary>
         [TestMethod]
-        public void UpdateMethodIsInvalidParametersOfObject()
+        public void ExampleControllerUpdateMethodIsInvalidParametersOfObject()
         {
             NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new ExampleUpdateDTO() { Rut = "12332231", Name = string.Empty, LastName = string.Empty, BirthDate = DateTimeOffset.MinValue, Active = false, Password = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
@@ -222,22 +222,22 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe y no se actualiza
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objeto con parametros correctos en donde la entidad no existe y no se actualiza
         /// </summary>
         [TestMethod]
-        public void UpdateMethodIsNotExist()
+        public void ExampleControllerUpdateMethodIsNotExist()
         {
-            NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new ExampleUpdateDTO() { Rut = "21-3", Name = "Leonel", LastName = "Gonzalez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "vcxz9876" }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<bool> updateMethod = exampleController.Update(new ExampleUpdateDTO() { Rut = "21-3", Name = "Leonel", LastName = "Gonzalez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "vcxz9876" }) as NegotiatedContentResult<bool>;
             Assert.IsNotNull(updateMethod);
-            Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
-            Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
+            Assert.IsFalse(updateMethod.Content);
+            Assert.AreEqual(HttpStatusCode.OK, updateMethod.StatusCode);
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe y se actualiza
+        /// Verificar que el metodo api/example/update funciona segun lo necesitado al enviar el objeto con parametros correctos en donde la entidad existe y se actualiza
         /// </summary>
         [TestMethod]
-        public void UpdateMethodIsCorrect()
+        public void ExampleControllerUpdateMethodIsCorrect()
         {
             NegotiatedContentResult<bool> updateMethod = exampleController.Update(new ExampleUpdateDTO() { Rut = "1-9", Name = "Pedro", LastName = "Gutierrez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "1234qwer" }) as NegotiatedContentResult<bool>;
             Assert.IsNotNull(updateMethod);
@@ -253,7 +253,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros vacios
         /// </summary>
         [TestMethod]
-        public void DeleteMethodIsEmptyParameters()
+        public void ExampleControllerDeleteMethodIsEmptyParameters()
         {
             NegotiatedContentResult<MessageVO> deleteMethod = exampleController.Delete(string.Empty) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(deleteMethod);
@@ -265,7 +265,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros invalidos
         /// </summary>
         [TestMethod]
-        public void DeleteMethodIsInvalidParameters()
+        public void ExampleControllerDeleteMethodIsInvalidParameters()
         {
             NegotiatedContentResult<MessageVO> deleteMethod = exampleController.Delete("12332231") as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(deleteMethod);
@@ -277,7 +277,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros correctos en donde la entidad no existe
         /// </summary>
         [TestMethod]
-        public void DeleteMethodIsCorrectAndNotExist()
+        public void ExampleControllerDeleteMethodIsCorrectAndNotExist()
         {
             NegotiatedContentResult<bool> deleteMethod = exampleController.Delete("21-3") as NegotiatedContentResult<bool>;
             Assert.IsNotNull(deleteMethod);
@@ -289,7 +289,7 @@ namespace WebAPIUnitTest
         /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros correctos en donde la entidad existe
         /// </summary>
         [TestMethod]
-        public void DeleteMethodIsCorrect()
+        public void ExampleControllerDeleteMethodIsCorrect()
         {
             NegotiatedContentResult<bool> deleteMethod = exampleController.Delete("1-9") as NegotiatedContentResult<bool>;
             Assert.IsNotNull(deleteMethod);
@@ -302,10 +302,10 @@ namespace WebAPIUnitTest
         #region List
 
         /// <summary>
-        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objecto nulo
+        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objeto nulo
         /// </summary>
         [TestMethod]
-        public void ListMethodIsNullObject()
+        public void ExampleControllerListMethodIsNullObject()
         {
             NegotiatedContentResult<MessageVO> listMethod = exampleController.List(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(listMethod);
@@ -314,29 +314,41 @@ namespace WebAPIUnitTest
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objecto con parametros invalidos
+        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objeto con parametros invalidos
         /// </summary>
         [TestMethod]
-        public void ListMethodIsInvalidParametersOfObject()
+        public void ExampleControllerListMethodIsInvalidParametersOfObject()
         {
-            NegotiatedContentResult<MessageVO> listMethod = exampleController.List(new ExampleListDTO() { PageIndex = -1, PageSize = 0 }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> listMethod = exampleController.List(new ExampleListDTO() { PageIndex = 0, PageSize = 0 }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(listMethod);
             Assert.IsInstanceOfType(listMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
         }
 
         /// <summary>
-        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objecto con parametros correctos
+        /// Verificar que el metodo api/example/list funciona segun lo necesitado al enviar el objeto con parametros correctos
         /// </summary>
         [TestMethod]
-        public void ListMethodIsCorrect()
+        public void ExampleControllerListMethodIsCorrect()
         {
-            NegotiatedContentResult<List<Example>> listMethod = exampleController.List(new ExampleListDTO() { PageIndex = 0, PageSize = 10 }) as NegotiatedContentResult<List<Example>>;
+            NegotiatedContentResult<List<Example>> listMethod = exampleController.List(new ExampleListDTO() { PageIndex = 1, PageSize = 10 }) as NegotiatedContentResult<List<Example>>;
             Assert.IsNotNull(listMethod);
             Assert.IsInstanceOfType(listMethod.Content, typeof(List<Example>));
             Assert.AreEqual(HttpStatusCode.OK, listMethod.StatusCode);
         }
 
+        #endregion
+
+        #region Count
+
+        [TestMethod]
+        public void ExampleControllerCountMethodIsCorrect()
+        {
+            NegotiatedContentResult<long> countMethod = exampleController.Count() as NegotiatedContentResult<long>;
+            Assert.IsNotNull(countMethod);
+            Assert.IsInstanceOfType(countMethod.Content, typeof(long));
+            Assert.AreEqual(HttpStatusCode.OK, countMethod.StatusCode);
+        }
         #endregion
     }
 }

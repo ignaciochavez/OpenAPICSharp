@@ -79,6 +79,7 @@
     <Compile Include="CheckControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExampleControllerTests.cs" />
+    <Compile Include="HeroeControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj">
