@@ -16,7 +16,7 @@ namespace WebAPI
     public class APIKeyAuthAttribute : AuthorizationFilterAttribute
     {
         MessageVO messageVO = new MessageVO();
-        MessageHTML messageHTML = new MessageHTML();
+        ContentHTML contentHTML = new ContentHTML();
 
         private static bool GetAPIKeyHeader(System.Web.Http.Controllers.HttpActionContext actionContext, out string apiKeyHeader)
         {
@@ -42,7 +42,7 @@ namespace WebAPI
             {
                 if (!GetAPIKeyHeader(actionContext, out apiKeyHeader))
                 {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("notAuthorizedTitle"), messageHTML.GetInnerTextById("notAuthorized"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
                     actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
                 }
                 else
@@ -50,7 +50,7 @@ namespace WebAPI
                     string[] authorization = apiKeyHeader.Split(' ');
                     if (authorization[0] != "Bearer")
                     {
-                        messageVO.SetMessage(0, messageHTML.GetInnerTextById("notAuthorizedTitle"), messageHTML.GetInnerTextById("notAuthorized"));
+                        messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
                         actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
                     }
                     else
@@ -59,7 +59,7 @@ namespace WebAPI
                         string encryptApiKey = Useful.ConvertSHA256(authorization[1]);
                         if (secretKey != encryptApiKey)
                         {
-                            messageVO.SetMessage(0, messageHTML.GetInnerTextById("notAuthorizedTitle"), messageHTML.GetInnerTextById("notAuthorized"));
+                            messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
                             actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
                         }
                     }
@@ -68,7 +68,7 @@ namespace WebAPI
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.InternalServerError, messageVO);
                 base.OnAuthorization(actionContext);
             }

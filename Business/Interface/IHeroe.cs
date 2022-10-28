@@ -10,11 +10,13 @@ namespace Business.Interface
 {
     public interface IHeroe
     {
-        Heroe Select(string name);
-        bool Exist(string name);
+        Heroe Select(int id);
+        bool ExistByName(string name);
         Heroe Insert(HeroeInsertDTO heroeInsertDTO);
-        bool Update(HeroeUpdateDTO heroeUpdateDTO);
-        bool Delete(string name);
+        bool Update(Heroe heroe);
+        bool Delete(int id);
         List<Heroe> List(HeroeListDTO heroeListDTO);
+        long TotalRecords();
+        bool ExistByNameAndNotSameEntity(HeroeExistByNameAndNotSameEntityDTO heroeExistByNameAndNotSameEntityDTO);
     }
 }

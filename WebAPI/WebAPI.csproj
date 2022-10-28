@@ -94,6 +94,7 @@
       <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -107,6 +108,7 @@
     <Content Include="Contents\api-200.png" />
     <Content Include="Contents\CSS\bootstrap.css" />
     <Content Include="Contents\CSS\style.css" />
+    <EmbeddedResource Include="Contents\CSS\swagger.css" />
     <Content Include="Contents\Img\A-64.png" />
     <Content Include="Contents\Img\aquaman.png" />
     <Content Include="Contents\Img\batman.png" />
@@ -119,6 +121,7 @@
     <Content Include="Contents\Img\wolverine.png" />
     <Content Include="Contents\JS\useful.js" />
     <Content Include="Contents\Useful\Messages.html" />
+    <Content Include="Contents\Useful\TemplatePDF.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
@@ -139,7 +142,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Contents\CSS\bootstrap.css.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

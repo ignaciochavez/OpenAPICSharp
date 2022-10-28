@@ -17,7 +17,7 @@ namespace Business.Tool
 
         public static string GetApplicationDirectory()
         {
-            return System.AppDomain.CurrentDomain.BaseDirectory.Replace("WebAPIUnitTest\\bin\\Debug", "WebAPI\\");
+            return System.AppDomain.CurrentDomain.BaseDirectory.Replace("WebAPIUnitTests\\bin\\Debug", "WebAPI\\");
         }
                 
         public static string GetAppSettings(string keyWebConfig)
@@ -66,6 +66,12 @@ namespace Business.Tool
             }
 
             return rutDigit;
+        }
+
+        public static string GetAllTextFile(string path)
+        {
+            string text = File.ReadAllText(path);
+            return text;
         }
 
         public static string GetApplicationNameText()

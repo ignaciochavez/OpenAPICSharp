@@ -13,14 +13,14 @@ namespace Business.Implementation
     {
         private static HeroeDAO heroeDAO = new HeroeDAO();
 
-        public static Heroe Select(string name)
+        public static Heroe Select(int id)
         {
-            return heroeDAO.Select(name);
+            return heroeDAO.Select(id);
         }
 
-        public static bool Exist(string name)
+        public static bool ExistByName(string name)
         {
-            return heroeDAO.Exist(name);
+            return heroeDAO.ExistByName(name);
         }
 
         public static Heroe Insert(HeroeInsertDTO heroeInsertDTO)
@@ -28,14 +28,14 @@ namespace Business.Implementation
             return heroeDAO.Insert(heroeInsertDTO);
         }
 
-        public static bool Update(HeroeUpdateDTO heroeUpdateDTO)
+        public static bool Update(Heroe heroe)
         {
-            return heroeDAO.Update(heroeUpdateDTO);
+            return heroeDAO.Update(heroe);
         }
 
-        public static bool Delete(string name)
+        public static bool Delete(int id)
         {
-            return heroeDAO.Delete(name);
+            return heroeDAO.Delete(id);
         }
 
         public static List<Heroe> List(HeroeListDTO heroeListDTO)
@@ -43,9 +43,14 @@ namespace Business.Implementation
             return heroeDAO.List(heroeListDTO);
         }
 
-        public static long Count()
+        public static long TotalRecords()
         {
-            return heroeDAO.Count();
+            return heroeDAO.TotalRecords();
+        }
+
+        public static bool ExistByNameAndNotSameEntity(HeroeExistByNameAndNotSameEntityDTO heroeExistByNameAndNotSameEntityDTO)
+        {
+            return heroeDAO.ExistByNameAndNotSameEntity(heroeExistByNameAndNotSameEntityDTO);
         }
     }
 }

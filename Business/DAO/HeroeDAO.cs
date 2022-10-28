@@ -12,11 +12,11 @@ namespace Business.DAO
 {
     public class HeroeDAO : IHeroe
     {
-        List<Heroe> listHeroeData = new List<Heroe>();
+        List<Heroe> heroes = new List<Heroe>();
 
         public HeroeDAO()
         {
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 1,
                 Name = "Aquaman",
@@ -25,7 +25,7 @@ namespace Business.DAO
                 Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)),
                 Home = "DC"
             });
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 2,
                 Name = "Batman",
@@ -34,7 +34,7 @@ namespace Business.DAO
                 Appearance = new DateTimeOffset(new DateTime(1939, 5, 1)),
                 Home = "DC"
             });
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 3,
                 Name = "Daredevil",
@@ -43,7 +43,7 @@ namespace Business.DAO
                 Appearance = new DateTimeOffset(new DateTime(1964, 1, 1)),
                 Home = "Marvel"
             });
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 4,
                 Name = "Hulk",
@@ -52,7 +52,7 @@ namespace Business.DAO
                 Appearance = new DateTimeOffset(new DateTime(1962, 5, 1)),
                 Home = "Marvel"
             });
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 5,
                 Name = "Linterna Verde",
@@ -61,7 +61,7 @@ namespace Business.DAO
                 Appearance = new DateTimeOffset(new DateTime(1940, 6, 1)),
                 Home = "DC"
             });
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 6,
                 Name = "Spider-Man",
@@ -70,7 +70,7 @@ namespace Business.DAO
                 Appearance = new DateTimeOffset(new DateTime(1962, 8, 1)),
                 Home = "Marvel"
             });
-            listHeroeData.Add(new Heroe()
+            heroes.Add(new Heroe()
             {
                 Id = 7,
                 Name = "Wolverine",
@@ -81,15 +81,15 @@ namespace Business.DAO
             });
         }
 
-        public Heroe Select(string name)
+        public Heroe Select(int id)
         {
-            Heroe heroe = listHeroeData.FirstOrDefault(o => o.Name == name);
+            Heroe heroe = heroes.FirstOrDefault(o => o.Id == id);
             return heroe;
         }
 
-        public bool Exist(string name)
+        public bool ExistByName(string name)
         {
-            bool exist = listHeroeData.Any(o => o.Name == name);
+            bool exist = heroes.Any(o => o.Name == name);
             return exist;
         }
 
@@ -97,33 +97,33 @@ namespace Business.DAO
         {
             Heroe heroe = new Heroe()
             {
-                Id = listHeroeData.Last().Id + 1,
+                Id = heroes.Last().Id + 1,
                 Name = heroeInsertDTO.Name,
                 Description = heroeInsertDTO.Description,
                 ImgBase64String = heroeInsertDTO.ImgBase64String,
                 Appearance = heroeInsertDTO.Appearance,
                 Home = heroeInsertDTO.Home
             };
-            listHeroeData.Add(heroe);
+            heroes.Add(heroe);
             return heroe;
         }
 
-        public bool Update(HeroeUpdateDTO heroeUpdateDTO)
+        public bool Update(Heroe heroe)
         {
-            Heroe heroeExist = listHeroeData.FirstOrDefault(o => o.Name == heroeUpdateDTO.Name);
+            Heroe heroeExist = heroes.FirstOrDefault(o => o.Id == heroe.Id);
             if (heroeExist != null)
             {
-                Heroe heroe = new Heroe()
+                Heroe entity = new Heroe()
                 {
                     Id = heroeExist.Id,
-                    Name = heroeUpdateDTO.Name,
-                    Description = heroeUpdateDTO.Description,
-                    ImgBase64String = heroeUpdateDTO.ImgBase64String,
-                    Appearance = heroeUpdateDTO.Appearance,
-                    Home = heroeUpdateDTO.Home
+                    Name = heroe.Name,
+                    Description = heroe.Description,
+                    ImgBase64String = heroe.ImgBase64String,
+                    Appearance = heroe.Appearance,
+                    Home = heroe.Home
                 };
-                listHeroeData.Remove(heroeExist);
-                listHeroeData.Add(heroe);
+                heroes.Remove(heroeExist);
+                heroes.Add(entity);
                 return true;
             }
             else
@@ -132,12 +132,12 @@ namespace Business.DAO
             }
         }
 
-        public bool Delete(string name)
+        public bool Delete(int id)
         {
-            Heroe heroe = listHeroeData.FirstOrDefault(o => o.Name == name);
+            Heroe heroe = heroes.FirstOrDefault(o => o.Id == id);
             if (heroe != null)
             {
-                listHeroeData.Remove(heroe);
+                heroes.Remove(heroe);
                 return true;
             }
             else
@@ -148,14 +148,23 @@ namespace Business.DAO
 
         public List<Heroe> List(HeroeListDTO heroeListDTO)
         {
-            List<Heroe> listHeroe = listHeroeData.OrderBy(o => o.Id).Skip((heroeListDTO.PageSize * (heroeListDTO.PageIndex - 1))).Take(heroeListDTO.PageSize).ToList();
+            List<Heroe> listHeroe = heroes.OrderBy(o => o.Id).Skip((heroeListDTO.PageSize * (heroeListDTO.PageIndex - 1))).Take(heroeListDTO.PageSize).ToList();
             return listHeroe;
         }
 
-        public long Count()
+        public long TotalRecords()
         {
-            long count = listHeroeData.LongCount();
-            return count;
+            long totalRecords = heroes.LongCount();
+            return totalRecords;
+        }
+
+        public bool ExistByNameAndNotSameEntity(HeroeExistByNameAndNotSameEntityDTO heroeExistByNameAndNotSameEntityDTO)
+        {
+            Heroe heroe = heroes.FirstOrDefault(o => o.Id != heroeExistByNameAndNotSameEntityDTO.Id && o.Name == heroeExistByNameAndNotSameEntityDTO.Name);
+            if (heroe == null)
+                return false;
+            else
+                return true;
         }
     }
 }

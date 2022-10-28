@@ -1,22 +1,14 @@
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\bin\Debug\Business.dll
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\bin\Debug\Business.pdb
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\bin\Debug\HtmlAgilityPack.dll
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\bin\Debug\HtmlAgilityPack.pdb
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\bin\Debug\HtmlAgilityPack.xml
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\obj\Debug\Business.dll
-c:\users\ignacio\documents\visual studio 2015\Projects\OpenAPI\Business\obj\Debug\Business.pdb
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\bin\Debug\Business.dll
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\bin\Debug\Business.pdb
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.dll
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.pdb
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.xml
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\obj\Debug\Business.dll
-C:\Users\Ignacio\Documents\Visual Studio 2015\Projects\OpenAPICSharp\Business\obj\Debug\Business.pdb
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\Business.dll
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\Business.pdb
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.dll
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.pdb
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.xml
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.dll
-D:\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.pdb
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\Business.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\Business.pdb
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\BouncyCastle.Crypto.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\DocumentFormat.OpenXml.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\itextsharp.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\itextsharp.xmlworker.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\SpreadsheetLight.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.pdb
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\HtmlAgilityPack.xml
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\itextsharp.xml
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\SpreadsheetLight.xml
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.dll
+D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.pdb

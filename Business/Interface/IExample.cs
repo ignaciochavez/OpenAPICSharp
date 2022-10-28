@@ -10,11 +10,15 @@ namespace Business.Interface
 {
     public interface IExample
     {
-        Example Select(string rut);
-        bool Exist(string rut);
+        Example Select(int id);
+        bool ExistsByRut(string rut);
         Example Insert(ExampleInsertDTO exampleInsertDTO);
-        bool Update(ExampleUpdateDTO exampleUpdateDTO);
-        bool Delete(string rut);
+        bool Update(Example example);
+        bool Delete(int id);
         List<Example> List(ExampleListDTO exampleListDTO);
+        long TotalRecords();
+        bool ExistByRutAndNotSameEntity(ExampleExistByRutAndNotSameEntityDTO exampleExistByRutAndNotSameEntityDTO);
+        ExampleExcelDTO Excel();
+        ExamplePDFDTO PDF();
     }
 }

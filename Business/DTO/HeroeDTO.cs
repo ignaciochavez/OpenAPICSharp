@@ -15,18 +15,15 @@ namespace Business.DTO
         public string Home { get; set; }
     }
 
-    public class HeroeUpdateDTO
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ImgBase64String { get; set; }
-        public DateTimeOffset Appearance { get; set; }
-        public string Home { get; set; }
-    }
-
     public class HeroeListDTO
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
+    }
+
+    public class HeroeExistByNameAndNotSameEntityDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

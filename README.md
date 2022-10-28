@@ -12,6 +12,8 @@ Visual studio 2015 .NET C#
 
 Tener codigo fuente de solucion
 
+Tener instalado Open Xml SDK 2.5 .msi (https://github.com/OfficeDev/Open-XML-SDK/releases/tag/v2.5)
+
 Tener IIS instalado
 
 Habilitar Sitio web IIS

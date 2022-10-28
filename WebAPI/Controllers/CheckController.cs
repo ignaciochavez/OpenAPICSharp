@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class CheckController : ApiController
     {
         MessageVO messageVO = new MessageVO();
-        MessageHTML messageHTML = new MessageHTML();
+        ContentHTML contentHTML = new ContentHTML();
         
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace WebAPI.Controllers
         {
             try
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("checkTitle"), messageHTML.GetInnerTextById("correctCheckMessage"));
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
                 return Content(HttpStatusCode.OK, messageVO);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
@@ -62,12 +62,12 @@ namespace WebAPI.Controllers
         {
             try
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("checkTitle"), messageHTML.GetInnerTextById("correctCheckMessage"));
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
                 return Content(HttpStatusCode.OK, messageVO);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }

@@ -13,14 +13,14 @@ namespace Business.Implementation
     {
         private static ExampleDAO exampleDAO = new ExampleDAO();
 
-        public static Example Select(string rut)
+        public static Example Select(int id)
         {
-            return exampleDAO.Select(rut);
+            return exampleDAO.Select(id);
         }
 
-        public static bool Exist(string rut)
+        public static bool ExistsByRut(string rut)
         {
-            return exampleDAO.Exist(rut);
+            return exampleDAO.ExistsByRut(rut);
         }
 
         public static Example Insert(ExampleInsertDTO exampleInsertDTO)
@@ -28,14 +28,14 @@ namespace Business.Implementation
             return exampleDAO.Insert(exampleInsertDTO);
         }
 
-        public static bool Update(ExampleUpdateDTO exampleUpdateDTO)
+        public static bool Update(Example example)
         {
-            return exampleDAO.Update(exampleUpdateDTO);
+            return exampleDAO.Update(example);
         }
 
-        public static bool Delete(string rut)
+        public static bool Delete(int id)
         {
-            return exampleDAO.Delete(rut);
+            return exampleDAO.Delete(id);
         }
 
         public static List<Example> List(ExampleListDTO exampleListDTO)
@@ -43,9 +43,24 @@ namespace Business.Implementation
             return exampleDAO.List(exampleListDTO);
         }
 
-        public static long Count()
+        public static long TotalRecords()
         {
-            return exampleDAO.Count();
+            return exampleDAO.TotalRecords();
+        }
+
+        public static bool ExistByRutAndNotSameEntity(ExampleExistByRutAndNotSameEntityDTO exampleExistByRutAndNotSameEntityDTO)
+        {
+            return exampleDAO.ExistByRutAndNotSameEntity(exampleExistByRutAndNotSameEntityDTO);
+        }
+
+        public static ExampleExcelDTO Excel()
+        {
+            return exampleDAO.Excel();
+        }
+
+        public static ExamplePDFDTO PDF()
+        {
+            return exampleDAO.PDF();
         }
     }
 }

@@ -20,82 +20,38 @@ namespace WebAPI.Controllers
     public class ExampleController : ApiController
     {
         MessageVO messageVO = new MessageVO();
-        MessageHTML messageHTML = new MessageHTML();
+        ContentHTML contentHTML = new ContentHTML();
 
         /// <summary>
-        /// Metodo para seleccionar Example por rut
+        /// Metodo para seleccionar Example
         /// </summary>
         /// <remarks>
-        /// api/example/Select?rut=1-9
+        /// api/example/Select?id=1
         /// </remarks>
-        /// <param name="rut">Parametro rut</param>
-        /// <returns>Entidad Example</returns>
+        /// <param name="id">Id Example</param>
+        /// <returns>Retorna el objeto</returns>
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(Example))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Select")]
-        public IHttpActionResult Select([FromUri] string rut)
+        public IHttpActionResult Select([FromUri] int id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(rut))
+                if (id <= 0)
                 {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "rut"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-                else if (!Useful.ValidateRut(rut))
-                {
-                    messageVO.SetMessage(1, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "rut"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "id"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ExampleImpl.Select(rut);
+                var entity = ExampleImpl.Select(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
-                return Content(HttpStatusCode.InternalServerError, messageVO);
-            }
-        }
-
-        /// <summary>
-        /// Metodo para verificar existencia de entidad Example por rut
-        /// </summary>
-        /// <remarks>
-        /// api/example/Exist?rut=1-9
-        /// </remarks>
-        /// <param name="rut">Parametro rut</param>
-        /// <returns>Verdadero o Falso</returns>
-        [HttpGet]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto existe o no", typeof(bool))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("Exist")]
-        public IHttpActionResult Exist([FromUri] string rut)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(rut))
-                {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "rut"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-                else if (!Useful.ValidateRut(rut))
-                {
-                    messageVO.SetMessage(1, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "rut"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-
-                var exist = ExampleImpl.Exist(rut);
-                return Content(HttpStatusCode.OK, exist);
-            }
-            catch (Exception ex)
-            {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
@@ -116,8 +72,8 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="exampleInsertDTO">Objeto</param>
-        /// <returns>Entidad Example</returns>    
+        /// <param name="exampleInsertDTO">Modelo ExampleInsertDTO</param>
+        /// <returns>Retorna el objeto</returns>    
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido creado y retornado", typeof(Example))]
@@ -130,34 +86,35 @@ namespace WebAPI.Controllers
             {
                 if (exampleInsertDTO == null)
                 {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleInsertDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleInsertDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.Rut))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
                 else if (!Useful.ValidateRut(exampleInsertDTO.Rut))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
                
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.Name))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.LastName))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
                 if (!Useful.ValidateDateTimeOffset(exampleInsertDTO.BirthDate))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
 
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.Password))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
 
                 if (messageVO.Messages.Count() > 0)
                 {
-                    messageVO.SetIdTitle(1, messageHTML.GetInnerTextById("requeridTitle"));
+                    messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (ExampleImpl.Exist(exampleInsertDTO.Rut))
+                bool existsEntity = ExampleImpl.ExistsByRut(exampleInsertDTO.Rut);
+                if (existsEntity)
                 {
-                    messageVO.SetMessage(2, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Example").Replace("{1}", "Rut"));
+                    messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Example").Replace("{1}", "Rut"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
@@ -166,7 +123,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
@@ -178,6 +135,7 @@ namespace WebAPI.Controllers
         /// Request POST:
         ///
         ///     {
+        ///        "Id": 1,
         ///        "Rut": "18-3",
         ///        "Name": "Emanuel",
         ///        "LastName": "Leiva",
@@ -187,90 +145,95 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="exampleUpdateDTO">Objeto</param>
-        /// <returns>Verdadero o Falso</returns>    
+        /// <param name="example">Modelo Example</param>
+        /// <returns>Retorna el objeto</returns>    
         [HttpPut]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido creado o no", typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Update")]
-        public IHttpActionResult Update([FromBody] ExampleUpdateDTO exampleUpdateDTO)
+        public IHttpActionResult Update([FromBody] Example example)
         {
             try
             {
-                if (exampleUpdateDTO == null)
+                if (example == null)
                 {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleUpdateDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "Example"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (string.IsNullOrWhiteSpace(exampleUpdateDTO.Rut))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
-                else if (!Useful.ValidateRut(exampleUpdateDTO.Rut))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
+                if (example.Id <= 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
 
-                if (string.IsNullOrWhiteSpace(exampleUpdateDTO.Name))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
-                if (string.IsNullOrWhiteSpace(exampleUpdateDTO.LastName))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
-                if (!Useful.ValidateDateTimeOffset(exampleUpdateDTO.BirthDate))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
+                if (string.IsNullOrWhiteSpace(example.Rut))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
+                else if (!Useful.ValidateRut(example.Rut))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
 
-                if (string.IsNullOrWhiteSpace(exampleUpdateDTO.Password))
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
+                if (string.IsNullOrWhiteSpace(example.Name))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
+                if (string.IsNullOrWhiteSpace(example.LastName))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
+                if (!Useful.ValidateDateTimeOffset(example.BirthDate))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
+
+                if (string.IsNullOrWhiteSpace(example.Password))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
 
                 if (messageVO.Messages.Count() > 0)
                 {
-                    messageVO.SetIdTitle(1, messageHTML.GetInnerTextById("requeridTitle"));
+                    messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
-                
-                var update = ExampleImpl.Update(exampleUpdateDTO);
+
+                bool existByRutAndNotSameEntity = ExampleImpl.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = example.Id, Rut = example.Rut });
+                if (existByRutAndNotSameEntity)
+                {
+                    messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Example").Replace("{1}", "Rut").Replace("{2}", "Example"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                var update = ExampleImpl.Update(example);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
 
         /// <summary>
-        /// Metodo para eliminar entidad Example por rut
+        /// Metodo para eliminar entidad Example
         /// </summary>
         /// <remarks>
-        /// api/example/Delete?rut=1-9
+        /// api/example/Delete?id=1
         /// </remarks>
-        /// <param name="rut">Parametro rut</param>
-        /// <returns>Verdadero o Falso</returns>
+        /// <param name="id">Id Example</param>
+        /// <returns>Retorna el objeto</returns>
         [HttpDelete]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido eliminado o no", typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido eliminado", typeof(bool))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Delete")]
-        public IHttpActionResult Delete([FromUri] string rut)
+        public IHttpActionResult Delete([FromUri] int id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(rut))
+                if (id <= 0)
                 {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("emptyParameters").Replace("{0}", "rut"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-                else if (!Useful.ValidateRut(rut))
-                {
-                    messageVO.SetMessage(1, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "rut"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "id"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = ExampleImpl.Delete(rut);
+                var delete = ExampleImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
@@ -288,7 +251,7 @@ namespace WebAPI.Controllers
         ///
         /// </remarks>
         /// <param name="exampleListDTO">Objeto</param>
-        /// <returns>Lista Entidad Example</returns>
+        /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Example>))]
@@ -301,27 +264,30 @@ namespace WebAPI.Controllers
             {
                 if (exampleListDTO == null)
                 {
-                    messageVO.SetMessage(0, messageHTML.GetInnerTextById("requeridTitle"), messageHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleListDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleListDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
                 if (exampleListDTO.PageIndex <= 0) 
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
-                if (exampleListDTO.PageSize <= 0 || exampleListDTO.PageSize > Useful.GetPageSizeMaximun())
-                    messageVO.Messages.Add(messageHTML.GetInnerTextById("parameterGreaterThanAndLessThan").Replace("{0}", "PageIndex").Replace("{1}", "0").Replace("{2}", Useful.GetPageSizeMaximun().ToString()));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+
+                if (exampleListDTO.PageSize <= 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                else if (exampleListDTO.PageSize > Useful.GetPageSizeMaximun())
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("minimumParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
                 if (messageVO.Messages.Count() > 0)
                 {
-                    messageVO.SetIdTitle(1, messageHTML.GetInnerTextById("requeridTitle"));
+                    messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var list = ExampleImpl.List(exampleListDTO);
-                return Content(HttpStatusCode.OK, list);
+                var entitys = ExampleImpl.List(exampleListDTO);
+                return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
@@ -330,25 +296,132 @@ namespace WebAPI.Controllers
         /// Metodo para contar registros de entidad Example 
         /// </summary>
         /// <remarks>
-        /// api/example/Count
+        /// api/example/TotalRecords
         /// </remarks>
-        /// <returns>Conteo de registros</returns>
+        /// <returns>Retorna el objeto</returns>
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(long))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("Count")]
-        public IHttpActionResult Count()
+        [Route("TotalRecords")]
+        public IHttpActionResult TotalRecords()
         {
             try
             {
-                var count = ExampleImpl.Count();
-                return Content(HttpStatusCode.OK, count);
+                var totalRecords = ExampleImpl.TotalRecords();
+                return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
             {
-                messageVO.SetMessage(0, messageHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para verificar si existe entidad Example, que no sea igual a la entidad actual por Id y Rut
+        /// </summary>
+        /// <remarks>
+        /// Request POST:
+        ///
+        ///     {
+        ///        "Id": 1,
+        ///        "Rut": "1-9"
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>Retorna el objeto</returns>
+        [HttpPost]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("ExistByRutAndNotSameEntity")]
+        public IHttpActionResult ExistByRutAndNotSameEntity([FromBody] ExampleExistByRutAndNotSameEntityDTO exampleExistByRutAndNotSameEntityDTO)
+        {
+            try
+            {
+                if (exampleExistByRutAndNotSameEntityDTO == null)
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleExistByRutAndNotSameEntityDTO"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                if (exampleExistByRutAndNotSameEntityDTO.Id <= 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
+
+                if (string.IsNullOrWhiteSpace(exampleExistByRutAndNotSameEntityDTO.Rut))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
+                else if (!Useful.ValidateRut(exampleExistByRutAndNotSameEntityDTO.Rut))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
+
+                if (messageVO.Messages.Count() > 0)
+                {
+                    messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                bool exists = ExampleImpl.ExistByRutAndNotSameEntity(exampleExistByRutAndNotSameEntityDTO);
+                return Content(HttpStatusCode.OK, exists);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para contar retornar Excel
+        /// </summary>
+        /// <remarks>
+        /// api/example/Excel
+        /// </remarks>
+        /// <returns>Retorna el objeto</returns>
+        [HttpGet]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(ExampleExcelDTO))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("Excel")]
+        public IHttpActionResult Excel()
+        {
+            try
+            {
+                var excel = ExampleImpl.Excel();
+                return Content(HttpStatusCode.OK, excel);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para contar retornar PDF
+        /// </summary>
+        /// <remarks>
+        /// api/example/Excel
+        /// </remarks>
+        /// <returns>Retorna el objeto</returns>
+        [HttpGet]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(ExamplePDFDTO))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("PDF")]
+        public IHttpActionResult PDF()
+        {
+            try
+            {
+                var pdf = ExampleImpl.PDF();
+                return Content(HttpStatusCode.OK, pdf);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }

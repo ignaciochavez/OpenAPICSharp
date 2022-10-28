@@ -54,10 +54,7 @@ namespace WebAPI
                         //    {
                         //        vc.Version("v2", "Swashbuckle Dummy API V2");
                         //        vc.Version("v1", "Swashbuckle Dummy API V1");
-                        //    });
-
-                        c.PrettyPrint();
-                        
+                        //    });                        
 
                         // You can use "BasicAuth", "ApiKey" or "OAuth2" options to describe security schemes for the API.
                         // See https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md for more details.
@@ -185,6 +182,8 @@ namespace WebAPI
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.
                         //
                         //c.CustomProvider((defaultProvider) => new CachingSwaggerProvider(defaultProvider));
+
+                        c.PrettyPrint();
                     })
                 .EnableSwaggerUi(c =>
                     {
@@ -192,7 +191,7 @@ namespace WebAPI
                         // The file must be included in your project as an "Embedded Resource", and then the resource's
                         // "Logical Name" is passed to the method as shown below.
                         //
-                        //c.InjectStylesheet(containingAssembly, "Swashbuckle.Dummy.SwaggerExtensions.testStyles1.css");
+                        c.InjectStylesheet(typeof(SwaggerConfig).Assembly, "WebAPI.Contents.CSS.swagger.css");
 
                         // Use the "InjectJavaScript" option to invoke one or more custom JavaScripts after the swagger-ui
                         // has loaded. The file must be included in your project as an "Embedded Resource", and then the resource's
@@ -252,7 +251,7 @@ namespace WebAPI
                         // If your API supports ApiKey, you can override the default values.
                         // "apiKeyIn" can either be "query" or "header"                                                
                         //
-                                             
+
                         c.EnableApiKeySupport("API-KEY", "header");
                     });
         }

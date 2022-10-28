@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:WebAPI.APIKeyAuthAttribute">
+            <summary>
+            APIKeyAuthAttribute
+            </summary>
+        </member>
+        <member name="M:WebAPI.APIKeyAuthAttribute.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            OnAuthorization
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="T:WebAPI.SwaggerConfig">
+            <summary>
+            Clase SwaggerConfig
+            </summary>
+        </member>
+        <member name="M:WebAPI.SwaggerConfig.Register">
+            <summary>
+            Metodo Register
+            </summary>
+        </member>
+        <member name="M:WebAPI.SwaggerConfig.GetXmlCommentsPath">
+            <summary>
+            Metodo GetXmlCommentsPath
+            </summary>
+        </member>
+        <member name="T:WebAPI.WebApiConfig">
+            <summary>
+            Clase WebApiConfig
+            </summary>
+        </member>
+        <member name="M:WebAPI.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Metodo Register
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:WebAPI.Controllers.CheckController">
+            <summary>
+             Controlador api/check
+            </summary>    
+        </member>
+        <member name="M:WebAPI.Controllers.CheckController.Check">
+            <summary>
+            Metodo para verificar conectividad al servicio
+            </summary>
+            <remarks>
+            api/check/Check
+            </remarks>
+            <returns>MessageVO</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.CheckController.CheckAuth">
+            <summary>
+            Metodo para verificar funcionalidad de autenticacion
+            </summary>
+            <remarks>
+            api/check/CheckAuth
+            </remarks>
+            <returns>MessageVO</returns>  
+        </member>
+        <member name="T:WebAPI.Controllers.ExampleController">
+            <summary>
+             Controlador api/example
+            </summary> 
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Select(System.Int32)">
+            <summary>
+            Metodo para seleccionar Example
+            </summary>
+            <remarks>
+            api/example/Select?id=1
+            </remarks>
+            <param name="id">Id Example</param>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Insert(Business.DTO.ExampleInsertDTO)">
+             <summary>
+             Metodo para insertar Example
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Rut": "18-3",
+                    "Name": "Emanuel",
+                    "LastName": "Leiva",
+                    "BirthDate": "1995-12-25T00:00:00.0000007-04:00",
+                    "Active": true,
+                    "Password": "4321rewq"
+                 }
+            
+             </remarks>
+             <param name="exampleInsertDTO">Modelo ExampleInsertDTO</param>
+             <returns>Retorna el objeto</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Update(Business.Entity.Example)">
+             <summary>
+             Metodo para actualizar Example
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Id": 1,
+                    "Rut": "18-3",
+                    "Name": "Emanuel",
+                    "LastName": "Leiva",
+                    "BirthDate": "1995-12-25T00:00:00.0000007-04:00",
+                    "Active": true,
+                    "Password": "vcxz7894"
+                 }
+            
+             </remarks>
+             <param name="example">Modelo Example</param>
+             <returns>Retorna el objeto</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Delete(System.Int32)">
+            <summary>
+            Metodo para eliminar entidad Example
+            </summary>
+            <remarks>
+            api/example/Delete?id=1
+            </remarks>
+            <param name="id">Id Example</param>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.List(Business.DTO.ExampleListDTO)">
+             <summary>
+             Metodo para listar Example
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "PageIndex": 0,
+                    "PageSize": 10
+                 }
+            
+             </remarks>
+             <param name="exampleListDTO">Objeto</param>
+             <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.TotalRecords">
+            <summary>
+            Metodo para contar registros de entidad Example 
+            </summary>
+            <remarks>
+            api/example/TotalRecords
+            </remarks>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.ExistByRutAndNotSameEntity(Business.DTO.ExampleExistByRutAndNotSameEntityDTO)">
+             <summary>
+             Metodo para verificar si existe entidad Example, que no sea igual a la entidad actual por Id y Rut
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Id": 1,
+                    "Rut": "1-9"
+                 }
+            
+             </remarks>
+             <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.Excel">
+            <summary>
+            Metodo para contar retornar Excel
+            </summary>
+            <remarks>
+            api/example/Excel
+            </remarks>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ExampleController.PDF">
+            <summary>
+            Metodo para contar retornar PDF
+            </summary>
+            <remarks>
+            api/example/Excel
+            </remarks>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.HeroeController">
+            <summary>
+             Controlador api/heroe
+            </summary> 
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.Select(System.Int32)">
+            <summary>
+            Metodo para seleccionar Heroe
+            </summary>
+            <remarks>
+            api/heroe/Select?id=1
+            </remarks>
+            <param name="id">Id Heroe</param>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.Insert(Business.DTO.HeroeInsertDTO)">
+             <summary>
+             Metodo para insertar Heroe
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Name": "Thor",
+                    "Description": "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.",
+                    "ImgBase64String": "123456adsqwe",
+                    "Appearance": "1962-08-01T00:00:00.0000000-00:00",
+                    "Home": "Marvel"
+                 }
+            
+             </remarks>
+             <param name="heroeInsertDTO">Modelo HeroeInsertDTO</param>
+             <returns>Retorna el objeto</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.Update(Business.Entity.Heroe)">
+             <summary>
+             Metodo para actualizar Heroe
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Id": 1,
+                    "Name": "Aquaman",
+                    "Description": "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
+                    "ImgBase64String": "123456adsqwe",
+                    "Appearance": "1941-11-01T00:00:00.0000000-00:00",
+                    "Home": "DC"
+                 }
+            
+             </remarks>
+             <param name="heroe">Modelo Heroe</param>
+             <returns>Retorna el objeto</returns>    
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.Delete(System.Int32)">
+            <summary>
+            Metodo para eliminar entidad Heroe
+            </summary>
+            <remarks>
+            api/heroe/Delete?id=1
+            </remarks>
+            <param name="id">Id Heroe</param>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.List(Business.DTO.HeroeListDTO)">
+             <summary>
+             Metodo para listar Heroe
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "PageIndex": 0,
+                    "PageSize": 10
+                 }
+            
+             </remarks>
+             <param name="heroeListDTO">Modelo HeroeListDTO</param>
+             <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.TotalRecords">
+            <summary>
+            Metodo para contar registros de entidad Heroe 
+            </summary>
+            <remarks>
+            api/heroe/TotalRecords
+            </remarks>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.ExistByNameAndNotSameEntity(Business.DTO.HeroeExistByNameAndNotSameEntityDTO)">
+             <summary>
+             Metodo para verificar si existe entidad Heroe, que no sea igual a la entidad actual por Id y Name
+             </summary>
+             <remarks>
+             Request POST:
+            
+                 {
+                    "Id": 1,
+                    "Name": "Aquaman"
+                 }
+            
+             </remarks>
+             <returns>Retorna el objeto</returns>
+        </member>
+        <member name="T:WebAPI.WebApiApplication">
+            <summary>
+            Clase WebApiApplication
+            </summary>
+        </member>
+        <member name="M:WebAPI.WebApiApplication.Application_Start">
+            <summary>
+            Metodo Application_start
+            </summary>
+        </member>
+    </members>
+</doc>
