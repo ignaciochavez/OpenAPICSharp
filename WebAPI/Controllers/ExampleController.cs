@@ -375,11 +375,8 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Metodo para contar retornar Excel
         /// </summary>
-        /// <remarks>
-        /// api/example/Excel
-        /// </remarks>
         /// <returns>Retorna el objeto</returns>
-        [HttpGet]
+        [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(ExampleExcelDTO))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
@@ -402,11 +399,8 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Metodo para contar retornar PDF
         /// </summary>
-        /// <remarks>
-        /// api/example/Excel
-        /// </remarks>
         /// <returns>Retorna el objeto</returns>
-        [HttpGet]
+        [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(ExamplePDFDTO))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]

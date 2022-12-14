@@ -174,18 +174,12 @@
             <summary>
             Metodo para contar retornar Excel
             </summary>
-            <remarks>
-            api/example/Excel
-            </remarks>
             <returns>Retorna el objeto</returns>
         </member>
         <member name="M:WebAPI.Controllers.ExampleController.PDF">
             <summary>
             Metodo para contar retornar PDF
             </summary>
-            <remarks>
-            api/example/Excel
-            </remarks>
             <returns>Retorna el objeto</returns>
         </member>
         <member name="T:WebAPI.Controllers.HeroeController">

@@ -1,8 +1,15 @@
 ﻿/* Style para tener un footer en la parte inferior colocado correctamente */
 html {
     width:100%;
-    min-height: 93.8%;
+    min-height: 100%;
     position: relative;
+    font-family: sans-serif;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: black;
 }
 
 body {
@@ -11,10 +18,10 @@ body {
 }
 
 footer {
-    border-top: 1px solid rgba(50, 50, 50, 0.3);
     bottom: 0px;
-    position: absolute;
+    color: white;
     width: 100%;
-    height: 40px;
+    height: 100%;
+    background-color: #000;
 }
 /* Style para tener un footer en la parte inferior colocado correctamente */
