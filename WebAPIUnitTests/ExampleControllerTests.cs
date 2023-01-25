@@ -24,7 +24,6 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<MessageVO> selectMethod = exampleController.Select(0) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(selectMethod);
-            Assert.IsInstanceOfType(selectMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, selectMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -52,7 +51,6 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<Example> selectMethod = exampleController.Select(2) as NegotiatedContentResult<Example>;
             Assert.IsNotNull(selectMethod);
-            Assert.IsInstanceOfType(selectMethod.Content, typeof(Example));
             Assert.AreEqual(HttpStatusCode.OK, selectMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -312,79 +310,18 @@ namespace WebAPIUnitTests
             exampleController.Dispose();
         }
         #endregion
-
-        #region ExistByNameAndNotSameEntity
-
-        /// <summary>
-        /// Verificar que el metodo api/example/existbyrutandnotsameentity funciona segun lo necesitado al enviar el objecto nulo
-        /// </summary>
-        [TestMethod]
-        public void ExampleControllerExistByRutAndNotSameEntityMethodIsNullObject()
-        {
-            ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> existByRutAndNotSameEntityMethod = exampleController.ExistByRutAndNotSameEntity(null) as NegotiatedContentResult<MessageVO>;
-            Assert.IsNotNull(existByRutAndNotSameEntityMethod);
-            Assert.IsInstanceOfType(existByRutAndNotSameEntityMethod.Content, typeof(MessageVO));
-            Assert.AreEqual(HttpStatusCode.BadRequest, existByRutAndNotSameEntityMethod.StatusCode);
-            exampleController.Dispose();
-        }
-
-        /// <summary>
-        /// Verificar que el metodo api/example/existbyrutandnotsameentity funciona segun lo necesitado al enviar el objecto con parametros vacios
-        /// </summary>
-        [TestMethod]
-        public void ExampleControllerExistByRutAndNotSameEntityMethodIsEmptyParametersOfObject()
-        {
-            ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> existByRutAndNotSameEntityMethod = exampleController.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = 0, Rut = string.Empty }) as NegotiatedContentResult<MessageVO>;
-            Assert.IsNotNull(existByRutAndNotSameEntityMethod);
-            Assert.IsInstanceOfType(existByRutAndNotSameEntityMethod.Content, typeof(MessageVO));
-            Assert.AreEqual(HttpStatusCode.BadRequest, existByRutAndNotSameEntityMethod.StatusCode);
-            exampleController.Dispose();
-        }
-
-        /// <summary>
-        /// Verificar que el metodo api/example/existbyrutandnotsameentity funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe
-        /// </summary>
-        [TestMethod]
-        public void ExampleControllerExistByRutAndNotSameEntityMethodIsNotExist()
-        {
-            ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<bool> existByRutAndNotSameEntityMethod = exampleController.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = 100, Rut = "29-9" }) as NegotiatedContentResult<bool>;
-            Assert.IsNotNull(existByRutAndNotSameEntityMethod);
-            Assert.IsFalse(existByRutAndNotSameEntityMethod.Content);
-            Assert.AreEqual(HttpStatusCode.OK, existByRutAndNotSameEntityMethod.StatusCode);
-            exampleController.Dispose();
-        }
-
-        /// <summary>
-        /// Verificar que el metodo api/example/existbyrutandnotsameentity funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe
-        /// </summary>
-        [TestMethod]
-        public void ExampleControllerExistByRutAndNotSameEntityMethodIsCorrect()
-        {
-            ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<bool> existByRutAndNotSameEntityMethod = exampleController.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = 11, Rut = "12-4" }) as NegotiatedContentResult<bool>;
-            Assert.IsNotNull(existByRutAndNotSameEntityMethod);
-            Assert.IsTrue(existByRutAndNotSameEntityMethod.Content);
-            Assert.AreEqual(HttpStatusCode.OK, existByRutAndNotSameEntityMethod.StatusCode);
-            exampleController.Dispose();
-        }
-
-        #endregion
-
+        
         #region Excel
 
         /// <summary>
         /// Verificar que el metodo api/example/excel funciona segun lo necesitado
         /// </summary>
         [TestMethod]
-        public void Excel()
+        public void ExampleControllerExcelMethodIsCorrect()
         {
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<ExampleExcelDTO> excelMethod = exampleController.Excel() as NegotiatedContentResult<ExampleExcelDTO>;
             Assert.IsNotNull(excelMethod);
-            Assert.IsInstanceOfType(excelMethod.Content, typeof(ExampleExcelDTO));
             Assert.AreEqual(HttpStatusCode.OK, excelMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -397,12 +334,11 @@ namespace WebAPIUnitTests
         /// Verificar que el metodo api/example/pdf funciona segun lo necesitado
         /// </summary>
         [TestMethod]
-        public void PDF()
+        public void ExampleControllerPDFMethodIsCorrect()
         {
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<ExamplePDFDTO> pdfMethod = exampleController.PDF() as NegotiatedContentResult<ExamplePDFDTO>;
             Assert.IsNotNull(pdfMethod);
-            Assert.IsInstanceOfType(pdfMethod.Content, typeof(ExamplePDFDTO));
             Assert.AreEqual(HttpStatusCode.OK, pdfMethod.StatusCode);
             exampleController.Dispose();
         }

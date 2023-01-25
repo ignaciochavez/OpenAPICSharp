@@ -35,8 +35,16 @@ namespace WebAPI.Controllers
         {
             try
             {
-                messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
-                return Content(HttpStatusCode.OK, messageVO);
+                if (contentHTML.IsLoadDocumentHTML())
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
+                    return Content(HttpStatusCode.OK, messageVO);
+                }
+                else
+                {
+                    messageVO.SetMessage(0, "Verificacion de API", "Servicio no responde correctamente, funcionalidad no se ha ejecutado segun lo esperado");
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }                
             }
             catch (Exception ex)
             {

@@ -92,18 +92,30 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.Rut))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
+                else if (exampleInsertDTO.Rut.Trim().Length > 12)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Rut").Replace("{1}", "12"));
                 else if (!Useful.ValidateRut(exampleInsertDTO.Rut))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
-               
+
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.Name))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
+                else if (exampleInsertDTO.Name.Trim().Length > 45)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "45"));
+
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.LastName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
+                else if (exampleInsertDTO.LastName.Trim().Length > 45)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "45"));
+
                 if (!Useful.ValidateDateTimeOffset(exampleInsertDTO.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
+                else if (exampleInsertDTO.BirthDate > DateTimeOffset.Now)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
 
                 if (string.IsNullOrWhiteSpace(exampleInsertDTO.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
+                else if (exampleInsertDTO.Password.Trim().Length > 16)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -111,7 +123,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                bool existsEntity = ExampleImpl.ExistsByRut(exampleInsertDTO.Rut);
+                bool existsEntity = ExampleImpl.ExistsByRut(exampleInsertDTO.Rut.Replace(".", ""));
                 if (existsEntity)
                 {
                     messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Example").Replace("{1}", "Rut"));
@@ -168,18 +180,30 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(example.Rut))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
+                else if (example.Rut.Trim().Length > 12)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Rut").Replace("{1}", "12"));
                 else if (!Useful.ValidateRut(example.Rut))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
 
                 if (string.IsNullOrWhiteSpace(example.Name))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
+                else if (example.Name.Trim().Length > 45)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "45"));
+
                 if (string.IsNullOrWhiteSpace(example.LastName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
+                else if (example.LastName.Trim().Length > 45)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "45"));
+
                 if (!Useful.ValidateDateTimeOffset(example.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
+                else if (example.BirthDate > DateTimeOffset.Now)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
 
                 if (string.IsNullOrWhiteSpace(example.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
+                else if (example.Password.Trim().Length > 16)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -187,7 +211,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                bool existByRutAndNotSameEntity = ExampleImpl.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = example.Id, Rut = example.Rut });
+                bool existByRutAndNotSameEntity = ExampleImpl.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = example.Id, Rut = example.Rut.Replace(".", "") });
                 if (existByRutAndNotSameEntity)
                 {
                     messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Example").Replace("{1}", "Rut").Replace("{2}", "Example"));
@@ -245,7 +269,7 @@ namespace WebAPI.Controllers
         /// Request POST:
         ///
         ///     {
-        ///        "PageIndex": 0,
+        ///        "PageIndex": 1,
         ///        "PageSize": 10
         ///     }
         ///
@@ -318,62 +342,9 @@ namespace WebAPI.Controllers
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
-
+        
         /// <summary>
-        /// Metodo para verificar si existe entidad Example, que no sea igual a la entidad actual por Id y Rut
-        /// </summary>
-        /// <remarks>
-        /// Request POST:
-        ///
-        ///     {
-        ///        "Id": 1,
-        ///        "Rut": "1-9"
-        ///     }
-        ///
-        /// </remarks>
-        /// <returns>Retorna el objeto</returns>
-        [HttpPost]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(bool))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("ExistByRutAndNotSameEntity")]
-        public IHttpActionResult ExistByRutAndNotSameEntity([FromBody] ExampleExistByRutAndNotSameEntityDTO exampleExistByRutAndNotSameEntityDTO)
-        {
-            try
-            {
-                if (exampleExistByRutAndNotSameEntityDTO == null)
-                {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleExistByRutAndNotSameEntityDTO"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-
-                if (exampleExistByRutAndNotSameEntityDTO.Id <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
-
-                if (string.IsNullOrWhiteSpace(exampleExistByRutAndNotSameEntityDTO.Rut))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
-                else if (!Useful.ValidateRut(exampleExistByRutAndNotSameEntityDTO.Rut))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
-
-                if (messageVO.Messages.Count() > 0)
-                {
-                    messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-
-                bool exists = ExampleImpl.ExistByRutAndNotSameEntity(exampleExistByRutAndNotSameEntityDTO);
-                return Content(HttpStatusCode.OK, exists);
-            }
-            catch (Exception ex)
-            {
-                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
-                return Content(HttpStatusCode.InternalServerError, messageVO);
-            }
-        }
-
-        /// <summary>
-        /// Metodo para contar retornar Excel
+        /// Metodo para retornar Excel
         /// </summary>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
@@ -397,7 +368,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para contar retornar PDF
+        /// Metodo para retornar PDF
         /// </summary>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]

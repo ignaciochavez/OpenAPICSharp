@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Drawing.Imaging;
 
 namespace Business.Tool
 {
@@ -74,10 +75,37 @@ namespace Business.Tool
             return text;
         }
 
+        //public static ImageFormat GetImageFormat(string conventionFromBase64String)
+        //{
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/bmp;base64"))
+        //        return ImageFormat.Bmp;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/emf;base64"))
+        //        return ImageFormat.Emf;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/exif;base64"))
+        //        return ImageFormat.Exif;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/gif;base64"))
+        //        return ImageFormat.Gif;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/icon;base64"))
+        //        return ImageFormat.Icon;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/jpeg;base64") || conventionFromBase64String.ToLower().Contains("data:image/jpg;base64"))
+        //        return ImageFormat.Jpeg;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/tiff;base64"))
+        //        return ImageFormat.Tiff;
+        //    if (conventionFromBase64String.ToLower().Contains("data:image/wmf;base64"))
+        //        return ImageFormat.Wmf;
+        //    else
+        //        return ImageFormat.MemoryBmp;
+        //}
+
         public static string GetApplicationNameText()
         {
             return "OpenAPI";
         }        
+
+        public static string GetImagePath()
+        {
+            return $"{GetApplicationDirectory()}Contents\\api-200.png";
+        }
         #endregion
 
         #region Validate
@@ -108,6 +136,11 @@ namespace Business.Tool
             return true;
         }
 
+        public static bool ValidateBase64String(string base64String)
+        {
+            return (base64String.Trim().Length % 4 == 0) && Regex.IsMatch(base64String.Trim(), @GetAppSettings("IsBase64String"), RegexOptions.None);
+        }
+
         #endregion
 
         #region Convert
@@ -126,6 +159,23 @@ namespace Business.Tool
             return sb.ToString();
         }
 
+        #endregion
+
+        #region Replace
+        public static string ReplaceConventionImageFromBase64String(string base64String)
+        {
+            base64String = base64String.Replace("data:image/bmp;base64,", "");
+            base64String = base64String.Replace("data:image/emf;base64,", "");
+            base64String = base64String.Replace("data:image/exif;base64,", "");
+            base64String = base64String.Replace("data:image/gif;base64,", "");
+            base64String = base64String.Replace("data:image/icon;base64,", "");
+            base64String = base64String.Replace("data:image/jpeg;base64,", "");
+            base64String = base64String.Replace("data:image/jpg;base64,", "");
+            base64String = base64String.Replace("data:image/png;base64,", "");
+            base64String = base64String.Replace("data:image/tiff;base64,", "");
+            base64String = base64String.Replace("data:image/wmf;base64,", "");
+            return base64String;
+        }
         #endregion
     }
 }

@@ -65,10 +65,10 @@ namespace WebAPI.Controllers
         ///
         ///     {
         ///        "Name": "Thor",
-        ///        "Description": "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.",
-        ///        "ImgBase64String": "123456adsqwe",
+        ///        "Home": "Marvel",
         ///        "Appearance": "1962-08-01T00:00:00.0000000-00:00",
-        ///        "Home": "Marvel"
+        ///        "Description": "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.",
+        ///        "ImgBase64String": "123456adsqwe"
         ///     }
         ///
         /// </remarks>
@@ -92,14 +92,43 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(heroeInsertDTO.Name))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
-                if (string.IsNullOrWhiteSpace(heroeInsertDTO.Description))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Description"));
-                if (string.IsNullOrWhiteSpace(heroeInsertDTO.ImgBase64String))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "ImgBase64String"));
-                if (!Useful.ValidateDateTimeOffset(heroeInsertDTO.Appearance))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
+                else if (heroeInsertDTO.Name.Trim().Length > 45)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "45"));
+                
                 if (string.IsNullOrWhiteSpace(heroeInsertDTO.Home))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Home"));
+                else if (heroeInsertDTO.Home.Trim().Length > 35)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Home").Replace("{1}", "35"));
+
+                if (!Useful.ValidateDateTimeOffset(heroeInsertDTO.Appearance))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
+                else if (heroeInsertDTO.Appearance > DateTimeOffset.Now)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
+
+                if (string.IsNullOrWhiteSpace(heroeInsertDTO.Description))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Description"));
+                else if (heroeInsertDTO.Description.Trim().Length > 450)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "450"));
+
+                if (string.IsNullOrWhiteSpace(heroeInsertDTO.ImgBase64String))
+                {
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "ImgBase64String"));
+                }
+                else if (!Useful.ValidateBase64String(Useful.ReplaceConventionImageFromBase64String(heroeInsertDTO.ImgBase64String)))
+                {
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "ImgBase64String"));
+                }
+                else
+                {
+
+                    string[] arrayImgBase64String = heroeInsertDTO.ImgBase64String.Split(',');
+                    if (!arrayImgBase64String[0].Contains("data:image/bmp;base64") && !arrayImgBase64String[0].Contains("data:image/emf;base64") && !arrayImgBase64String[0].Contains("data:image/exif;base64")
+                        && !arrayImgBase64String[0].Contains("data:image/gif;base64") && !arrayImgBase64String[0].Contains("data:image/icon;base64") && !arrayImgBase64String[0].Contains("data:image/jpeg;base64")
+                        && !arrayImgBase64String[0].Contains("data:image/jpg;base64") && !arrayImgBase64String[0].Contains("data:image/png;base64") && !arrayImgBase64String[0].Contains("data:image/tiff;base64")
+                        && !arrayImgBase64String[0].Contains("data:image/wmf;base64"))
+                        messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "ImgBase64String").Replace("{1}", "bmp, emf, exif, gif, icon, jpeg, jpg, png, tiff o wmf"));
+
+                }
 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -133,10 +162,10 @@ namespace WebAPI.Controllers
         ///     {
         ///        "Id": 1,
         ///        "Name": "Aquaman",
-        ///        "Description": "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
-        ///        "ImgBase64String": "123456adsqwe",
+        ///        "Home": "DC",
         ///        "Appearance": "1941-11-01T00:00:00.0000000-00:00",
-        ///        "Home": "DC"
+        ///        "Description": "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
+        ///        "ImgBase64String": "123456adsqwe"
         ///     }
         ///
         /// </remarks>
@@ -163,14 +192,43 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(heroe.Name))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
-                if (string.IsNullOrWhiteSpace(heroe.Description))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Description"));
-                if (string.IsNullOrWhiteSpace(heroe.ImgBase64String))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "ImgBase64String"));
-                if (!Useful.ValidateDateTimeOffset(heroe.Appearance))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
+                else if (heroe.Name.Trim().Length > 45)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "45"));
+
                 if (string.IsNullOrWhiteSpace(heroe.Home))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Home"));
+                else if (heroe.Home.Trim().Length > 35)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Home").Replace("{1}", "35"));
+
+                if (!Useful.ValidateDateTimeOffset(heroe.Appearance))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
+                else if (heroe.Appearance > DateTimeOffset.Now)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
+
+                if (string.IsNullOrWhiteSpace(heroe.Description))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Description"));
+                else if (heroe.Description.Trim().Length > 450)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "450"));
+
+                if (string.IsNullOrWhiteSpace(heroe.ImgBase64String))
+                {
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "ImgBase64String"));
+                }
+                else if (!Useful.ValidateBase64String(Useful.ReplaceConventionImageFromBase64String(heroe.ImgBase64String)))
+                {
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "ImgBase64String"));
+                }
+                else
+                {
+
+                    string[] arrayImgBase64String = heroe.ImgBase64String.Split(',');
+                    if (!arrayImgBase64String[0].Contains("data:image/bmp;base64") && !arrayImgBase64String[0].Contains("data:image/emf;base64") && !arrayImgBase64String[0].Contains("data:image/exif;base64")
+                        && !arrayImgBase64String[0].Contains("data:image/gif;base64") && !arrayImgBase64String[0].Contains("data:image/icon;base64") && !arrayImgBase64String[0].Contains("data:image/jpeg;base64")
+                        && !arrayImgBase64String[0].Contains("data:image/jpg;base64") && !arrayImgBase64String[0].Contains("data:image/png;base64") && !arrayImgBase64String[0].Contains("data:image/tiff;base64")
+                        && !arrayImgBase64String[0].Contains("data:image/wmf;base64"))
+                        messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "ImgBase64String").Replace("{1}", "bmp, emf, exif, gif, icon, jpeg, jpg, png, tiff o wmf"));
+
+                }
 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -236,7 +294,7 @@ namespace WebAPI.Controllers
         /// Request POST:
         ///
         ///     {
-        ///        "PageIndex": 0,
+        ///        "PageIndex": 1,
         ///        "PageSize": 10
         ///     }
         ///
@@ -273,8 +331,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var list = HeroeImpl.List(heroeListDTO);
-                return Content(HttpStatusCode.OK, list);
+                var entitys = HeroeImpl.List(heroeListDTO);
+                return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
             {
@@ -309,50 +367,47 @@ namespace WebAPI.Controllers
                 return Content(HttpStatusCode.InternalServerError, messageVO);
             }
         }
-
+        
         /// <summary>
-        /// Metodo para verificar si existe entidad Heroe, que no sea igual a la entidad actual por Id y Name
+        /// Metodo para retornar Excel
         /// </summary>
-        /// <remarks>
-        /// Request POST:
-        ///
-        ///     {
-        ///        "Id": 1,
-        ///        "Name": "Aquaman"
-        ///     }
-        ///
-        /// </remarks>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(HeroeExcelDTO))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("ExistByNameAndNotSameEntity")]
-        public IHttpActionResult ExistByNameAndNotSameEntity([FromBody] HeroeExistByNameAndNotSameEntityDTO heroeExistByNameAndNotSameEntityDTO)
+        [Route("Excel")]
+        public IHttpActionResult Excel()
         {
             try
             {
-                if (heroeExistByNameAndNotSameEntityDTO == null)
-                {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "HeroeExistByNameAndNotSameEntityDTO"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
+                var excel = HeroeImpl.Excel();
+                return Content(HttpStatusCode.OK, excel);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
 
-                if (heroeExistByNameAndNotSameEntityDTO.Id <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
-
-                if (string.IsNullOrWhiteSpace(heroeExistByNameAndNotSameEntityDTO.Name))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
-
-                if (messageVO.Messages.Count() > 0)
-                {
-                    messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-
-                bool exists = HeroeImpl.ExistByNameAndNotSameEntity(heroeExistByNameAndNotSameEntityDTO);
-                return Content(HttpStatusCode.OK, exists);
+        /// <summary>
+        /// Metodo para retornar PDF
+        /// </summary>
+        /// <returns>Retorna el objeto</returns>
+        [HttpPost]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(HeroePDFDTO))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("PDF")]
+        public IHttpActionResult PDF()
+        {
+            try
+            {
+                var pdf = HeroeImpl.PDF();
+                return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)
             {

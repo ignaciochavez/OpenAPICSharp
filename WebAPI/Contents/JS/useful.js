@@ -9,7 +9,8 @@ function getAbsolutePath() {
     return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
 }
 
-window.onload = function () {
+window.onload = function ()
+{
     document.getElementById('anio').innerHTML = getYear();
 
     var pageIndex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length).toLowerCase();

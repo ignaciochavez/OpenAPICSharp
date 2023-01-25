@@ -52,5 +52,15 @@ namespace Business.Implementation
         {
             return heroeDAO.ExistByNameAndNotSameEntity(heroeExistByNameAndNotSameEntityDTO);
         }
+
+        public static HeroeExcelDTO Excel()
+        {
+            return heroeDAO.Excel();
+        }
+
+        public static HeroePDFDTO PDF()
+        {
+            return heroeDAO.PDF();
+        }
     }
 }

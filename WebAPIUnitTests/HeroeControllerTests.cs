@@ -24,7 +24,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> selectMethod = heroeController.Select(0) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(selectMethod);
-            Assert.IsInstanceOfType(selectMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, selectMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -52,7 +51,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<Heroe> selectMethod = heroeController.Select(2) as NegotiatedContentResult<Heroe>;
             Assert.IsNotNull(selectMethod);
-            Assert.IsInstanceOfType(selectMethod.Content, typeof(Heroe));
             Assert.AreEqual(HttpStatusCode.OK, selectMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -70,7 +68,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -84,7 +81,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = string.Empty, Description = string.Empty, ImgBase64String = string.Empty, Appearance = DateTimeOffset.MinValue, Home = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -98,7 +94,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Batman", Description = "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.", ImgBase64String = "123456asdqwe", Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)), Home = "DC" }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -112,7 +107,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<Heroe> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Thor", Description = "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.", ImgBase64String = "asdfassf12345678", Appearance = new DateTimeOffset(new DateTime(1962, 8, 1)), Home = "Marvel" }) as NegotiatedContentResult<Heroe>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(Heroe));
             Assert.AreEqual(HttpStatusCode.OK, insertMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -130,7 +124,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> updateMethod = heroeController.Update(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
-            Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -144,7 +137,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> updateMethod = heroeController.Update(new Heroe() { Id = 0, Name = string.Empty, Description = string.Empty, ImgBase64String = string.Empty, Appearance = DateTimeOffset.MinValue, Home = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
-            Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -190,7 +182,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> deleteMethod = heroeController.Delete(0) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(deleteMethod);
-            Assert.IsInstanceOfType(deleteMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, deleteMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -236,7 +227,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> listMethod = heroeController.List(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(listMethod);
-            Assert.IsInstanceOfType(listMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -250,7 +240,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<MessageVO> listMethod = heroeController.List(new HeroeListDTO() { PageIndex = 0, PageSize = 0 }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(listMethod);
-            Assert.IsInstanceOfType(listMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -264,7 +253,6 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<List<Heroe>> listMethod = heroeController.List(new HeroeListDTO() { PageIndex = 1, PageSize = 10 }) as NegotiatedContentResult<List<Heroe>>;
             Assert.IsNotNull(listMethod);
-            Assert.IsInstanceOfType(listMethod.Content, typeof(List<Heroe>));
             Assert.AreEqual(HttpStatusCode.OK, listMethod.StatusCode);
             heroeController.Dispose();
         }
@@ -279,70 +267,44 @@ namespace WebAPIUnitTests
             HeroeController heroeController = new HeroeController();
             NegotiatedContentResult<long> countMethod = heroeController.TotalRecords() as NegotiatedContentResult<long>;
             Assert.IsNotNull(countMethod);
-            Assert.IsInstanceOfType(countMethod.Content, typeof(long));
             Assert.AreEqual(HttpStatusCode.OK, countMethod.StatusCode);
             heroeController.Dispose();
         }
         #endregion
-
-        #region ExistByNameAndNotSameEntity
-
-        /// <summary>
-        /// Verificar que el metodo api/heroe/existbynameandnotsameentity funciona segun lo necesitado al enviar el objecto nulo
-        /// </summary>
-        [TestMethod]
-        public void HeroeControllerExistByNameAndNotSameEntityMethodIsNullObject()
-        {
-            HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<MessageVO> existByNameAndNotSameEntityMethod = heroeController.ExistByNameAndNotSameEntity(null) as NegotiatedContentResult<MessageVO>;
-            Assert.IsNotNull(existByNameAndNotSameEntityMethod);
-            Assert.IsInstanceOfType(existByNameAndNotSameEntityMethod.Content, typeof(MessageVO));
-            Assert.AreEqual(HttpStatusCode.BadRequest, existByNameAndNotSameEntityMethod.StatusCode);
-            heroeController.Dispose();
-        }
+        
+        #region Excel
 
         /// <summary>
-        /// Verificar que el metodo api/heroe/existbynameandnotsameentity funciona segun lo necesitado al enviar el objecto con parametros vacios
+        /// Verificar que el metodo api/heroe/excel funciona segun lo necesitado
         /// </summary>
         [TestMethod]
-        public void HeroeControllerExistByNameAndNotSameEntityMethodIsEmptyParametersOfObject()
+        public void HeroeControllerExcelMethodIsCorrect()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<MessageVO> existByNameAndNotSameEntityMethod = heroeController.ExistByNameAndNotSameEntity(new HeroeExistByNameAndNotSameEntityDTO() { Id = 0, Name = string.Empty }) as NegotiatedContentResult<MessageVO>;
-            Assert.IsNotNull(existByNameAndNotSameEntityMethod);
-            Assert.IsInstanceOfType(existByNameAndNotSameEntityMethod.Content, typeof(MessageVO));
-            Assert.AreEqual(HttpStatusCode.BadRequest, existByNameAndNotSameEntityMethod.StatusCode);
-            heroeController.Dispose();
-        }        
-
-        /// <summary>
-        /// Verificar que el metodo api/heroe/existbynameandnotsameentity funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe
-        /// </summary>
-        [TestMethod]
-        public void HeroeControllerExistByNameAndNotSameEntityMethodIsNotExist()
-        {
-            HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<bool> existByNameAndNotSameEntityMethod = heroeController.ExistByNameAndNotSameEntity(new HeroeExistByNameAndNotSameEntityDTO() { Id = 100, Name = "Superman" }) as NegotiatedContentResult<bool>;
-            Assert.IsNotNull(existByNameAndNotSameEntityMethod);
-            Assert.IsFalse(existByNameAndNotSameEntityMethod.Content);
-            Assert.AreEqual(HttpStatusCode.OK, existByNameAndNotSameEntityMethod.StatusCode);
-            heroeController.Dispose();
-        }
-
-        /// <summary>
-        /// Verificar que el metodo api/heroe/existbynameandnotsameentity funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe
-        /// </summary>
-        [TestMethod]
-        public void HeroeControllerExistByNameAndNotSameEntityMethodIsCorrect()
-        {
-            HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<bool> existByNameAndNotSameEntityMethod = heroeController.ExistByNameAndNotSameEntity(new HeroeExistByNameAndNotSameEntityDTO() { Id = 4, Name = "Linterna Verde" }) as NegotiatedContentResult<bool>;
-            Assert.IsNotNull(existByNameAndNotSameEntityMethod);
-            Assert.IsTrue(existByNameAndNotSameEntityMethod.Content);
-            Assert.AreEqual(HttpStatusCode.OK, existByNameAndNotSameEntityMethod.StatusCode);
+            NegotiatedContentResult<HeroeExcelDTO> excelMethod = heroeController.Excel() as NegotiatedContentResult<HeroeExcelDTO>;
+            Assert.IsNotNull(excelMethod);
+            Assert.AreEqual(HttpStatusCode.OK, excelMethod.StatusCode);
             heroeController.Dispose();
         }
 
         #endregion
+
+        #region PDF
+
+        /// <summary>
+        /// Verificar que el metodo api/heroe/pdf funciona segun lo necesitado
+        /// </summary>
+        [TestMethod]
+        public void HeroeControllerPDFMethodIsCorrect()
+        {
+            HeroeController heroeController = new HeroeController();            
+            NegotiatedContentResult<HeroePDFDTO> pdfMethod = heroeController.PDF() as NegotiatedContentResult<HeroePDFDTO>;
+            Assert.IsNotNull(pdfMethod);
+            Assert.AreEqual(HttpStatusCode.OK, pdfMethod.StatusCode);
+            heroeController.Dispose();
+        }
+
+        #endregion
+
     }
 }

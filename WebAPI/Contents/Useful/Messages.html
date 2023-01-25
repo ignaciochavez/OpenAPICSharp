@@ -27,14 +27,18 @@
             <div class="card-body">
                 <ol id="headers" style="margin-left:1.5rem;margin-right:2rem;margin-bottom:1.5rem;margin-top:1rem;">
                     <li><p id="parametersAtZero" style="font-weight: bold;">Parámetro {0} debe ser mayor a 0</p></li>
+                    <li><p id="maximunParameterLengthCharacter" style="font-weight: bold;">Parámetro {0} no debe ser mayor a {1} caracteres de largo</p></li>
                     <li><p id="minimumParameterLength" style="font-weight: bold;">Parámetro {0} debe ser mayor a {1}</p></li>
                     <li><p id="emptyParameters" style="font-weight: bold;">Parámetro {0} no puede estar vacio</p></li>
                     <li><p id="dateTimeParametersNoInitialized" style="font-weight: bold;">Parámetro {0} debe esta inicializado</p></li>
-                    <li><p id="invalidFormatParameters" style="font-weight: bold;">Parámetro {0} no es válido. Revise la documentación</p></li>
+                    <li><p id="dateTimeParameterGreaterThanTheCurrentDate" style="font-weight: bold;">Parámetro {0} no puede ser mayor a la fecha actual</p></li>
+                    <li><p id="invalidFormatParameters" style="font-weight: bold;">Parámetro {0} no es válido</p></li>
+                    <li><p id="formatMustBe" style="font-weight: bold;">Parámetro {0} no es válido. El formato debe ser {1}</p></li>
                     <li><p id="nullObject" style="font-weight: bold;">Objeto {0}, no puede ser nulo</p></li>
                     <li><p id="entityExistByParameter" style="font-weight: bold;">Ya existe una entidad {0} registrada por el parámetro {1}</p></li>
                     <li><p id="notAuthorized" style="font-weight: bold;">Se ha denegado la autorización para esta solicitud</p></li>
                     <li><p id="correctCheckMessage" style="font-weight: bold;">Servicio responde correctamente</p></li>
+                    <li><p id="incorrectCheckMessage" style="font-weight: bold;">Servicio no responde correctamente, funcionalidad no se ha ejecutado segun lo esperado</p></li>
                     <li><p id="entityExistsByParameterAndIsNotTheSameEntity" style="font-weight: bold;">Ya existe una entidad {0} por el parámetro {1} y es diferente de la entidad {2} actual</p></li>
                 </ol>
             </div>

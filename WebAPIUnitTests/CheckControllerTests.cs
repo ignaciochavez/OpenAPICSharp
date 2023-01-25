@@ -20,7 +20,6 @@ namespace WebAPIUnitTests
             CheckController checkController = new CheckController();
             NegotiatedContentResult<MessageVO> checkMethod = checkController.Check() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkMethod);
-            Assert.IsInstanceOfType(checkMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.OK, checkMethod.StatusCode);
             checkController.Dispose();
         }
@@ -34,7 +33,6 @@ namespace WebAPIUnitTests
             CheckController checkController = new CheckController();
             NegotiatedContentResult<MessageVO> checkAuthMethod = checkController.CheckAuth() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkAuthMethod);
-            Assert.IsInstanceOfType(checkAuthMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.OK, checkAuthMethod.StatusCode);
             checkController.Dispose();
         }

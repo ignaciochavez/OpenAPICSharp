@@ -29,7 +29,6 @@ D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\H
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\SpreadsheetLight.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\itextsharp.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\DocumentFormat.OpenXml.dll
-D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\itextsharp.xmlworker.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\BouncyCastle.Crypto.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Business.pdb
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml

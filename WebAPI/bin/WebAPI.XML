@@ -138,7 +138,7 @@
              Request POST:
             
                  {
-                    "PageIndex": 0,
+                    "PageIndex": 1,
                     "PageSize": 10
                  }
             
@@ -155,30 +155,15 @@
             </remarks>
             <returns>Retorna el objeto</returns>
         </member>
-        <member name="M:WebAPI.Controllers.ExampleController.ExistByRutAndNotSameEntity(Business.DTO.ExampleExistByRutAndNotSameEntityDTO)">
-             <summary>
-             Metodo para verificar si existe entidad Example, que no sea igual a la entidad actual por Id y Rut
-             </summary>
-             <remarks>
-             Request POST:
-            
-                 {
-                    "Id": 1,
-                    "Rut": "1-9"
-                 }
-            
-             </remarks>
-             <returns>Retorna el objeto</returns>
-        </member>
         <member name="M:WebAPI.Controllers.ExampleController.Excel">
             <summary>
-            Metodo para contar retornar Excel
+            Metodo para retornar Excel
             </summary>
             <returns>Retorna el objeto</returns>
         </member>
         <member name="M:WebAPI.Controllers.ExampleController.PDF">
             <summary>
-            Metodo para contar retornar PDF
+            Metodo para retornar PDF
             </summary>
             <returns>Retorna el objeto</returns>
         </member>
@@ -206,10 +191,10 @@
             
                  {
                     "Name": "Thor",
-                    "Description": "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.",
-                    "ImgBase64String": "123456adsqwe",
+                    "Home": "Marvel",
                     "Appearance": "1962-08-01T00:00:00.0000000-00:00",
-                    "Home": "Marvel"
+                    "Description": "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.",
+                    "ImgBase64String": "123456adsqwe"
                  }
             
              </remarks>
@@ -226,10 +211,10 @@
                  {
                     "Id": 1,
                     "Name": "Aquaman",
-                    "Description": "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
-                    "ImgBase64String": "123456adsqwe",
+                    "Home": "DC",
                     "Appearance": "1941-11-01T00:00:00.0000000-00:00",
-                    "Home": "DC"
+                    "Description": "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
+                    "ImgBase64String": "123456adsqwe"
                  }
             
              </remarks>
@@ -254,7 +239,7 @@
              Request POST:
             
                  {
-                    "PageIndex": 0,
+                    "PageIndex": 1,
                     "PageSize": 10
                  }
             
@@ -271,20 +256,17 @@
             </remarks>
             <returns>Retorna el objeto</returns>
         </member>
-        <member name="M:WebAPI.Controllers.HeroeController.ExistByNameAndNotSameEntity(Business.DTO.HeroeExistByNameAndNotSameEntityDTO)">
-             <summary>
-             Metodo para verificar si existe entidad Heroe, que no sea igual a la entidad actual por Id y Name
-             </summary>
-             <remarks>
-             Request POST:
-            
-                 {
-                    "Id": 1,
-                    "Name": "Aquaman"
-                 }
-            
-             </remarks>
-             <returns>Retorna el objeto</returns>
+        <member name="M:WebAPI.Controllers.HeroeController.Excel">
+            <summary>
+            Metodo para retornar Excel
+            </summary>
+            <returns>Retorna el objeto</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.HeroeController.PDF">
+            <summary>
+            Metodo para retornar PDF
+            </summary>
+            <returns>Retorna el objeto</returns>
         </member>
         <member name="T:WebAPI.WebApiApplication">
             <summary>
