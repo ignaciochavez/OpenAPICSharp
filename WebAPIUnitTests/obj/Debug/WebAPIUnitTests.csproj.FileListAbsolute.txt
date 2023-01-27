@@ -68,7 +68,6 @@ D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTe
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\SpreadsheetLight.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\itextsharp.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\DocumentFormat.OpenXml.dll
-D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\itextsharp.xmlworker.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\WebActivatorEx.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\Swashbuckle.Core.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\WebAPIUnitTests\bin\Debug\System.Web.Http.Cors.dll

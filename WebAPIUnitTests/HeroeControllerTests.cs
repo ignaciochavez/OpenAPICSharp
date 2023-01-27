@@ -79,12 +79,25 @@ namespace WebAPIUnitTests
         public void HeroeControllerInsertMethodIsEmptyParametersOfObject()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = string.Empty, Description = string.Empty, ImgBase64String = string.Empty, Appearance = DateTimeOffset.MinValue, Home = string.Empty }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = string.Empty, Home = string.Empty, Appearance = DateTimeOffset.MinValue, Description = string.Empty, ImgBase64String = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             heroeController.Dispose();
         }
-        
+
+        /// <summary>
+        /// Verificar que el metodo api/heroe/insert funciona segun lo necesitado al enviar parametros invalidos
+        /// </summary>
+        [TestMethod]
+        public void HeroeControllerInsertMethodIsInvalidParametersOfObject()
+        {
+            HeroeController heroeController = new HeroeController();
+            NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Test Test Test Test Test Test Test Test Test Test", Home = "Test Test Test Test Test Test Test Test", Appearance = DateTimeOffset.Now.AddDays(1), Description = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\api-200.png"), ImgBase64String = "1234asdf" }) as NegotiatedContentResult<MessageVO>;
+            Assert.IsNotNull(insertMethod);
+            Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
+            heroeController.Dispose();
+        }
+
         /// <summary>
         /// Verificar que el metodo api/heroe/insert funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad existe y no se inserta
         /// </summary>
@@ -92,7 +105,7 @@ namespace WebAPIUnitTests
         public void HeroeControllerInsertMethodIsExist()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Batman", Description = "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.", ImgBase64String = "123456asdqwe", Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)), Home = "DC" }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Batman", Home = "DC", Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)), Description = "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.", ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\api-200.png") }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             heroeController.Dispose();
@@ -105,7 +118,7 @@ namespace WebAPIUnitTests
         public void HeroeControllerInsertMethodIsCorrect()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<Heroe> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Thor", Description = "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.", ImgBase64String = "asdfassf12345678", Appearance = new DateTimeOffset(new DateTime(1962, 8, 1)), Home = "Marvel" }) as NegotiatedContentResult<Heroe>;
+            NegotiatedContentResult<Heroe> insertMethod = heroeController.Insert(new HeroeInsertDTO() { Name = "Thor", Home = "Marvel", Appearance = new DateTimeOffset(new DateTime(1962, 8, 1)), Description = "El personaje, que se basa en la deidad nórdica homónima, es el dios del trueno asgardiano poseedor del martillo encantado, Mjolnir, que le otorga capacidad de volar y manipular el clima entre sus otros atributos sobrehumanos, además de concentrar su poder.", ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\api-200.png") }) as NegotiatedContentResult<Heroe>;
             Assert.IsNotNull(insertMethod);
             Assert.AreEqual(HttpStatusCode.OK, insertMethod.StatusCode);
             heroeController.Dispose();
@@ -135,12 +148,25 @@ namespace WebAPIUnitTests
         public void HeroeControllerUpdateMethodIsEmptyParametersOfObject()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<MessageVO> updateMethod = heroeController.Update(new Heroe() { Id = 0, Name = string.Empty, Description = string.Empty, ImgBase64String = string.Empty, Appearance = DateTimeOffset.MinValue, Home = string.Empty }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> updateMethod = heroeController.Update(new Heroe() { Id = 0, Name = string.Empty, Home = string.Empty, Appearance = DateTimeOffset.MinValue, Description = string.Empty, ImgBase64String = string.Empty }) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
             heroeController.Dispose();
         }
-        
+
+        /// <summary>
+        /// Verificar que el metodo api/heroe/update funciona segun lo necesitado al enviar parametros invalidos
+        /// </summary>
+        [TestMethod]
+        public void HeroeControllerUpdateMethodIsInvalidParametersOfObject()
+        {
+            HeroeController heroeController = new HeroeController();
+            NegotiatedContentResult<MessageVO> insertMethod = heroeController.Update(new Heroe() { Id = -1, Name = "Test Test Test Test Test Test Test Test Test Test", Home = "Test Test Test Test Test Test Test Test", Appearance = DateTimeOffset.Now.AddDays(1), Description = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\api-200.png"), ImgBase64String = "1234asdf" }) as NegotiatedContentResult<MessageVO>;
+            Assert.IsNotNull(insertMethod);
+            Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
+            heroeController.Dispose();
+        }
+
         /// <summary>
         /// Verificar que el metodo api/heroe/update funciona segun lo necesitado al enviar el objecto con parametros correctos en donde la entidad no existe y no se actualiza
         /// </summary>
@@ -148,7 +174,7 @@ namespace WebAPIUnitTests
         public void HeroeControllerUpdateMethodIsNotExist()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<bool> updateMethod = heroeController.Update(new Heroe() { Id = 100, Name = "Superman", Description = "Superman es un hombre alto, musculoso, hombre de raza blanca con ojos azules y pelo negro corto con un rizo. Tiene habilidades sobrehumanas, como una fuerza increíble y una piel impermeable.", ImgBase64String = "123456asdqwe", Appearance = new DateTimeOffset(new DateTime(1938, 6, 1)), Home = "DC" }) as NegotiatedContentResult<bool>;
+            NegotiatedContentResult<bool> updateMethod = heroeController.Update(new Heroe() { Id = 100, Name = "Superman", Home = "DC", Appearance = new DateTimeOffset(new DateTime(1938, 6, 1)), Description = "Superman es un hombre alto, musculoso, hombre de raza blanca con ojos azules y pelo negro corto con un rizo. Tiene habilidades sobrehumanas, como una fuerza increíble y una piel impermeable.", ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\api-200.png") }) as NegotiatedContentResult<bool>;
             Assert.IsNotNull(updateMethod);
             Assert.IsFalse(updateMethod.Content);
             Assert.AreEqual(HttpStatusCode.OK, updateMethod.StatusCode);
@@ -162,7 +188,7 @@ namespace WebAPIUnitTests
         public void HeroeControllerUpdateMethodIsCorrect()
         {
             HeroeController heroeController = new HeroeController();
-            NegotiatedContentResult<bool> updateMethod = heroeController.Update(new Heroe() { Id = 2, Name = "Batman", Description = "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.", ImgBase64String = "123456asdqwe", Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)), Home = "DC" }) as NegotiatedContentResult<bool>;
+            NegotiatedContentResult<bool> updateMethod = heroeController.Update(new Heroe() { Id = 2, Home = "DC", Name = "Batman", Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)), Description = "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.", ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\batman.png") }) as NegotiatedContentResult<bool>;
             Assert.IsNotNull(updateMethod);
             Assert.IsTrue(updateMethod.Content);
             Assert.AreEqual(HttpStatusCode.OK, updateMethod.StatusCode);
@@ -174,7 +200,7 @@ namespace WebAPIUnitTests
         #region Delete
 
         /// <summary>
-        /// Verificar que el metodo api/heroe/delete funciona segun lo necesitado al enviar parametros vacios
+        /// Verificar que el metodo api/heroe/delete funciona segun lo necesitado al enviar parametros invalidos
         /// </summary>
         [TestMethod]
         public void HeroeControllerDeleteMethodIsInvalidParameters()

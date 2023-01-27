@@ -20,6 +20,8 @@ Habilitar Sitio web IIS
 
 ### Instalación 🔧
 
+Publicar solucion desde visual studio y mover compilado a carpeta que leera el IIS
+
 Copiar archivo WebAPI.XML ubicado en la carpeta bin del proyecto WebAPI de la solución visual studio 2015, y pegar el archivo en la carpeta bin del compilado a implementar (si no existe el archivo, se genera al recompilar solucion desde visual studio)
 
 Habilitar directorio y sitio web IIS

@@ -18,5 +18,7 @@ namespace Business.Interface
         List<Heroe> List(HeroeListDTO heroeListDTO);
         long TotalRecords();
         bool ExistByNameAndNotSameEntity(HeroeExistByNameAndNotSameEntityDTO heroeExistByNameAndNotSameEntityDTO);
+        HeroeExcelDTO Excel();
+        HeroePDFDTO PDF();
     }
 }
