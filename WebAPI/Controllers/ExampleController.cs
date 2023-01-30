@@ -298,7 +298,7 @@ namespace WebAPI.Controllers
                 if (exampleListDTO.PageSize <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
                 else if (exampleListDTO.PageSize > Useful.GetPageSizeMaximun())
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("minimumParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
                 if (messageVO.Messages.Count() > 0)
                 {

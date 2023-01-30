@@ -12,4 +12,3 @@ D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\bin\Debug\SpreadsheetLight.xml
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.dll
 D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.pdb
-D:\Trabajos\Personal\Repositorio\GITHUB\ignaciochavez\OpenAPICSharp\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache

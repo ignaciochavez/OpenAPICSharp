@@ -13,16 +13,16 @@ namespace Business.DTO
         public string Name { get; set; }
 
         [Required]
-        public string Description { get; set; }
-
-        [Required]
-        public string ImgBase64String { get; set; }
+        public string Home { get; set; }
 
         [Required]
         public DateTimeOffset Appearance { get; set; }
 
         [Required]
-        public string Home { get; set; }
+        public string Description { get; set; }
+
+        [Required]
+        public string ImgBase64String { get; set; }
     }
 
     public class HeroeListDTO
