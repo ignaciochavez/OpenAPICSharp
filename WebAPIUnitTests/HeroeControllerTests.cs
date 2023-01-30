@@ -287,6 +287,9 @@ namespace WebAPIUnitTests
 
         #region TotalRecords
 
+        /// <summary>
+        /// Verificar que el metodo api/heroe/totalrecords funciona segun lo necesitado
+        /// </summary>
         [TestMethod]
         public void HeroeControllerTotalRecordsMethodIsCorrect()
         {
@@ -296,6 +299,7 @@ namespace WebAPIUnitTests
             Assert.AreEqual(HttpStatusCode.OK, countMethod.StatusCode);
             heroeController.Dispose();
         }
+
         #endregion
         
         #region Excel

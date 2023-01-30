@@ -299,6 +299,9 @@ namespace WebAPIUnitTests
 
         #region TotalRecords
 
+        /// <summary>
+        /// Verificar que el metodo api/example/totalrecords funciona segun lo necesitado
+        /// </summary>
         [TestMethod]
         public void ExampleControllerTotalRecordsMethodIsCorrect()
         {
@@ -309,6 +312,7 @@ namespace WebAPIUnitTests
             Assert.AreEqual(HttpStatusCode.OK, countMethod.StatusCode);
             exampleController.Dispose();
         }
+
         #endregion
         
         #region Excel
