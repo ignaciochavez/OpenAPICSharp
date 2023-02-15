@@ -23,6 +23,20 @@ namespace Business.DTO
 
         [Required]
         public string ImgBase64String { get; set; }
+
+        public HeroeInsertDTO()
+        {
+
+        }
+
+        public HeroeInsertDTO(string name, string home, DateTimeOffset appearance, string description, string imgBase64String)
+        {
+            Name = name;
+            Home = home;
+            Appearance = appearance;
+            Description = description;
+            ImgBase64String = imgBase64String;
+        }
     }
 
     public class HeroeListDTO
@@ -32,12 +46,34 @@ namespace Business.DTO
 
         [Required]
         public int PageSize { get; set; }
+
+        public HeroeListDTO()
+        {
+
+        }
+
+        public HeroeListDTO(int pageIndex, int pageSize)
+        {
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+        }
     }
 
     public class HeroeExistByNameAndNotSameEntityDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public HeroeExistByNameAndNotSameEntityDTO()
+        {
+
+        }
+
+        public HeroeExistByNameAndNotSameEntityDTO(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 
     public class HeroeExcelDTO
@@ -47,6 +83,17 @@ namespace Business.DTO
 
         [Required]
         public byte[] FileContent { get; set; }
+
+        public HeroeExcelDTO()
+        {
+
+        }
+
+        public HeroeExcelDTO(string fileName, byte[] fileContent)
+        {
+            FileName = fileName;
+            FileContent = fileContent;
+        }
     }
 
     public class HeroePDFDTO
@@ -56,5 +103,16 @@ namespace Business.DTO
 
         [Required]
         public byte[] FileContent { get; set; }
+
+        public HeroePDFDTO()
+        {
+
+        }
+
+        public HeroePDFDTO(string fileName, byte[] fileContent)
+        {
+            FileName = fileName;
+            FileContent = fileContent;
+        }
     }
 }

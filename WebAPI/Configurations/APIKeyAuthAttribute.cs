@@ -15,8 +15,8 @@ namespace WebAPI
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class APIKeyAuthAttribute : AuthorizationFilterAttribute
     {
-        MessageVO messageVO = new MessageVO();
-        ContentHTML contentHTML = new ContentHTML();
+        private MessageVO messageVO = new MessageVO();
+        private ContentHTML contentHTML = new ContentHTML();
 
         private static bool GetAPIKeyHeader(System.Web.Http.Controllers.HttpActionContext actionContext, out string apiKeyHeader)
         {

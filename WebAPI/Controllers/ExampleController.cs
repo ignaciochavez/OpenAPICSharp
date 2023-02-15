@@ -19,8 +19,8 @@ namespace WebAPI.Controllers
     [APIKeyAuth]
     public class ExampleController : ApiController
     {
-        MessageVO messageVO = new MessageVO();
-        ContentHTML contentHTML = new ContentHTML();
+        private MessageVO messageVO = new MessageVO();
+        private ContentHTML contentHTML = new ContentHTML();
 
         /// <summary>
         /// Metodo para seleccionar Example
@@ -211,7 +211,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                bool existByRutAndNotSameEntity = ExampleImpl.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO() { Id = example.Id, Rut = example.Rut.Replace(".", "") });
+                bool existByRutAndNotSameEntity = ExampleImpl.ExistByRutAndNotSameEntity(new ExampleExistByRutAndNotSameEntityDTO(example.Id, example.Rut.Replace(".", "")));
                 if (existByRutAndNotSameEntity)
                 {
                     messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Example").Replace("{1}", "Rut").Replace("{2}", "Example"));

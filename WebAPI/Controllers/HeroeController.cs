@@ -19,8 +19,8 @@ namespace WebAPI.Controllers
     [APIKeyAuth]
     public class HeroeController : ApiController
     {
-        MessageVO messageVO = new MessageVO();
-        ContentHTML contentHTML = new ContentHTML();
+        private MessageVO messageVO = new MessageVO();
+        private ContentHTML contentHTML = new ContentHTML();
 
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                bool existByNameAndNotSameEntity = HeroeImpl.ExistByNameAndNotSameEntity(new HeroeExistByNameAndNotSameEntityDTO() { Id = heroe.Id, Name = heroe.Name });
+                bool existByNameAndNotSameEntity = HeroeImpl.ExistByNameAndNotSameEntity(new HeroeExistByNameAndNotSameEntityDTO(heroe.Id, heroe.Name));
                 if (existByNameAndNotSameEntity)
                 {
                     messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Heroe").Replace("{1}", "Name").Replace("{2}", "Heroe"));

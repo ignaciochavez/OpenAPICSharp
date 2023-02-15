@@ -15,8 +15,8 @@ namespace WebAPI.Controllers
     [RoutePrefix("api/check")]
     public class CheckController : ApiController
     {
-        MessageVO messageVO = new MessageVO();
-        ContentHTML contentHTML = new ContentHTML();
+        private MessageVO messageVO = new MessageVO();
+        private ContentHTML contentHTML = new ContentHTML();
         
 
         /// <summary>

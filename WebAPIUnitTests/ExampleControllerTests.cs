@@ -14,7 +14,7 @@ namespace WebAPIUnitTests
     public class ExampleControllerTests
     {
         #region Select
-        
+
         /// <summary>
         /// Verificar que el metodo api/example/select funciona segun lo necesitado al enviar parametros invalidos
         /// </summary>
@@ -56,7 +56,7 @@ namespace WebAPIUnitTests
         }
 
         #endregion
-        
+
         #region Insert
 
         /// <summary>
@@ -68,7 +68,6 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -80,9 +79,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerInsertMethodIsEmptyParametersOfObject()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = string.Empty, Name = string.Empty, LastName = string.Empty, BirthDate = DateTimeOffset.MinValue, Active = false, Password = string.Empty }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO(string.Empty, string.Empty, string.Empty, DateTimeOffset.MinValue, false, string.Empty)) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -94,9 +92,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerInsertMethodIsInvalidParametersOfObject()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = "12332231123", Name = "Test Test Test Test Test Test Test Test Test Test", LastName = "Test Test Test Test Test Test Test Test Test Test", BirthDate = DateTimeOffset.Now.AddDays(1), Active = false, Password = "Test Test Test Test" }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO("12332231123", "Test Test Test Test Test Test Test Test Test Test", "Test Test Test Test Test Test Test Test Test Test", DateTimeOffset.Now.AddDays(1), false, "Test Test Test Test")) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -108,9 +105,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerInsertMethodIsExist()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = "1-9", Name = "Pedro", LastName = "Gutierrez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "1234qwer" }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> insertMethod = exampleController.Insert(new ExampleInsertDTO("1-9", "Pedro", "Gutierrez", DateTimeOffset.UtcNow.Date, true, "1234qwer")) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, insertMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -122,15 +118,14 @@ namespace WebAPIUnitTests
         public void ExampleControllerInsertMethodIsCorrect()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<Example> insertMethod = exampleController.Insert(new ExampleInsertDTO() { Rut = "76-0", Name = "Emanuel", LastName = "Leiva", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "4321rewq" }) as NegotiatedContentResult<Example>;
+            NegotiatedContentResult<Example> insertMethod = exampleController.Insert(new ExampleInsertDTO("76-0", "Emanuel", "Leiva", DateTimeOffset.UtcNow.Date, true, "4321rewq")) as NegotiatedContentResult<Example>;
             Assert.IsNotNull(insertMethod);
-            Assert.IsInstanceOfType(insertMethod.Content, typeof(Example));
             Assert.AreEqual(HttpStatusCode.OK, insertMethod.StatusCode);
             exampleController.Dispose();
         }
 
         #endregion
-        
+
         #region Update
 
         /// <summary>
@@ -142,7 +137,6 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
-            Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -154,9 +148,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerUpdateMethodIsEmptyParametersOfObject()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new Example() { Id = 0, Rut = string.Empty, Name = string.Empty, LastName = string.Empty, BirthDate = DateTimeOffset.MinValue, Active = false, Password = string.Empty }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new Example(0, string.Empty, string.Empty, string.Empty, DateTimeOffset.MinValue, false, string.Empty)) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
-            Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -168,9 +161,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerUpdateMethodIsInvalidParametersOfObject()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new Example() { Id = 0, Rut = "12332231123123", Name = "Test Test Test Test Test Test Test Test Test Test", LastName = "Test Test Test Test Test Test Test Test Test Test", BirthDate = DateTimeOffset.Now.AddDays(1), Active = false, Password = "Test Test Test Test" }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> updateMethod = exampleController.Update(new Example(0, "12332231123123", "Test Test Test Test Test Test Test Test Test Test", "Test Test Test Test Test Test Test Test Test Test", DateTimeOffset.Now.AddDays(1), false, "Test Test Test Test")) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(updateMethod);
-            Assert.IsInstanceOfType(updateMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, updateMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -182,7 +174,7 @@ namespace WebAPIUnitTests
         public void ExampleControllerUpdateMethodIsNotExist()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<bool> updateMethod = exampleController.Update(new Example() { Id = 100, Rut = "77-9", Name = "Leonel", LastName = "Gonzalez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "vcxz9876" }) as NegotiatedContentResult<bool>;
+            NegotiatedContentResult<bool> updateMethod = exampleController.Update(new Example(100, "77-9", "Leonel", "Gonzalez", DateTimeOffset.UtcNow.Date, true, "vcxz9876")) as NegotiatedContentResult<bool>;
             Assert.IsNotNull(updateMethod);
             Assert.IsFalse(updateMethod.Content);
             Assert.AreEqual(HttpStatusCode.OK, updateMethod.StatusCode);
@@ -196,7 +188,7 @@ namespace WebAPIUnitTests
         public void ExampleControllerUpdateMethodIsCorrect()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<bool> updateMethod = exampleController.Update(new Example() { Id = 2, Rut = "2-7", Name = "Pedro", LastName = "Gutierrez", BirthDate = DateTimeOffset.UtcNow.Date, Active = true, Password = "1234qwer" }) as NegotiatedContentResult<bool>;
+            NegotiatedContentResult<bool> updateMethod = exampleController.Update(new Example(2, "2-7", "Pedro", "Gutierrez", DateTimeOffset.UtcNow.Date, true, "1234qwer")) as NegotiatedContentResult<bool>;
             Assert.IsNotNull(updateMethod);
             Assert.IsTrue(updateMethod.Content);
             Assert.AreEqual(HttpStatusCode.OK, updateMethod.StatusCode);
@@ -206,7 +198,7 @@ namespace WebAPIUnitTests
         #endregion
 
         #region Delete
-        
+
         /// <summary>
         /// Verificar que el metodo api/example/delete funciona segun lo necesitado al enviar parametros invalidos
         /// </summary>
@@ -216,7 +208,6 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<MessageVO> deleteMethod = exampleController.Delete(0) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(deleteMethod);
-            Assert.IsInstanceOfType(deleteMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, deleteMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -262,7 +253,6 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<MessageVO> listMethod = exampleController.List(null) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(listMethod);
-            Assert.IsInstanceOfType(listMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -274,9 +264,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerListMethodIsInvalidParametersOfObject()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<MessageVO> listMethod = exampleController.List(new ExampleListDTO() { PageIndex = 0, PageSize = 0 }) as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> listMethod = exampleController.List(new ExampleListDTO(0, 0)) as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(listMethod);
-            Assert.IsInstanceOfType(listMethod.Content, typeof(MessageVO));
             Assert.AreEqual(HttpStatusCode.BadRequest, listMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -288,9 +277,8 @@ namespace WebAPIUnitTests
         public void ExampleControllerListMethodIsCorrect()
         {
             ExampleController exampleController = new ExampleController();
-            NegotiatedContentResult<List<Example>> listMethod = exampleController.List(new ExampleListDTO() { PageIndex = 1, PageSize = 10 }) as NegotiatedContentResult<List<Example>>;
+            NegotiatedContentResult<List<Example>> listMethod = exampleController.List(new ExampleListDTO(1, 10)) as NegotiatedContentResult<List<Example>>;
             Assert.IsNotNull(listMethod);
-            Assert.IsInstanceOfType(listMethod.Content, typeof(List<Example>));
             Assert.AreEqual(HttpStatusCode.OK, listMethod.StatusCode);
             exampleController.Dispose();
         }
@@ -308,13 +296,12 @@ namespace WebAPIUnitTests
             ExampleController exampleController = new ExampleController();
             NegotiatedContentResult<long> countMethod = exampleController.TotalRecords() as NegotiatedContentResult<long>;
             Assert.IsNotNull(countMethod);
-            Assert.IsInstanceOfType(countMethod.Content, typeof(long));
             Assert.AreEqual(HttpStatusCode.OK, countMethod.StatusCode);
             exampleController.Dispose();
         }
 
         #endregion
-        
+
         #region Excel
 
         /// <summary>

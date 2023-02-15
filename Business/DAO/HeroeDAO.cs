@@ -19,75 +19,17 @@ namespace Business.DAO
 {
     public class HeroeDAO : IHeroe
     {
-        List<Heroe> heroes = new List<Heroe>();
+        private List<Heroe> heroes = new List<Heroe>();
 
         public HeroeDAO()
         {
-            heroes.Add(new Heroe()
-            {
-                Id = 1,
-                Name = "Aquaman",
-                Home = "DC",
-                Appearance = new DateTimeOffset(new DateTime(1941, 11, 1)),
-                Description = "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\aquaman.png")                
-                
-            });
-            heroes.Add(new Heroe()
-            {
-                Id = 2,
-                Name = "Batman",
-                Home = "DC",
-                Appearance = new DateTimeOffset(new DateTime(1939, 5, 1)),
-                Description = "Los rasgos principales de Batman se resumen en «destreza física, habilidades deductivas y obsesión». La mayor parte de las características básicas de los cómics han variado por las diferentes interpretaciones que le han dado al personaje.",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\batman.png")
-                
-            });
-            heroes.Add(new Heroe()
-            {
-                Id = 3,
-                Name = "Daredevil",
-                Home = "Marvel",
-                Appearance = new DateTimeOffset(new DateTime(1964, 1, 1)),
-                Description = "Al haber perdido la vista, los cuatro sentidos restantes de Daredevil fueron aumentados por la radiación a niveles superhumanos, en el accidente que tuvo cuando era niño. A pesar de su ceguera, puede \"ver\" a través de un \"sexto sentido\" que le sirve como un radar similar al de los murciélagos.",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\daredevil.png")
-            });
-            heroes.Add(new Heroe()
-            {
-                Id = 4,
-                Name = "Hulk",
-                Home = "Marvel",
-                Appearance = new DateTimeOffset(new DateTime(1962, 5, 1)),
-                Description = "Su principal poder es su capacidad de aumentar su fuerza hasta niveles prácticamente ilimitados a la vez que aumenta su furia. Dependiendo de qué personalidad de Hulk esté al mando en ese momento (el Hulk Banner es el más débil, pero lo compensa con su inteligencia).",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\hulk.png")                                
-            });
-            heroes.Add(new Heroe()
-            {
-                Id = 5,
-                Name = "Linterna Verde",
-                Home = "DC",
-                Appearance = new DateTimeOffset(new DateTime(1940, 6, 1)),
-                Description = "Poseedor del anillo de poder que posee la capacidad de crear manifestaciones de luz sólida mediante la utilización del pensamiento. Es alimentado por la Llama Verde (revisada por escritores posteriores como un poder místico llamado Starheart), una llama mágica contenida en dentro de un orbe (el orbe era en realidad un meteorito verde de metal que cayó a la Tierra, el cual encontró un fabricante de lámparas llamado Chang).",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\linterna-verde.png")
-            });
-            heroes.Add(new Heroe()
-            {
-                Id = 6,
-                Name = "Spider-Man",
-                Home = "Marvel",
-                Appearance = new DateTimeOffset(new DateTime(1962, 8, 1)),
-                Description = "Tras ser mordido por una araña radiactiva, obtuvo los siguientes poderes sobrehumanos, una gran fuerza, agilidad, poder trepar por paredes. La fuerza de Spider-Man le permite levantar 10 toneladas o más. Gracias a esta gran fuerza Spider-Man puede realizar saltos íncreibles. Un \"sentido arácnido\", que le permite saber si un peligro se cierne sobre él, antes de que suceda. En ocasiones este puede llevar a Spider-Man al origen del peligro.",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\spiderman.png")
-            });
-            heroes.Add(new Heroe()
-            {
-                Id = 7,
-                Name = "Wolverine",
-                Home = "Marvel",
-                Appearance = new DateTimeOffset(new DateTime(1974, 11, 1)),
-                Description = "En el universo ficticio de Marvel, Wolverine posee poderes regenerativos que pueden curar cualquier herida, por mortal que ésta sea, además ese mismo poder hace que sea inmune a cualquier enfermedad existente en la Tierra y algunas extraterrestres . Posee también una fuerza sobrehumana, que si bien no se compara con la de otros superhéroes como Hulk, sí sobrepasa la de cualquier humano.",
-                ImgBase64String = Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\wolverine.png")
-            });
+            heroes.Add(new Heroe(1, "Aquaman", "DC", new DateTimeOffset(new DateTime(1941, 11, 1)), "El poder más reconocido de Aquaman es la capacidad telepática para comunicarse con la vida marina, la cual puede convocar a grandes distancias.", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\aquaman.png")));
+            heroes.Add(new Heroe(2, "Batman", "DC", new DateTimeOffset(new DateTime(1939, 5, 1)), "Los rasgos principales de Batman se resumen en «destreza física, habilidades deductivas y obsesión». La mayor parte de las características básicas de los cómics han variado por las diferentes interpretaciones que le han dado al personaje.", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\batman.png")));
+            heroes.Add(new Heroe(3, "Daredevil", "Marvel", new DateTimeOffset(new DateTime(1964, 1, 1)), "Al haber perdido la vista, los cuatro sentidos restantes de Daredevil fueron aumentados por la radiación a niveles superhumanos, en el accidente que tuvo cuando era niño. A pesar de su ceguera, puede \"ver\" a través de un \"sexto sentido\" que le sirve como un radar similar al de los murciélagos.", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\daredevil.png")));
+            heroes.Add(new Heroe(4, "Hulk", "Marvel", new DateTimeOffset(new DateTime(1962, 5, 1)), "Su principal poder es su capacidad de aumentar su fuerza hasta niveles prácticamente ilimitados a la vez que aumenta su furia. Dependiendo de qué personalidad de Hulk esté al mando en ese momento (el Hulk Banner es el más débil, pero lo compensa con su inteligencia).", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\hulk.png")));
+            heroes.Add(new Heroe(5, "Linterna Verde", "DC", new DateTimeOffset(new DateTime(1940, 6, 1)), "Poseedor del anillo de poder que posee la capacidad de crear manifestaciones de luz sólida mediante la utilización del pensamiento. Es alimentado por la Llama Verde (revisada por escritores posteriores como un poder místico llamado Starheart), una llama mágica contenida en dentro de un orbe (el orbe era en realidad un meteorito verde de metal que cayó a la Tierra, el cual encontró un fabricante de lámparas llamado Chang).", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\linterna-verde.png")));
+            heroes.Add(new Heroe(6, "Spider-Man", "Marvel", new DateTimeOffset(new DateTime(1962, 8, 1)), "Tras ser mordido por una araña radiactiva, obtuvo los siguientes poderes sobrehumanos, una gran fuerza, agilidad, poder trepar por paredes. La fuerza de Spider-Man le permite levantar 10 toneladas o más. Gracias a esta gran fuerza Spider-Man puede realizar saltos íncreibles. Un \"sentido arácnido\", que le permite saber si un peligro se cierne sobre él, antes de que suceda. En ocasiones este puede llevar a Spider-Man al origen del peligro.", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\spiderman.png")));
+            heroes.Add(new Heroe(7, "Wolverine", "Marvel", new DateTimeOffset(new DateTime(1974, 11, 1)), "En el universo ficticio de Marvel, Wolverine posee poderes regenerativos que pueden curar cualquier herida, por mortal que ésta sea, además ese mismo poder hace que sea inmune a cualquier enfermedad existente en la Tierra y algunas extraterrestres . Posee también una fuerza sobrehumana, que si bien no se compara con la de otros superhéroes como Hulk, sí sobrepasa la de cualquier humano.", Useful.GetPngToBase64String($"{Useful.GetApplicationDirectory()}Contents\\IMG\\wolverine.png")));
         }
 
         public Heroe Select(int id)
@@ -104,15 +46,7 @@ namespace Business.DAO
 
         public Heroe Insert(HeroeInsertDTO heroeInsertDTO)
         {
-            Heroe heroe = new Heroe()
-            {
-                Id = heroes.Last().Id + 1,
-                Name = heroeInsertDTO.Name,
-                Home = heroeInsertDTO.Home,
-                Appearance = heroeInsertDTO.Appearance,
-                Description = heroeInsertDTO.Description,
-                ImgBase64String = heroeInsertDTO.ImgBase64String
-            };
+            Heroe heroe = new Heroe(heroes.Last().Id + 1, heroeInsertDTO.Name, heroeInsertDTO.Home, heroeInsertDTO.Appearance, heroeInsertDTO.Description, heroeInsertDTO.ImgBase64String);
             heroes.Add(heroe);
             return heroe;
         }
@@ -122,15 +56,7 @@ namespace Business.DAO
             Heroe heroeExist = heroes.FirstOrDefault(o => o.Id == heroe.Id);
             if (heroeExist != null)
             {
-                Heroe entity = new Heroe()
-                {
-                    Id = heroeExist.Id,
-                    Name = heroe.Name,
-                    Home = heroe.Home,
-                    Appearance = heroe.Appearance,
-                    Description = heroe.Description,
-                    ImgBase64String = heroe.ImgBase64String
-                };
+                Heroe entity = new Heroe(heroeExist.Id, heroe.Name, heroe.Home, heroe.Appearance, heroe.Description, heroe.ImgBase64String);
                 heroes.Remove(heroeExist);
                 heroes.Add(entity);
                 return true;
@@ -249,11 +175,7 @@ namespace Business.DAO
                 }
 
                 sLDocument.SaveAs(memoryStream);
-                heroeExcelDTO = new HeroeExcelDTO()
-                {
-                    FileName = "Heroes.xlsx",
-                    FileContent = memoryStream.ToArray()
-                };
+                heroeExcelDTO = new HeroeExcelDTO("Heroes.xlsx", memoryStream.ToArray());
             }
             catch (Exception)
             {
@@ -429,11 +351,7 @@ namespace Business.DAO
                 
                 documentPDF.Close();
 
-                heroePDFDTO = new HeroePDFDTO()
-                {
-                    FileName = "Heroes.pdf",
-                    FileContent = memoryStream.ToArray()
-                };
+                heroePDFDTO = new HeroePDFDTO("Heroes.pdf", memoryStream.ToArray());
             }
             catch (Exception)
             {

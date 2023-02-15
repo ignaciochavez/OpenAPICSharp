@@ -29,5 +29,21 @@ namespace Business.Entity
 
         [Required]
         public string Password { get; set; }
+
+        public Example()
+        {
+
+        }
+
+        public Example(int id, string rut, string name, string lastName, DateTimeOffset birthDate, bool active, string password)
+        {
+            Id = id;
+            Rut = rut;
+            Name = name;
+            LastName = lastName;
+            BirthDate = birthDate;
+            Active = active;
+            Password = password;
+        }
     }
 }

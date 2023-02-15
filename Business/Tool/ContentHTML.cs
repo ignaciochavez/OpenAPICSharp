@@ -9,8 +9,8 @@ namespace Business.Tool
 {
     public class ContentHTML
     {
-        public string Path { get; set; }
-        public HtmlDocument HtmlDocument { get; set; }
+        private string Path { get; set; }
+        private HtmlDocument HtmlDocument { get; set; }
 
         public ContentHTML()
         {
