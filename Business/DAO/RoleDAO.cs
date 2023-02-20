@@ -120,10 +120,11 @@ namespace Business.DAO
                 sLDocument = Useful.GetSpreadsheetLightBase();
 
                 SLStyle sLStyleHeaderTable = Useful.GetSpreadsheetLightStyleCellTableHeader(sLDocument);
-                sLDocument.SetCellValue("E8", "Id");
-                sLDocument.SetCellStyle("E8", sLStyleHeaderTable);
-                sLDocument.SetCellValue("F8", "Name");
-                sLDocument.SetCellStyle("F8", sLStyleHeaderTable);
+                sLDocument.SetCellValue("E9", "Id");
+                sLDocument.SetCellStyle("E9", sLStyleHeaderTable);
+                sLDocument.SetCellValue("F9", "Name");
+                sLDocument.SetCellStyle("F9", sLStyleHeaderTable);
+                sLDocument.SetColumnWidth("F9", 25.00);
 
                 SLStyle sLStyleId = Useful.GetSpreadsheetLightStyleCellIdTable(sLDocument);
                 sLStyleId.Alignment.Horizontal = HorizontalAlignmentValues.Left;
@@ -134,10 +135,8 @@ namespace Business.DAO
                 sLStyleIdDegrade.Alignment.Horizontal = HorizontalAlignmentValues.Left;
 
                 SLStyle sLStyleBodyDegrade = Useful.GetSpreadsheetLightStyleCellTableBodyDegrade(sLDocument);
-
-                sLDocument.SetColumnWidth("F9", 25.00);
-
-                int index = 9;
+                
+                int index = 10;
                 var roles = List();
                 foreach (var item in roles)
                 {
@@ -218,7 +217,7 @@ namespace Business.DAO
                 documentPDF.Add(new Phrase("\n"));
                 
                 int index = 1;
-                int size = GetPageSizeMaximun();
+                int size = GetSizeMaximunOfRecords();
                 long length = TotalRecords() / size;
                 for (int i = 0; i <= length; i++)
                 {
@@ -297,7 +296,7 @@ namespace Business.DAO
             return fileDTO;
         }
 
-        private int GetPageSizeMaximun()
+        private int GetSizeMaximunOfRecords()
         {
             return Convert.ToInt32(Useful.GetAppSettings("PDFRoleSizeMaximunOfRecords"));
         }
