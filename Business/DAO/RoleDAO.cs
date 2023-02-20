@@ -197,7 +197,7 @@ namespace Business.DAO
                 PdfPTable pdfPTableHeaderTwo = Useful.GetiTextSharpTableHeaderTwo();
                 documentPDF.Add(pdfPTableHeaderTwo);
 
-                iTextSharp.text.Image imageLogo = Useful.GetiTextSharpImageLogo();
+                Image imageLogo = Useful.GetiTextSharpImageLogo();
                 imageLogo.SetAbsolutePosition(documentPDF.LeftMargin + 40, documentPDF.Top - 55);
                 documentPDF.Add(imageLogo);
 
@@ -222,9 +222,9 @@ namespace Business.DAO
                 long length = TotalRecords() / size;
                 for (int i = 0; i <= length; i++)
                 {
-                    List<DataSource.Comic.Role> heroesByPage = ModelComic.ComicEntities.Role.OrderBy(o => o.Id).Skip(size * (index - 1)).Take(size).ToList();
+                    List<Role> rolesByPage = ModelComic.ComicEntities.Role.OrderBy(o => o.Id).Skip(size * (index - 1)).Take(size).ToList();
 
-                    if (heroesByPage.Count() == 0)
+                    if (rolesByPage.Count() == 0)
                         break;
                     
                     if (index != 1)
@@ -251,7 +251,7 @@ namespace Business.DAO
                     pdfPTable.AddCell(pdfPCellName);
                     
                     int count = 0;
-                    foreach (var item in heroesByPage)
+                    foreach (var item in rolesByPage)
                     {
                         if ((count % 2) == 0)
                         {
