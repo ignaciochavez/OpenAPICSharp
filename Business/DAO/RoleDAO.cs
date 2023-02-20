@@ -1,5 +1,4 @@
 ﻿using Business.DTO;
-using Business.Entity;
 using DataSource.Comic;
 using SpreadsheetLight;
 using System;
@@ -27,8 +26,12 @@ namespace Business.DAO
 
         public Entity.Role Select(int id)
         {
+            Entity.Role role = null;
             var entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
-            Entity.Role role = new Entity.Role(entity.Id, entity.Name);
+
+            if (entity != null)
+                role = new Entity.Role(entity.Id, entity.Name);
+
             return role;
         }
 
@@ -40,7 +43,7 @@ namespace Business.DAO
 
         public bool Insert(string name)
         {
-            DataSource.Comic.Role role = new DataSource.Comic.Role();
+            Role role = new Role();
             role.Name = name;
             int insert = ModelComic.ComicEntities.SaveChanges();
             return (insert > 0);
@@ -49,7 +52,7 @@ namespace Business.DAO
         public bool Update(Entity.Role role)
         {
             int isUpdate = 0;
-            DataSource.Comic.Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == role.Id);
+            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == role.Id);
             if (entity != null)
             {
                 entity.Name = role.Name;
@@ -61,7 +64,7 @@ namespace Business.DAO
         public bool Delete(int id)
         {
             int isDelete = 0;
-            DataSource.Comic.Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
+            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
             if (entity != null)
             {
                 ModelComic.ComicEntities.Role.Remove(entity);
@@ -73,7 +76,7 @@ namespace Business.DAO
         public List<Entity.Role> List()
         {
             List<Entity.Role> list = new List<Entity.Role>();
-            List<DataSource.Comic.Role> entities = ModelComic.ComicEntities.Role.ToList();
+            List<Role> entities = ModelComic.ComicEntities.Role.ToList();
             foreach (var item in entities)
             {
                 Entity.Role role = new Entity.Role(item.Id, item.Name);
@@ -85,7 +88,7 @@ namespace Business.DAO
         public List<Entity.Role> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
             List<Entity.Role> list = new List<Entity.Role>();
-            List<DataSource.Comic.Role> entities = ModelComic.ComicEntities.Role.OrderByDescending(o => o.Id).Skip((listPaginatedDTO.PageSize * (listPaginatedDTO.PageIndex - 1))).Take(listPaginatedDTO.PageSize).ToList();
+            List<Role> entities = ModelComic.ComicEntities.Role.OrderByDescending(o => o.Id).Skip((listPaginatedDTO.PageSize * (listPaginatedDTO.PageIndex - 1))).Take(listPaginatedDTO.PageSize).ToList();
             foreach (var item in entities)
             {
                 Entity.Role role = new Entity.Role(item.Id, item.Name);
