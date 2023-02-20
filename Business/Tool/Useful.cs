@@ -7,6 +7,11 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using SpreadsheetLight;
+using DocumentFormat.OpenXml.Spreadsheet;
+using SpreadsheetLight.Drawing;
 
 namespace Business.Tool
 {
@@ -67,12 +72,284 @@ namespace Business.Tool
             return rutDigit;
         }
 
-        public static string GetAllTextFile(string path)
+        public static SLDocument GetSpreadsheetLightBase()
         {
-            string text = File.ReadAllText(path);
-            return text;
+            SLDocument sLDocument = new SLDocument();
+            sLDocument.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Role");
+
+            sLDocument.MergeWorksheetCells("D3", "H3");
+            sLDocument.SetCellValue("D3", $"© Copyright IgnacioChavez {DateTime.Now.ToString("yyyy")}. Todos los derechos reservados");
+
+            SLStyle sLStyleTitles = sLDocument.CreateStyle();
+            sLStyleTitles.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+
+            sLDocument.MergeWorksheetCells("D4", "H4");
+            sLDocument.SetCellValue("D4", Useful.GetEmailContact());
+            sLDocument.SetCellStyle("D4", sLStyleTitles);
+            sLDocument.MergeWorksheetCells("D5", "H5");
+            sLDocument.SetCellValue("D5", Useful.GetPhoneContact());
+            sLDocument.SetCellStyle("D5", sLStyleTitles);
+
+            SLPicture sLPicture = new SLPicture(Useful.GetImagePath());
+            sLPicture.SetPosition(2, 1);
+            sLPicture.ResizeInPixels(80, 80);
+            sLDocument.InsertPicture(sLPicture);
+
+            SLStyle sLStyleTitleOpenAPICSharp = sLDocument.CreateStyle();
+            sLStyleTitleOpenAPICSharp.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            sLStyleTitleOpenAPICSharp.Alignment.Vertical = VerticalAlignmentValues.Center;
+            sLStyleTitleOpenAPICSharp.SetWrapText(true);
+            sLStyleTitleOpenAPICSharp.Font.Bold = true;
+            sLDocument.SetCellStyle("B7", sLStyleTitleOpenAPICSharp);
+            sLDocument.SetCellValue("B7", "OpenAPICSharp");
+            sLDocument.SetRowHeight(7, 27.57);
+
+            SLStyle sLStyleDateTime = sLDocument.CreateStyle();
+            sLStyleDateTime.SetFont("Calibri", 10);
+            sLStyleDateTime.SetFontColor(System.Drawing.ColorTranslator.FromHtml("#8E97A0"));
+            sLDocument.MergeWorksheetCells("J3", "L3");
+            sLDocument.SetCellValue("J3", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sszzz")}");
+            sLDocument.SetCellStyle("J3", sLStyleDateTime);
+
+            return sLDocument;
         }
-        
+
+        public static SLStyle GetSpreadsheetLightStyleCellTableHeader(SLDocument sLDocument)
+        {
+            SLStyle sLStyleHeaderTable = sLDocument.CreateStyle();
+            sLStyleHeaderTable.Font.Bold = true;
+            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
+            return sLStyleHeaderTable;
+        }
+
+        public static SLStyle GetSpreadsheetLightStyleCellIdTable(SLDocument sLDocument)
+        {
+            SLStyle sLStyleHeaderTable = sLDocument.CreateStyle();
+            sLStyleHeaderTable.Border.BottomBorder.BorderStyle = BorderStyleValues.DashDot;
+            sLStyleHeaderTable.Border.BottomBorder.Color = System.Drawing.ColorTranslator.FromHtml("#dee2e6");
+            sLStyleHeaderTable.Font.Bold = true;
+            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
+            return sLStyleHeaderTable;
+        }
+
+        public static SLStyle GetSpreadsheetLightStyleCellIdTableDegrade(SLDocument sLDocument)
+        {
+            SLStyle sLStyleHeaderTable = sLDocument.CreateStyle();
+            sLStyleHeaderTable.Border.BottomBorder.BorderStyle = BorderStyleValues.DashDot;
+            sLStyleHeaderTable.Border.BottomBorder.Color = System.Drawing.ColorTranslator.FromHtml("#dee2e6");
+            System.Drawing.Color backgroundColor = System.Drawing.ColorTranslator.FromHtml("#DADDE0");
+            sLStyleHeaderTable.SetPatternFill(PatternValues.Solid, backgroundColor, backgroundColor);
+            sLStyleHeaderTable.Font.Bold = true;
+            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
+            return sLStyleHeaderTable;
+        }
+
+        public static SLStyle GetSpreadsheetLightStyleCellTableBody(SLDocument sLDocument)
+        {
+            SLStyle sLStyleHeaderTable = sLDocument.CreateStyle();
+            sLStyleHeaderTable.Border.BottomBorder.BorderStyle = BorderStyleValues.DashDot;
+            sLStyleHeaderTable.Border.BottomBorder.Color = System.Drawing.ColorTranslator.FromHtml("#dee2e6");
+            sLStyleHeaderTable.Font.Bold = false;
+            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
+            return sLStyleHeaderTable;
+        }
+
+        public static SLStyle GetSpreadsheetLightStyleCellTableBodyDegrade(SLDocument sLDocument)
+        {
+            SLStyle sLStyleHeaderTable = sLDocument.CreateStyle();
+            sLStyleHeaderTable.Border.BottomBorder.BorderStyle = BorderStyleValues.DashDot;
+            sLStyleHeaderTable.Border.BottomBorder.Color = System.Drawing.ColorTranslator.FromHtml("#dee2e6");
+            System.Drawing.Color backgroundColor = System.Drawing.ColorTranslator.FromHtml("#DADDE0");
+            sLStyleHeaderTable.SetPatternFill(PatternValues.Solid, backgroundColor, backgroundColor);
+            sLStyleHeaderTable.Font.Bold = false;
+            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
+            return sLStyleHeaderTable;
+        }
+
+
+        public static PdfPTable GetiTextSharpTableHeaderOne()
+        {
+            PdfPTable pdfPTableHeaderOne = new PdfPTable(3);
+            pdfPTableHeaderOne.SetWidths(new int[] { 100, 56, 190 });
+
+            iTextSharp.text.Font fontTableOne = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            PdfPCell pdfPCellCopyright = new PdfPCell(new Phrase("© Copyright", fontTableOne));
+            pdfPCellCopyright.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+            pdfPCellCopyright.BorderWidth = 0;
+
+            iTextSharp.text.Font fontTableOneIgnacioChavez = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 14, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            PdfPCell pdfPCellIgnacioChavez = new PdfPCell(new Phrase("IgnacioChavez", fontTableOneIgnacioChavez));
+            pdfPCellIgnacioChavez.BorderWidth = 0;
+
+            PdfPCell pdfPCellAllRightsReserved = new PdfPCell(new Phrase("2023. Todos los derechos reservados", fontTableOne));
+            pdfPCellAllRightsReserved.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
+            pdfPCellAllRightsReserved.BorderWidth = 0;
+
+            pdfPTableHeaderOne.AddCell(pdfPCellCopyright);
+            pdfPTableHeaderOne.AddCell(pdfPCellIgnacioChavez);
+            pdfPTableHeaderOne.AddCell(pdfPCellAllRightsReserved);
+            return pdfPTableHeaderOne;
+        }
+
+        public static PdfPTable GetiTextSharpTableHeaderTwo()
+        {
+            PdfPTable pdfPTableHeaderTwo = new PdfPTable(1);
+
+            iTextSharp.text.Font fontTableTwo = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            PdfPCell pdfPCellEmail = new PdfPCell(new Phrase($"{Useful.GetEmailContact()}", fontTableTwo));
+            pdfPCellEmail.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+            pdfPCellEmail.BorderWidth = 0;
+
+            PdfPCell pdfPCellPhone = new PdfPCell(new Phrase($"{Useful.GetPhoneContact()}", fontTableTwo));
+            pdfPCellPhone.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+            pdfPCellPhone.BorderWidth = 0;
+
+            pdfPTableHeaderTwo.AddCell(pdfPCellEmail);
+            pdfPTableHeaderTwo.AddCell(pdfPCellPhone);
+            return pdfPTableHeaderTwo;
+        }
+
+        public static Image GetiTextSharpImageLogo()
+        {
+            iTextSharp.text.Image imageLogo = iTextSharp.text.Image.GetInstance(Useful.GetImagePath());
+            imageLogo.ScaleAbsoluteWidth(50);
+            imageLogo.ScaleAbsoluteHeight(50);
+            imageLogo.BorderWidth = 0;
+            return imageLogo;
+        }
+
+        public static PdfPTable GetiTextSharpTitle()
+        {
+            PdfPTable pdfPTableTitle = new PdfPTable(1);
+            pdfPTableTitle.TotalWidth = 40;
+            pdfPTableTitle.SetWidths(new int[] { 40 });
+
+            iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            PdfPCell pdfPCellTitle = new PdfPCell(new Phrase("OpenAPICSharp", fontTitle));
+            pdfPCellTitle.BorderWidth = 0;
+            pdfPCellTitle.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+
+            pdfPTableTitle.AddCell(pdfPCellTitle);
+            return pdfPTableTitle;
+        }
+
+        public static PdfPTable GetiTextSharpDateTime()
+        {
+            PdfPTable pdfPTableDateTime = new PdfPTable(1);
+            pdfPTableDateTime.TotalWidth = 140;
+            pdfPTableDateTime.SetWidths(new int[] { 140 });
+
+            iTextSharp.text.Font fontDateTime = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 10, iTextSharp.text.Font.BOLD, new BaseColor(System.Drawing.ColorTranslator.FromHtml("#8E97A0")));
+            PdfPCell pdfPCellDateTime = new PdfPCell(new Phrase($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sszzz")}", fontDateTime));
+            pdfPCellDateTime.BorderWidth = 0;
+            pdfPCellDateTime.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+            pdfPTableDateTime.AddCell(pdfPCellDateTime);
+            return pdfPTableDateTime;
+        }
+
+        public static PdfPTable GetiTextSharpTablePageNumber(int number)
+        {
+            PdfPTable pdfPTableNumberPage = new PdfPTable(1);
+            pdfPTableNumberPage.TotalWidth = 20;
+            pdfPTableNumberPage.SetWidths(new int[] { 20 });
+
+            iTextSharp.text.Font fontNumberPage = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            PdfPCell pdfPCellNumberPage = new PdfPCell(new Phrase($"{number.ToString()}", fontNumberPage));
+            pdfPCellNumberPage.BorderWidth = 0;
+            pdfPCellNumberPage.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+            pdfPTableNumberPage.AddCell(pdfPCellNumberPage);
+            return pdfPTableNumberPage;
+        }
+
+        public static PdfPTable GetiTextSharpTableDescription(string tableName, long totalRecords)
+        {
+            PdfPTable pdfPTableDescription = new PdfPTable(1);
+            iTextSharp.text.Font fontDescription = new iTextSharp.text.Font(FontFactory.GetFont("Times New Roman").BaseFont, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            PdfPCell pdfPCellDescription = new PdfPCell(new Phrase($"Ha descargado los registros existentes de la tabla {tableName}. El total de registros es de {totalRecords}.", fontDescription));
+            pdfPCellDescription.BorderWidth = 0;
+            pdfPCellDescription.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+            pdfPTableDescription.AddCell(pdfPCellDescription);
+            return pdfPTableDescription;
+        }
+
+        public static PdfPCell GetiTextSharpCellTableHeader(string name)
+        {
+            iTextSharp.text.Font fontHeaderTable = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            PdfPCell pdfPCell = new PdfPCell(new Phrase(name, fontHeaderTable));
+            pdfPCell.BorderWidthTop = 1;
+            pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCell.BorderWidthBottom = 1;
+            pdfPCell.BorderColorBottom = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCell.BorderWidthLeft = 0;
+            pdfPCell.BorderWidthRight = 0;
+            return pdfPCell;
+        }
+
+        public static PdfPCell GetiTextSharpCellIdTableBody(string value)
+        {
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
+            pdfPCell.BorderWidthTop = 1;
+            pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCell.BorderWidthBottom = 0;
+            pdfPCell.BorderWidthLeft = 0;
+            pdfPCell.BorderWidthRight = 0;
+            return pdfPCell;
+        }
+
+        public static PdfPCell GetiTextSharpCellIdTableBodyDegrade(string value)
+        {
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
+            pdfPCell.BorderWidthTop = 1;
+            pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCell.BorderWidthBottom = 0;
+            pdfPCell.BorderWidthLeft = 0;
+            pdfPCell.BorderWidthRight = 0;
+            pdfPCell.BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#DADDE0"));
+            return pdfPCell;
+        }
+
+        public static PdfPCell GetiTextSharpCellTableBody(string value)
+        {
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
+            pdfPCell.BorderWidthTop = 1;
+            pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCell.BorderWidthBottom = 0;
+            pdfPCell.BorderWidthLeft = 0;
+            pdfPCell.BorderWidthRight = 0;
+            return pdfPCell;
+        }
+
+        public static PdfPCell GetiTextSharpCellTableBodyDegrade(string value)
+        {
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
+            pdfPCell.BorderWidthTop = 1;
+            pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCell.BorderWidthBottom = 0;
+            pdfPCell.BorderWidthLeft = 0;
+            pdfPCell.BorderWidthRight = 0;
+            pdfPCell.BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#DADDE0"));
+            return pdfPCell;
+        }        
+
+        public static string GetEmailContact()
+        {
+            return GetAppSettings("EmailContact");
+        }
+
+        public static string GetPhoneContact()
+        {
+            return GetAppSettings("PhoneContact");
+        }
+
         public static string GetApplicationNameText()
         {
             return "OpenAPI";

@@ -38,6 +38,12 @@
       <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.41.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.41\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
@@ -70,21 +76,31 @@
   <ItemGroup>
     <Compile Include="DAO\ExampleDAO.cs" />
     <Compile Include="DAO\HeroeDAO.cs" />
+    <Compile Include="DAO\RoleDAO.cs" />
     <Compile Include="DTO\ExampleDTO.cs" />
     <Compile Include="DTO\HeroeDTO.cs" />
+    <Compile Include="DTO\UsefulDTO.cs" />
     <Compile Include="Entity\Example.cs" />
     <Compile Include="Entity\Heroe.cs" />
+    <Compile Include="Entity\Role.cs" />
     <Compile Include="Implementation\ExampleImpl.cs" />
     <Compile Include="Implementation\HeroeImpl.cs" />
+    <Compile Include="Implementation\RoleImpl.cs" />
     <Compile Include="Interface\IExample.cs" />
     <Compile Include="Interface\IHeroe.cs" />
+    <Compile Include="Interface\IRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\ExceptionExtension.cs" />
     <Compile Include="Tool\ContentHTML.cs" />
     <Compile Include="Tool\MessageVO.cs" />
     <Compile Include="Tool\Useful.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DataSource\DataSource.csproj">
+      <Project>{b8af2fdc-70a6-49d4-ba50-0c87a66baaaf}</Project>
+      <Name>DataSource</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
