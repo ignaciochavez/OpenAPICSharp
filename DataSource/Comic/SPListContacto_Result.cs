@@ -11,13 +11,10 @@ namespace DataSource.Comic
 {
     using System;
     
-    public partial class SPListBiography_Result
+    public partial class SPListContacto_Result
     {
         public int Id { get; set; }
-        public string FullName { get; set; }
-        public string Gender { get; set; }
-        public System.DateTime Appearance { get; set; }
-        public string Alias { get; set; }
-        public string Publisher { get; set; }
+        public string CorreoElectronico { get; set; }
+        public string Telefono { get; set; }
     }
 }

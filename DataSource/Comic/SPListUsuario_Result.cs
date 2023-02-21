@@ -11,10 +11,16 @@ namespace DataSource.Comic
 {
     using System;
     
-    public partial class SPListContact_Result
+    public partial class SPListUsuario_Result
     {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
+        public string Rut { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public System.DateTime FechaNacimiento { get; set; }
+        public string Contrasena { get; set; }
+        public bool Activo { get; set; }
+        public Nullable<System.DateTimeOffset> Registrado { get; set; }
+        public int ContactoId { get; set; }
+        public int RolId { get; set; }
     }
 }

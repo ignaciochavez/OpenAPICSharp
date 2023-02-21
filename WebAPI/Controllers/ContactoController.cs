@@ -15,23 +15,23 @@ namespace WebAPI.Controllers
     /// <summary>
     ///  Controlador api/contact
     /// </summary>    
-    [RoutePrefix("api/contact")]
-    public class ContactController : ApiController
+    [RoutePrefix("api/contacto")]
+    public class ContactoController : ApiController
     {
         private MessageVO messageVO = new MessageVO();
         private ContentHTML contentHTML = new ContentHTML();
 
         /// <summary>
-        /// Metodo para seleccionar Contact
+        /// Metodo para seleccionar Contacto
         /// </summary>
         /// <remarks>
-        /// api/contact/Select?id=1
+        /// api/contacto/Select?id=1
         /// </remarks>
-        /// <param name="id">Id Contact</param>
+        /// <param name="id">Id Contacto</param>
         /// <returns>Retorna el objeto</returns>
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(Contact))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(Contacto))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Select")]
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ContactImpl.Select(id);
+                var entity = ContactoImpl.Select(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -56,18 +56,18 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para insertar Contact
+        /// Metodo para insertar Contacto
         /// </summary>
         /// <remarks>
         /// Request POST:
         ///
         ///     {
-        ///        "Email": "correo@mail.com",
-        ///        "Phone": "+56912345678"
+        ///        "CorreoElectronico": "correo@mail.com",
+        ///        "Telefono": "+56912345678"
         ///     }
         ///
         /// </remarks>
-        /// <param name="contactInsertDTO">Objeto ContactInsertDTO</param>
+        /// <param name="contactoInsertDTO">Objeto ContactoInsertDTO</param>
         /// <returns>Retorna el objeto</returns>    
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -75,29 +75,29 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Insert")]
-        public IHttpActionResult Insert([FromBody] ContactInsertDTO contactInsertDTO)
+        public IHttpActionResult Insert([FromBody] ContactoInsertDTO contactoInsertDTO)
         {
             try
             {
-                if (contactInsertDTO == null)
+                if (contactoInsertDTO == null)
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ContactInsertDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ContactoInsertDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (string.IsNullOrWhiteSpace(contactInsertDTO.Email))                
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Email"));
-                else if (contactInsertDTO.Email.Trim().Length > 15)                
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "15"));
-                else if (!Useful.ValidateEmail(contactInsertDTO.Email))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
+                if (string.IsNullOrWhiteSpace(contactoInsertDTO.CorreoElectronico))                
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "CorreoElectronico"));
+                else if (contactoInsertDTO.CorreoElectronico.Trim().Length > 15)                
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "CorreoElectronico").Replace("{1}", "15"));
+                else if (!Useful.ValidateEmail(contactoInsertDTO.CorreoElectronico))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "CorreoElectronico"));
 
-                if (string.IsNullOrWhiteSpace(contactInsertDTO.Phone))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Phone"));
-                else if (contactInsertDTO.Phone.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Phone").Replace("{1}", "15"));
-                else if (!Useful.ValidatePhone(contactInsertDTO.Phone))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Phone"));
+                if (string.IsNullOrWhiteSpace(contactoInsertDTO.Telefono))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Telefono"));
+                else if (contactoInsertDTO.Telefono.Trim().Length > 15)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Telefono").Replace("{1}", "15"));
+                else if (!Useful.ValidatePhone(contactoInsertDTO.Telefono))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Telefono"));
                 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -105,7 +105,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = ContactImpl.Insert(contactInsertDTO);
+                var insert = ContactoImpl.Insert(contactoInsertDTO);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -116,19 +116,19 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para actualizar Role
+        /// Metodo para actualizar Contacto
         /// </summary>
         /// <remarks>
         /// Request PUT:
         ///
         ///     {
         ///        "Id": 1,
-        ///        "Email": "correo@mail.com",
-        ///        "Phone": "+56912345678"
+        ///        "CorreoElectronico": "correo@mail.com",
+        ///        "Telefono": "+56912345678"
         ///     }
         ///
         /// </remarks>
-        /// <param name="contact">Modelo Contact</param>
+        /// <param name="contacto">Modelo Contacto</param>
         /// <returns>Retorna el objeto</returns>    
         [HttpPut]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -136,32 +136,32 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Update")]
-        public IHttpActionResult Update([FromBody] Contact contact)
+        public IHttpActionResult Update([FromBody] Contacto contacto)
         {
             try
             {
-                if (contact == null)
+                if (contacto == null)
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "Contact"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "Contacto"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (contact.Id <= 0)
+                if (contacto.Id <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
 
-                if (string.IsNullOrWhiteSpace(contact.Email))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Email"));
-                else if (contact.Email.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "15"));
-                else if (!Useful.ValidateEmail(contact.Email))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
+                if (string.IsNullOrWhiteSpace(contacto.CorreoElectronico))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "CorreoElectronico"));
+                else if (contacto.CorreoElectronico.Trim().Length > 15)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "CorreoElectronico").Replace("{1}", "15"));
+                else if (!Useful.ValidateEmail(contacto.CorreoElectronico))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "CorreoElectronico"));
 
-                if (string.IsNullOrWhiteSpace(contact.Phone))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Phone"));
-                else if (contact.Phone.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Phone").Replace("{1}", "15"));
-                else if (!Useful.ValidatePhone(contact.Phone))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Phone"));
+                if (string.IsNullOrWhiteSpace(contacto.Telefono))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Telefono"));
+                else if (contacto.Telefono.Trim().Length > 15)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Telefono").Replace("{1}", "15"));
+                else if (!Useful.ValidatePhone(contacto.Telefono))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Telefono"));
 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -169,7 +169,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = ContactImpl.Update(contact);
+                var update = ContactoImpl.Update(contacto);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -180,12 +180,12 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para eliminar entidad Contact
+        /// Metodo para eliminar entidad Contacto
         /// </summary>
         /// <remarks>
-        /// api/contact/Delete?id=1
+        /// api/contacto/Delete?id=1
         /// </remarks>
-        /// <param name="id">Id Contact</param>
+        /// <param name="id">Id Contacto</param>
         /// <returns>Retorna el objeto</returns>
         [HttpDelete]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -203,7 +203,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = ContactImpl.Delete(id);
+                var delete = ContactoImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -214,7 +214,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para listar Contact
+        /// Metodo para listar Contacto
         /// </summary>
         /// <remarks>
         /// Request POST:
@@ -229,7 +229,7 @@ namespace WebAPI.Controllers
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Contact>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Contacto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("List")]
@@ -257,7 +257,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = ContactImpl.ListPaginated(listPaginatedDTO);
+                var entitys = ContactoImpl.ListPaginated(listPaginatedDTO);
                 return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
@@ -268,10 +268,10 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para contar registros de entidad Contact 
+        /// Metodo para contar registros de entidad Contacto
         /// </summary>
         /// <remarks>
-        /// api/contact/TotalRecords
+        /// api/contacto/TotalRecords
         /// </remarks>
         /// <returns>Retorna el objeto</returns>
         [HttpGet]
@@ -284,7 +284,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = ContactImpl.TotalRecords();
+                var totalRecords = ContactoImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -295,15 +295,15 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para buscar Contact
+        /// Metodo para buscar Contacto
         /// </summary>
         /// <remarks>
         /// Request POST:
         ///
         ///     {
         ///        "Id": 0,
-        ///        "Email": "email@correo.com",
-        ///        "Phone": "+56912345678"
+        ///        "CorreoElectronico": "email@correo.com",
+        ///        "Telefono": "+56912345678"
         ///        "ListPaginatedDTO": {
         ///          "PageIndex": 1,
         ///          "PageSize": 10
@@ -311,15 +311,15 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="contactSearchDTO">Objeto ContactSearchDTO</param>
+        /// <param name="contactSearchDTO">Objeto ContactoSearchDTO</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Contact>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Contacto>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Search")]
-        public IHttpActionResult Search([FromBody] ContactSearchDTO contactSearchDTO)
+        public IHttpActionResult Search([FromBody] ContactoSearchDTO contactSearchDTO)
         {
             try
             {
@@ -337,14 +337,14 @@ namespace WebAPI.Controllers
                 if (contactSearchDTO.Id < 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id").Replace("{1}", "0"));
 
-                if (!string.IsNullOrWhiteSpace(contactSearchDTO.Email) && contactSearchDTO.Email.Trim().Length > 50)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Email").Replace("{1}", "50"));
+                if (!string.IsNullOrWhiteSpace(contactSearchDTO.CorreoElectronico) && contactSearchDTO.CorreoElectronico.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "CorreoElectronico").Replace("{1}", "50"));
 
-                if (!string.IsNullOrWhiteSpace(contactSearchDTO.Phone) && contactSearchDTO.Phone.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Phone").Replace("{1}", "15"));
+                if (!string.IsNullOrWhiteSpace(contactSearchDTO.Telefono) && contactSearchDTO.Telefono.Trim().Length > 15)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Telefono").Replace("{1}", "15"));
 
-                if (contactSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(contactSearchDTO.Email) && string.IsNullOrWhiteSpace(contactSearchDTO.Phone))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id, Email y Phone,").Replace("{1}", "n").Replace("{2}", "s"));
+                if (contactSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(contactSearchDTO.CorreoElectronico) && string.IsNullOrWhiteSpace(contactSearchDTO.Telefono))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id, CorreoElectronico y Telefono,").Replace("{1}", "n").Replace("{2}", "s"));
 
                 if (contactSearchDTO.ListPaginatedDTO.PageIndex <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
@@ -360,7 +360,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = ContactImpl.Search(contactSearchDTO);
+                var entitys = ContactoImpl.Search(contactSearchDTO);
                 return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
@@ -384,7 +384,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var excel = ContactImpl.Excel();
+                var excel = ContactoImpl.Excel();
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -408,7 +408,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var pdf = ContactImpl.PDF();
+                var pdf = ContactoImpl.PDF();
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

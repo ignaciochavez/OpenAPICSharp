@@ -11,10 +11,9 @@ namespace DataSource.Comic
 {
     using System;
     
-    public partial class SPListContactPaginated_Result
+    public partial class SPListRol_Result
     {
         public int Id { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
+        public string Nombre { get; set; }
     }
 }

@@ -17,46 +17,46 @@ using System.Data.SqlClient;
 
 namespace Business.DAO
 {
-    public class RoleDAO : IRole
+    public class RolDAO : IRol
     {
 
-        public RoleDAO()
+        public RolDAO()
         {
 
         }
 
-        public Entity.Role Select(int id)
+        public Entity.Rol Select(int id)
         {
-            Entity.Role role = null;
-            var entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
+            Entity.Rol role = null;
+            var entity = ModelComic.ComicEntities.Rol.FirstOrDefault(o => o.Id == id);
 
             if (entity != null)
-                role = new Entity.Role(entity.Id, entity.Name);
+                role = new Entity.Rol(entity.Id, entity.Nombre);
 
             return role;
         }
 
-        public bool ExistByName(string name)
+        public bool Exist(string nombre)
         {
-            bool exist = ModelComic.ComicEntities.Role.Any(o => o.Name == name.Trim());
+            bool exist = ModelComic.ComicEntities.Rol.Any(o => o.Nombre == nombre.Trim());
             return exist;
         }
 
-        public int Insert(string name)
+        public int Insert(string nombre)
         {
-            Role role = new Role();
-            role.Name = Useful.GetTitleCaseWords(name.Trim());
+            Rol rol = new Rol();
+            rol.Nombre = Useful.GetTitleCaseWords(nombre.Trim());
             int insert = ModelComic.ComicEntities.SaveChanges();
-            return (insert > 0) ? role.Id : 0;
+            return (insert > 0) ? rol.Id : 0;
         }
 
-        public bool Update(Entity.Role role)
+        public bool Update(Entity.Rol rol)
         {
             int isUpdate = 0;
-            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == role.Id);
+            Rol entity = ModelComic.ComicEntities.Rol.FirstOrDefault(o => o.Id == rol.Id);
             if (entity != null)
             {
-                entity.Name = Useful.GetTitleCaseWords(role.Name.Trim());
+                entity.Nombre = Useful.GetTitleCaseWords(rol.Nombre.Trim());
                 isUpdate = ModelComic.ComicEntities.SaveChanges();
             }
             return (isUpdate > 0);
@@ -65,72 +65,72 @@ namespace Business.DAO
         public bool Delete(int id)
         {
             int isDelete = 0;
-            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
+            Rol entity = ModelComic.ComicEntities.Rol.FirstOrDefault(o => o.Id == id);
             if (entity != null)
             {
-                ModelComic.ComicEntities.Role.Remove(entity);
+                ModelComic.ComicEntities.Rol.Remove(entity);
                 isDelete = ModelComic.ComicEntities.SaveChanges();
             }
             return (isDelete > 0);
         }
 
-        public List<Entity.Role> List()
+        public List<Entity.Rol> List()
         {
-            List<Entity.Role> list = new List<Entity.Role>();
-            var entities = ModelComic.ComicEntities.SPListRole();
+            List<Entity.Rol> list = new List<Entity.Rol>();
+            var entities = ModelComic.ComicEntities.SPListRol();
             foreach (var item in entities)
             {
-                Entity.Role role = new Entity.Role(item.Id, item.Name);
-                list.Add(role);
+                Entity.Rol rol = new Entity.Rol(item.Id, item.Nombre);
+                list.Add(rol);
             }
             return list;
         }
 
-        public List<Entity.Role> ListPaginated(ListPaginatedDTO listPaginatedDTO)
+        public List<Entity.Rol> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
-            List<Entity.Role> list = new List<Entity.Role>();
-            var entities = ModelComic.ComicEntities.SPListRolePaginated(listPaginatedDTO.PageIndex, listPaginatedDTO.PageSize);
+            List<Entity.Rol> list = new List<Entity.Rol>();
+            var entities = ModelComic.ComicEntities.SPListRolPaginated(listPaginatedDTO.PageIndex, listPaginatedDTO.PageSize);
             foreach (var item in entities)
             {
-                Entity.Role role = new Entity.Role(item.Id, item.Name);
-                list.Add(role);
+                Entity.Rol rol = new Entity.Rol(item.Id, item.Nombre);
+                list.Add(rol);
             }
             return list;
         }
 
         public long TotalRecords()
         {
-            long totalRecords = ModelComic.ComicEntities.Role.LongCount();
+            long totalRecords = ModelComic.ComicEntities.Rol.LongCount();
             return totalRecords;
         }
 
-        public List<Entity.Role> Search(RoleSearchDTO roleSearchDTO)
+        public List<Entity.Rol> Search(RolSearchDTO rolSearchDTO)
         {
             string whereClause = string.Empty;
-            whereClause = ((roleSearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
-            whereClause += ((!string.IsNullOrEmpty(roleSearchDTO.Name)) ? ((whereClause.Length > 0) ? " AND [Name] LIKE '%' + @Name + '%'" : "[Name] LIKE '%' + @Name + '%'") : string.Empty);
-            string paginatedClause = $"ORDER BY [Id] ASC OFFSET({roleSearchDTO.ListPaginatedDTO.PageIndex - 1}) * {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
+            whereClause = ((rolSearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
+            whereClause += ((!string.IsNullOrEmpty(rolSearchDTO.Nombre)) ? ((whereClause.Length > 0) ? " AND [Nombre] LIKE '%' + @Nombre + '%'" : "[Nombre] LIKE '%' + @Nombre + '%'") : string.Empty);
+            string paginatedClause = $"ORDER BY [Id] ASC OFFSET({rolSearchDTO.ListPaginatedDTO.PageIndex - 1}) * {rolSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {rolSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
-            if (roleSearchDTO.Id > 0)
-                parameters.Add(new SqlParameter("Id", roleSearchDTO.Id));
-            if (!string.IsNullOrWhiteSpace(roleSearchDTO.Name))
-                parameters.Add(new SqlParameter("Name", roleSearchDTO.Name.Trim()));
+            if (rolSearchDTO.Id > 0)
+                parameters.Add(new SqlParameter("Id", rolSearchDTO.Id));
+            if (!string.IsNullOrWhiteSpace(rolSearchDTO.Nombre))
+                parameters.Add(new SqlParameter("Nombre", rolSearchDTO.Nombre.Trim()));
 
-            List<Entity.Role> list = new List<Entity.Role>();
-            List<Role> entities = ModelComic.ComicEntities.Role.SqlQuery($"SELECT [Id], [Name] FROM [Comic].[dbo].[Role] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            List<Entity.Rol> list = new List<Entity.Rol>();
+            List<Rol> entities = ModelComic.ComicEntities.Rol.SqlQuery($"SELECT [Id], [Nombre] FROM [dbo].[Rol] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
             foreach (var item in entities)
             {
-                Entity.Role entity = new Entity.Role(item.Id, item.Name);
+                Entity.Rol entity = new Entity.Rol(item.Id, item.Nombre);
                 list.Add(entity);
             }
             return list;
 
         }
 
-        public bool ExistByNameAndNotSameEntity(Entity.Role role)
+        public bool ExistAndNotSameEntity(Entity.Rol rol)
         {
-            bool exist = ModelComic.ComicEntities.Role.Any(o => o.Id != role.Id && o.Name == role.Name);
+            bool exist = ModelComic.ComicEntities.Rol.Any(o => o.Id != rol.Id && o.Nombre == rol.Nombre);
             return exist;
         }
 
@@ -147,7 +147,7 @@ namespace Business.DAO
                 SLStyle sLStyleHeaderTable = Useful.GetSpreadsheetLightStyleCellTableHeader(sLDocument);
                 sLDocument.SetCellValue("E9", "Id");
                 sLDocument.SetCellStyle("E9", sLStyleHeaderTable);
-                sLDocument.SetCellValue("F9", "Name");
+                sLDocument.SetCellValue("F9", "Nombre");
                 sLDocument.SetCellStyle("F9", sLStyleHeaderTable);
                             
                 SLStyle sLStyleId = Useful.GetSpreadsheetLightStyleCellIdTable(sLDocument);
@@ -170,21 +170,21 @@ namespace Business.DAO
                     {
                         sLDocument.SetCellValue($"E{index}", item.Id);
                         sLDocument.SetCellStyle($"E{index}", sLStyleId);
-                        sLDocument.SetCellValue($"F{index}", item.Name);
+                        sLDocument.SetCellValue($"F{index}", item.Nombre);
                         sLDocument.SetCellStyle($"F{index}", sLStyleBody);
                     }
                     else
                     {
                         sLDocument.SetCellValue($"E{index}", item.Id);
                         sLDocument.SetCellStyle($"E{index}", sLStyleIdDegrade);
-                        sLDocument.SetCellValue($"F{index}", item.Name);
+                        sLDocument.SetCellValue($"F{index}", item.Nombre);
                         sLDocument.SetCellStyle($"F{index}", sLStyleBodyDegrade);
                     }                   
                     index++;
                 }
 
                 sLDocument.SaveAs(memoryStream);
-                fileDTO = new FileDTO("Role.xlsx", memoryStream.ToArray());
+                fileDTO = new FileDTO("Rol.xlsx", memoryStream.ToArray());
             }
             catch (Exception)
             {
@@ -237,18 +237,20 @@ namespace Business.DAO
 
                 documentPDF.Add(new Phrase("\n"));
 
-                PdfPTable pdfPTableDescription = Useful.GetiTextSharpTableDescription("Role", TotalRecords());
+                long totalRecords = TotalRecords();
+
+                PdfPTable pdfPTableDescription = Useful.GetiTextSharpTableDescription("Rol", totalRecords);
                 documentPDF.Add(pdfPTableDescription);
 
                 documentPDF.Add(new Phrase("\n"));
                 
                 int index = 1;
-                int size = GetPDFRoleSizeMaximunOfRecordsByPage();
-                long length = TotalRecords() / size;
-                List<Entity.Role> roles = List();
+                int size = GetPDFRolSizeMaximunOfRecordsByPage();
+                long length = totalRecords / size;
+                List<Entity.Rol> roles = List();
                 for (int i = 0; i <= length; i++)
                 {
-                    List<Entity.Role> rolesByPage = roles.Skip(size * (index - 1)).Take(size).ToList(); ;
+                    List<Entity.Rol> rolesByPage = roles.Skip(size * (index - 1)).Take(size).ToList(); ;
 
                     if (rolesByPage.Count() == 0)
                         break;
@@ -271,10 +273,10 @@ namespace Business.DAO
                     pdfPTable.HorizontalAlignment = 1;
                     
                     PdfPCell pdfPCellId = Useful.GetiTextSharpCellTableHeader("Id");
-                    PdfPCell pdfPCellName = Useful.GetiTextSharpCellTableHeader("Name");
+                    PdfPCell pdfPCellNombre = Useful.GetiTextSharpCellTableHeader("Nombre");
 
                     pdfPTable.AddCell(pdfPCellId);
-                    pdfPTable.AddCell(pdfPCellName);
+                    pdfPTable.AddCell(pdfPCellNombre);
                     
                     int count = 0;
                     foreach (var item in rolesByPage)
@@ -282,17 +284,17 @@ namespace Business.DAO
                         if ((count % 2) == 0)
                         {
                             pdfPCellId = Useful.GetiTextSharpCellIdTableBodyDegrade(item.Id.ToString());
-                            pdfPCellName = Useful.GetiTextSharpCellTableBodyDegrade(item.Name);                            
+                            pdfPCellNombre = Useful.GetiTextSharpCellTableBodyDegrade(item.Nombre);                            
                         }
                         else
                         {
                             pdfPCellId = Useful.GetiTextSharpCellIdTableBody(item.Id.ToString());
-                            pdfPCellName = Useful.GetiTextSharpCellTableBody(item.Name);
+                            pdfPCellNombre = Useful.GetiTextSharpCellTableBody(item.Nombre);
                         }
                         
 
                         pdfPTable.AddCell(pdfPCellId);
-                        pdfPTable.AddCell(pdfPCellName);
+                        pdfPTable.AddCell(pdfPCellNombre);
 
                         count++;
                     }
@@ -307,7 +309,7 @@ namespace Business.DAO
                 documentPDF.Dispose();
                 documentPDF.Close();
 
-                fileDTO = new FileDTO("Role.pdf", memoryStream.ToArray());
+                fileDTO = new FileDTO("Rol.pdf", memoryStream.ToArray());
             }
             catch (Exception)
             {
@@ -323,9 +325,9 @@ namespace Business.DAO
             return fileDTO;
         }
 
-        private int GetPDFRoleSizeMaximunOfRecordsByPage()
+        private int GetPDFRolSizeMaximunOfRecordsByPage()
         {
-            return Convert.ToInt32(Useful.GetAppSettings("PDFRoleSizeMaximunOfRecordsByPage"));
+            return Convert.ToInt32(Useful.GetAppSettings("PDFRolSizeMaximunOfRecordsByPage"));
         }
 
         private System.Drawing.Color GetBackgroundColorHeaders()

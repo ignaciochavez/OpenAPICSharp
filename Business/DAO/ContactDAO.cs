@@ -16,41 +16,41 @@ using System.Data.SqlClient;
 
 namespace Business.DAO
 {
-    public class ContactDAO : IContact
+    public class ContactDAO : IContacto
     {
         public ContactDAO()
         {
 
         }
 
-        public Entity.Contact Select(int id)
+        public Entity.Contacto Select(int id)
         {
-            Entity.Contact contact = null;
-            var entity = ModelComic.ComicEntities.Contact.FirstOrDefault(o => o.Id == id);
+            Entity.Contacto contact = null;
+            var entity = ModelComic.ComicEntities.Contacto.FirstOrDefault(o => o.Id == id);
 
             if (entity != null)
-                contact = new Entity.Contact(entity.Id, entity.Email, entity.Phone);
+                contact = new Entity.Contacto(entity.Id, entity.CorreoElectronico, entity.Telefono);
 
             return contact;
         }
 
-        public int Insert(ContactInsertDTO contactInsertDTO)
+        public int Insert(ContactoInsertDTO contactoInsertDTO)
         {
-            Contact contact = new Contact();
-            contact.Email = contactInsertDTO.Email.Trim().ToLower();
-            contact.Phone = contactInsertDTO.Phone.Trim();
+            Contacto contacto = new Contacto();
+            contacto.CorreoElectronico = contactoInsertDTO.CorreoElectronico.Trim().ToLower();
+            contacto.Telefono = contactoInsertDTO.Telefono.Trim();
             int insert = ModelComic.ComicEntities.SaveChanges();
-            return (insert > 0) ? contact.Id : 0;
+            return (insert > 0) ? contacto.Id : 0;
         }
 
-        public bool Update(Entity.Contact contact)
+        public bool Update(Entity.Contacto contacto)
         {
             int isUpdate = 0;
-            Contact entity = ModelComic.ComicEntities.Contact.FirstOrDefault(o => o.Id == contact.Id);
+            Contacto entity = ModelComic.ComicEntities.Contacto.FirstOrDefault(o => o.Id == contacto.Id);
             if (entity != null)
             {
-                contact.Email = contact.Email.Trim().ToLower();
-                contact.Phone = contact.Phone.Trim();
+                entity.CorreoElectronico = contacto.CorreoElectronico.Trim().ToLower();
+                entity.Telefono = contacto.Telefono.Trim();
                 isUpdate = ModelComic.ComicEntities.SaveChanges();
             }
             return (isUpdate > 0);
@@ -59,66 +59,66 @@ namespace Business.DAO
         public bool Delete(int id)
         {
             int isDelete = 0;
-            Contact entity = ModelComic.ComicEntities.Contact.FirstOrDefault(o => o.Id == id);
+            Contacto entity = ModelComic.ComicEntities.Contacto.FirstOrDefault(o => o.Id == id);
             if (entity != null)
             {
-                ModelComic.ComicEntities.Contact.Remove(entity);
+                ModelComic.ComicEntities.Contacto.Remove(entity);
                 isDelete = ModelComic.ComicEntities.SaveChanges();
             }
             return (isDelete > 0);
         }
 
-        public List<Entity.Contact> List()
+        public List<Entity.Contacto> List()
         {
-            List<Entity.Contact> list = new List<Entity.Contact>();
-            var entities = ModelComic.ComicEntities.SPListContact();
+            List<Entity.Contacto> list = new List<Entity.Contacto>();
+            var entities = ModelComic.ComicEntities.SPListContacto();
             foreach (var item in entities)
             {
-                Entity.Contact contact = new Entity.Contact(item.Id, item.Email, item.Phone);
-                list.Add(contact);
+                Entity.Contacto contacto = new Entity.Contacto(item.Id, item.CorreoElectronico, item.Telefono);
+                list.Add(contacto);
             }
             return list;
         }
 
-        public List<Entity.Contact> ListPaginated(ListPaginatedDTO listPaginatedDTO)
+        public List<Entity.Contacto> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
-            List<Entity.Contact> list = new List<Entity.Contact>();
-            var entities = ModelComic.ComicEntities.SPListContactPaginated(listPaginatedDTO.PageIndex, listPaginatedDTO.PageSize);
+            List<Entity.Contacto> list = new List<Entity.Contacto>();
+            var entities = ModelComic.ComicEntities.SPListContactoPaginated(listPaginatedDTO.PageIndex, listPaginatedDTO.PageSize);
             foreach (var item in entities)
             {
-                Entity.Contact contact = new Entity.Contact(item.Id, item.Email, item.Phone);
-                list.Add(contact);
+                Entity.Contacto contacto = new Entity.Contacto(item.Id, item.CorreoElectronico, item.Telefono);
+                list.Add(contacto);
             }
             return list;
         }
 
         public long TotalRecords()
         {
-            long totalRecords = ModelComic.ComicEntities.Contact.LongCount();
+            long totalRecords = ModelComic.ComicEntities.Contacto.LongCount();
             return totalRecords;
         }
 
-        public List<Entity.Contact> Search(ContactSearchDTO contactSearchDTO)
+        public List<Entity.Contacto> Search(ContactoSearchDTO contactoSearchDTO)
         {
             string whereClause = string.Empty;
-            whereClause = ((contactSearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
-            whereClause += ((!string.IsNullOrEmpty(contactSearchDTO.Email)) ? ((whereClause.Length > 0) ? " AND [Email] LIKE '%' + @Email + '%'" : "[Email] LIKE '%' + @Email + '%'") : string.Empty);
-            whereClause += ((!string.IsNullOrEmpty(contactSearchDTO.Phone)) ? ((whereClause.Length > 0) ? " AND [Phone] LIKE '%' + @Phone + '%'" : "[Phone] LIKE '%' + @Phone + '%'") : string.Empty);
-            string paginatedClause = $"ORDER BY [Id] DESC OFFSET({contactSearchDTO.ListPaginatedDTO.PageIndex - 1}) * {contactSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {contactSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
+            whereClause = ((contactoSearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
+            whereClause += ((!string.IsNullOrEmpty(contactoSearchDTO.CorreoElectronico)) ? ((whereClause.Length > 0) ? " AND [CorreoElectronico] LIKE '%' + @CorreoElectronico + '%'" : "[CorreoElectronico] LIKE '%' + @CorreoElectronico + '%'") : string.Empty);
+            whereClause += ((!string.IsNullOrEmpty(contactoSearchDTO.Telefono)) ? ((whereClause.Length > 0) ? " AND [Telefono] LIKE '%' + @Telefono + '%'" : "[Telefono] LIKE '%' + @Telefono + '%'") : string.Empty);
+            string paginatedClause = $"ORDER BY [Id] DESC OFFSET({contactoSearchDTO.ListPaginatedDTO.PageIndex - 1}) * {contactoSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {contactoSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
-            if (contactSearchDTO.Id > 0)
-                parameters.Add(new SqlParameter("Id", contactSearchDTO.Id));
-            if (!string.IsNullOrWhiteSpace(contactSearchDTO.Email))
-                parameters.Add(new SqlParameter("Email", contactSearchDTO.Email.Trim()));
-            if (!string.IsNullOrWhiteSpace(contactSearchDTO.Phone))
-                parameters.Add(new SqlParameter("Phone", contactSearchDTO.Phone.Trim()));
+            if (contactoSearchDTO.Id > 0)
+                parameters.Add(new SqlParameter("Id", contactoSearchDTO.Id));
+            if (!string.IsNullOrWhiteSpace(contactoSearchDTO.CorreoElectronico))
+                parameters.Add(new SqlParameter("CorreoElectronico", contactoSearchDTO.CorreoElectronico.Trim()));
+            if (!string.IsNullOrWhiteSpace(contactoSearchDTO.Telefono))
+                parameters.Add(new SqlParameter("Telefono", contactoSearchDTO.Telefono.Trim()));
 
-            List<Entity.Contact> list = new List<Entity.Contact>();
-            List<Contact> entities = ModelComic.ComicEntities.Contact.SqlQuery($"SELECT [Id], [Email], [Phone] FROM [Comic].[dbo].[Contact] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            List<Entity.Contacto> list = new List<Entity.Contacto>();
+            List<Contacto> entities = ModelComic.ComicEntities.Contacto.SqlQuery($"SELECT [Id], [Email], [Telefono] FROM [dbo].[Contact] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
             foreach (var item in entities)
             {
-                Entity.Contact entity = new Entity.Contact(item.Id, item.Email, item.Phone);
+                Entity.Contacto entity = new Entity.Contacto(item.Id, item.CorreoElectronico, item.Telefono);
                 list.Add(entity);
             }
             return list;
@@ -137,9 +137,9 @@ namespace Business.DAO
                 SLStyle sLStyleHeaderTable = Useful.GetSpreadsheetLightStyleCellTableHeader(sLDocument);
                 sLDocument.SetCellValue("D9", "Id");
                 sLDocument.SetCellStyle("D9", sLStyleHeaderTable);
-                sLDocument.SetCellValue("E9", "Email");
+                sLDocument.SetCellValue("E9", "CorreoElectronico");
                 sLDocument.SetCellStyle("E9", sLStyleHeaderTable);
-                sLDocument.SetCellValue("F9", "Phone");
+                sLDocument.SetCellValue("F9", "Telefono");
                 sLDocument.SetCellStyle("F9", sLStyleHeaderTable);
 
                 SLStyle sLStyleId = Useful.GetSpreadsheetLightStyleCellIdTable(sLDocument);
@@ -156,32 +156,32 @@ namespace Business.DAO
                 sLDocument.SetColumnWidth("F10", 25.00);
 
                 int index = 10;
-                var roles = List();
-                foreach (var item in roles)
+                var contactos = List();
+                foreach (var item in contactos)
                 {
                     if ((index % 2) == 0)
                     {
                         sLDocument.SetCellValue($"D{index}", item.Id);
                         sLDocument.SetCellStyle($"D{index}", sLStyleId);
-                        sLDocument.SetCellValue($"E{index}", item.Email);
+                        sLDocument.SetCellValue($"E{index}", item.CorreoElectronico);
                         sLDocument.SetCellStyle($"E{index}", sLStyleBody);
-                        sLDocument.SetCellValue($"F{index}", item.Phone);
+                        sLDocument.SetCellValue($"F{index}", item.Telefono);
                         sLDocument.SetCellStyle($"F{index}", sLStyleBody);
                     }
                     else
                     {
                         sLDocument.SetCellValue($"D{index}", item.Id);
                         sLDocument.SetCellStyle($"D{index}", sLStyleIdDegrade);
-                        sLDocument.SetCellValue($"E{index}", item.Email);
+                        sLDocument.SetCellValue($"E{index}", item.CorreoElectronico);
                         sLDocument.SetCellStyle($"E{index}", sLStyleBodyDegrade);
-                        sLDocument.SetCellValue($"F{index}", item.Phone);
+                        sLDocument.SetCellValue($"F{index}", item.Telefono);
                         sLDocument.SetCellStyle($"F{index}", sLStyleBodyDegrade);
                     }
                     index++;
                 }
 
                 sLDocument.SaveAs(memoryStream);
-                fileDTO = new FileDTO("Contact.xlsx", memoryStream.ToArray());
+                fileDTO = new FileDTO("Contacto.xlsx", memoryStream.ToArray());
             }
             catch (Exception)
             {
@@ -234,20 +234,22 @@ namespace Business.DAO
 
                 documentPDF.Add(new Phrase("\n"));
 
-                PdfPTable pdfPTableDescription = Useful.GetiTextSharpTableDescription("Contact", TotalRecords());
+                long totalRecords = TotalRecords();
+
+                PdfPTable pdfPTableDescription = Useful.GetiTextSharpTableDescription("Contacto", totalRecords);
                 documentPDF.Add(pdfPTableDescription);
 
                 documentPDF.Add(new Phrase("\n"));
 
                 int index = 1;
-                int size = GetSizeMaximunOfRecords();
-                long length = TotalRecords() / size;
-                List<Entity.Contact> contacts = List();
+                int size = GetPDFContactoSizeMaximunOfRecordsByPage();
+                long length = totalRecords / size;
+                List<Entity.Contacto> contactos = List();
                 for (int i = 0; i <= length; i++)
                 {
-                    List<Entity.Contact> contactsByPage = contacts.Skip(size * (index - 1)).Take(size).ToList();
+                    List<Entity.Contacto> contactosByPage = contactos.Skip(size * (index - 1)).Take(size).ToList();
 
-                    if (contactsByPage.Count() == 0)
+                    if (contactosByPage.Count() == 0)
                         break;
 
                     if (index != 1)
@@ -268,32 +270,32 @@ namespace Business.DAO
                     pdfPTable.HorizontalAlignment = 1;
 
                     PdfPCell pdfPCellId = Useful.GetiTextSharpCellTableHeader("Id");
-                    PdfPCell pdfPCellEmail = Useful.GetiTextSharpCellTableHeader("Email");
-                    PdfPCell pdfPCellPhone = Useful.GetiTextSharpCellTableHeader("Phone");
+                    PdfPCell pdfPCellCorreoElectronico = Useful.GetiTextSharpCellTableHeader("CorreoElectronico");
+                    PdfPCell pdfPCellTelefono = Useful.GetiTextSharpCellTableHeader("Telefono");
 
                     pdfPTable.AddCell(pdfPCellId);
-                    pdfPTable.AddCell(pdfPCellEmail);
-                    pdfPTable.AddCell(pdfPCellPhone);
+                    pdfPTable.AddCell(pdfPCellCorreoElectronico);
+                    pdfPTable.AddCell(pdfPCellTelefono);
 
                     int count = 0;
-                    foreach (var item in contactsByPage)
+                    foreach (var item in contactosByPage)
                     {
                         if ((count % 2) == 0)
                         {
                             pdfPCellId = Useful.GetiTextSharpCellIdTableBodyDegrade(item.Id.ToString());
-                            pdfPCellEmail = Useful.GetiTextSharpCellTableBodyDegrade(item.Email);
-                            pdfPCellPhone = Useful.GetiTextSharpCellTableBodyDegrade(item.Phone);
+                            pdfPCellCorreoElectronico = Useful.GetiTextSharpCellTableBodyDegrade(item.CorreoElectronico);
+                            pdfPCellTelefono = Useful.GetiTextSharpCellTableBodyDegrade(item.Telefono);
                         }
                         else
                         {
                             pdfPCellId = Useful.GetiTextSharpCellIdTableBody(item.Id.ToString());
-                            pdfPCellEmail = Useful.GetiTextSharpCellTableBody(item.Email);
-                            pdfPCellPhone = Useful.GetiTextSharpCellTableBody(item.Phone);
+                            pdfPCellCorreoElectronico = Useful.GetiTextSharpCellTableBody(item.CorreoElectronico);
+                            pdfPCellTelefono = Useful.GetiTextSharpCellTableBody(item.Telefono);
                         }
 
                         pdfPTable.AddCell(pdfPCellId);
-                        pdfPTable.AddCell(pdfPCellEmail);
-                        pdfPTable.AddCell(pdfPCellPhone);
+                        pdfPTable.AddCell(pdfPCellCorreoElectronico);
+                        pdfPTable.AddCell(pdfPCellTelefono);
 
                         count++;
                     }
@@ -307,7 +309,7 @@ namespace Business.DAO
                 documentPDF.Dispose();
                 documentPDF.Close();
 
-                fileDTO = new FileDTO("Contact.pdf", memoryStream.ToArray());
+                fileDTO = new FileDTO("Contacto.pdf", memoryStream.ToArray());
             }
             catch (Exception)
             {
@@ -323,9 +325,9 @@ namespace Business.DAO
             return fileDTO;
         }
 
-        private int GetSizeMaximunOfRecords()
+        private int GetPDFContactoSizeMaximunOfRecordsByPage()
         {
-            return Convert.ToInt32(Useful.GetAppSettings("PDFContactSizeMaximunOfRecords"));
+            return Convert.ToInt32(Useful.GetAppSettings("PDFContactoSizeMaximunOfRecordsByPage"));
         }
 
         private System.Drawing.Color GetBackgroundColorHeaders()

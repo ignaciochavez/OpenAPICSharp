@@ -11,13 +11,16 @@ namespace DataSource.Comic
 {
     using System;
     
-    public partial class SPListBiographyPaginated_Result
+    public partial class SPListUsuarioPaginated_Result
     {
-        public int Id { get; set; }
-        public string FullName { get; set; }
-        public string Gender { get; set; }
-        public System.DateTime Appearance { get; set; }
-        public string Alias { get; set; }
-        public string Publisher { get; set; }
+        public string Rut { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public System.DateTime FechaNacimiento { get; set; }
+        public string Contrasena { get; set; }
+        public bool Activo { get; set; }
+        public Nullable<System.DateTimeOffset> Registrado { get; set; }
+        public int ContactoId { get; set; }
+        public int RolId { get; set; }
     }
 }
