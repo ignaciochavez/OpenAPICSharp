@@ -137,6 +137,7 @@
     <Compile Include="Configurations\SwaggerConfig.cs" />
     <Compile Include="Configurations\WebApiConfig.cs" />
     <Compile Include="Controllers\CheckController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\HeroeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />

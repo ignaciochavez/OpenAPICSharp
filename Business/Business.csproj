@@ -74,18 +74,24 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAO\ContactDAO.cs" />
     <Compile Include="DAO\ExampleDAO.cs" />
     <Compile Include="DAO\HeroeDAO.cs" />
     <Compile Include="DAO\RoleDAO.cs" />
+    <Compile Include="DTO\ContactDTO.cs" />
     <Compile Include="DTO\ExampleDTO.cs" />
     <Compile Include="DTO\HeroeDTO.cs" />
+    <Compile Include="DTO\RoleDTO.cs" />
     <Compile Include="DTO\UsefulDTO.cs" />
+    <Compile Include="Entity\Contact.cs" />
     <Compile Include="Entity\Example.cs" />
     <Compile Include="Entity\Heroe.cs" />
     <Compile Include="Entity\Role.cs" />
+    <Compile Include="Implementation\ContactImpl.cs" />
     <Compile Include="Implementation\ExampleImpl.cs" />
     <Compile Include="Implementation\HeroeImpl.cs" />
     <Compile Include="Implementation\RoleImpl.cs" />
+    <Compile Include="Interface\IContact.cs" />
     <Compile Include="Interface\IExample.cs" />
     <Compile Include="Interface\IHeroe.cs" />
     <Compile Include="Interface\IRole.cs" />
