@@ -12,22 +12,22 @@ namespace DataSource.Comic
     using System;
     using System.Collections.Generic;
     
-    public partial class Biografia
+    public partial class Biography
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Biografia()
+        public Biography()
         {
-            this.Heroe = new HashSet<Heroe>();
+            this.Hero = new HashSet<Hero>();
         }
     
         public int Id { get; set; }
-        public string NombreCompleto { get; set; }
-        public string Genero { get; set; }
-        public System.DateTime Aparicion { get; set; }
+        public string FullName { get; set; }
+        public string Gender { get; set; }
+        public System.DateTime Appearance { get; set; }
         public string Alias { get; set; }
-        public string Editor { get; set; }
+        public string Publisher { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Heroe> Heroe { get; set; }
+        public virtual ICollection<Hero> Hero { get; set; }
     }
 }

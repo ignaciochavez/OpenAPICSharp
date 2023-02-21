@@ -27,161 +27,143 @@ namespace DataSource.Comic
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Biografia> Biografia { get; set; }
-        public virtual DbSet<EstadisticasPoder> EstadisticasPoder { get; set; }
-        public virtual DbSet<Heroe> Heroe { get; set; }
-        public virtual DbSet<Rol> Rol { get; set; }
-        public virtual DbSet<Usuario> Usuario { get; set; }
-        public virtual DbSet<Contacto> Contacto { get; set; }
+        public virtual DbSet<Biography> Biography { get; set; }
+        public virtual DbSet<Contact> Contact { get; set; }
+        public virtual DbSet<Hero> Hero { get; set; }
+        public virtual DbSet<PowerStats> PowerStats { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<User> User { get; set; }
     
-        public virtual int SPDeleteHeroe(Nullable<int> heroeId)
+        public virtual int SPDeleteHero(Nullable<int> heroId)
         {
-            var heroeIdParameter = heroeId.HasValue ?
-                new ObjectParameter("HeroeId", heroeId) :
-                new ObjectParameter("HeroeId", typeof(int));
+            var heroIdParameter = heroId.HasValue ?
+                new ObjectParameter("HeroId", heroId) :
+                new ObjectParameter("HeroId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPDeleteHeroe", heroeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPDeleteHero", heroIdParameter);
         }
     
-        public virtual int SPDeleteUsuario(Nullable<int> usuarioId)
+        public virtual int SPDeleteUser(Nullable<int> userId)
         {
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPDeleteUsuario", usuarioIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPDeleteUser", userIdParameter);
         }
     
-        public virtual int SPInsertHeroe(string nombre, string descripcion, string rutaImagen, string nombreCompleto, string genero, Nullable<System.DateTime> aparicion, string alias, string editor, Nullable<int> inteligencia, Nullable<int> fuerza, Nullable<int> velocidad, Nullable<int> durabilidad, Nullable<int> poder, Nullable<int> combate)
+        public virtual int SPInsertHero(string name, string description, string imagePath, string fullName, string gender, Nullable<System.DateTime> appearance, string alias, string publisher, Nullable<int> intelligence, Nullable<int> strength, Nullable<int> speed, Nullable<int> durability, Nullable<int> power, Nullable<int> combat)
         {
-            var nombreParameter = nombre != null ?
-                new ObjectParameter("Nombre", nombre) :
-                new ObjectParameter("Nombre", typeof(string));
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
     
-            var descripcionParameter = descripcion != null ?
-                new ObjectParameter("Descripcion", descripcion) :
-                new ObjectParameter("Descripcion", typeof(string));
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
     
-            var rutaImagenParameter = rutaImagen != null ?
-                new ObjectParameter("RutaImagen", rutaImagen) :
-                new ObjectParameter("RutaImagen", typeof(string));
+            var imagePathParameter = imagePath != null ?
+                new ObjectParameter("ImagePath", imagePath) :
+                new ObjectParameter("ImagePath", typeof(string));
     
-            var nombreCompletoParameter = nombreCompleto != null ?
-                new ObjectParameter("NombreCompleto", nombreCompleto) :
-                new ObjectParameter("NombreCompleto", typeof(string));
+            var fullNameParameter = fullName != null ?
+                new ObjectParameter("FullName", fullName) :
+                new ObjectParameter("FullName", typeof(string));
     
-            var generoParameter = genero != null ?
-                new ObjectParameter("Genero", genero) :
-                new ObjectParameter("Genero", typeof(string));
+            var genderParameter = gender != null ?
+                new ObjectParameter("Gender", gender) :
+                new ObjectParameter("Gender", typeof(string));
     
-            var aparicionParameter = aparicion.HasValue ?
-                new ObjectParameter("Aparicion", aparicion) :
-                new ObjectParameter("Aparicion", typeof(System.DateTime));
+            var appearanceParameter = appearance.HasValue ?
+                new ObjectParameter("Appearance", appearance) :
+                new ObjectParameter("Appearance", typeof(System.DateTime));
     
             var aliasParameter = alias != null ?
                 new ObjectParameter("Alias", alias) :
                 new ObjectParameter("Alias", typeof(string));
     
-            var editorParameter = editor != null ?
-                new ObjectParameter("Editor", editor) :
-                new ObjectParameter("Editor", typeof(string));
+            var publisherParameter = publisher != null ?
+                new ObjectParameter("Publisher", publisher) :
+                new ObjectParameter("Publisher", typeof(string));
     
-            var inteligenciaParameter = inteligencia.HasValue ?
-                new ObjectParameter("Inteligencia", inteligencia) :
-                new ObjectParameter("Inteligencia", typeof(int));
+            var intelligenceParameter = intelligence.HasValue ?
+                new ObjectParameter("Intelligence", intelligence) :
+                new ObjectParameter("Intelligence", typeof(int));
     
-            var fuerzaParameter = fuerza.HasValue ?
-                new ObjectParameter("Fuerza", fuerza) :
-                new ObjectParameter("Fuerza", typeof(int));
+            var strengthParameter = strength.HasValue ?
+                new ObjectParameter("Strength", strength) :
+                new ObjectParameter("Strength", typeof(int));
     
-            var velocidadParameter = velocidad.HasValue ?
-                new ObjectParameter("Velocidad", velocidad) :
-                new ObjectParameter("Velocidad", typeof(int));
+            var speedParameter = speed.HasValue ?
+                new ObjectParameter("Speed", speed) :
+                new ObjectParameter("Speed", typeof(int));
     
-            var durabilidadParameter = durabilidad.HasValue ?
-                new ObjectParameter("Durabilidad", durabilidad) :
-                new ObjectParameter("Durabilidad", typeof(int));
+            var durabilityParameter = durability.HasValue ?
+                new ObjectParameter("Durability", durability) :
+                new ObjectParameter("Durability", typeof(int));
     
-            var poderParameter = poder.HasValue ?
-                new ObjectParameter("Poder", poder) :
-                new ObjectParameter("Poder", typeof(int));
+            var powerParameter = power.HasValue ?
+                new ObjectParameter("Power", power) :
+                new ObjectParameter("Power", typeof(int));
     
-            var combateParameter = combate.HasValue ?
-                new ObjectParameter("Combate", combate) :
-                new ObjectParameter("Combate", typeof(int));
+            var combatParameter = combat.HasValue ?
+                new ObjectParameter("Combat", combat) :
+                new ObjectParameter("Combat", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertHeroe", nombreParameter, descripcionParameter, rutaImagenParameter, nombreCompletoParameter, generoParameter, aparicionParameter, aliasParameter, editorParameter, inteligenciaParameter, fuerzaParameter, velocidadParameter, durabilidadParameter, poderParameter, combateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertHero", nameParameter, descriptionParameter, imagePathParameter, fullNameParameter, genderParameter, appearanceParameter, aliasParameter, publisherParameter, intelligenceParameter, strengthParameter, speedParameter, durabilityParameter, powerParameter, combatParameter);
         }
     
-        public virtual int SPInsertUsuario(string rut, string nombre, string apellido, Nullable<System.DateTime> fechaNacimiento, string contrasena, Nullable<bool> activo, Nullable<System.DateTimeOffset> registrado, string correoElectronico, string telefono, Nullable<int> rolId)
+        public virtual int SPInsertUser(string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<System.DateTimeOffset> registered, string email, Nullable<decimal> phone, Nullable<int> roleId)
         {
             var rutParameter = rut != null ?
                 new ObjectParameter("Rut", rut) :
                 new ObjectParameter("Rut", typeof(string));
     
-            var nombreParameter = nombre != null ?
-                new ObjectParameter("Nombre", nombre) :
-                new ObjectParameter("Nombre", typeof(string));
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
     
-            var apellidoParameter = apellido != null ?
-                new ObjectParameter("Apellido", apellido) :
-                new ObjectParameter("Apellido", typeof(string));
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
     
-            var fechaNacimientoParameter = fechaNacimiento.HasValue ?
-                new ObjectParameter("FechaNacimiento", fechaNacimiento) :
-                new ObjectParameter("FechaNacimiento", typeof(System.DateTime));
+            var birthDateParameter = birthDate.HasValue ?
+                new ObjectParameter("BirthDate", birthDate) :
+                new ObjectParameter("BirthDate", typeof(System.DateTime));
     
-            var contrasenaParameter = contrasena != null ?
-                new ObjectParameter("Contrasena", contrasena) :
-                new ObjectParameter("Contrasena", typeof(string));
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
     
-            var activoParameter = activo.HasValue ?
-                new ObjectParameter("Activo", activo) :
-                new ObjectParameter("Activo", typeof(bool));
+            var activeParameter = active.HasValue ?
+                new ObjectParameter("Active", active) :
+                new ObjectParameter("Active", typeof(bool));
     
-            var registradoParameter = registrado.HasValue ?
-                new ObjectParameter("Registrado", registrado) :
-                new ObjectParameter("Registrado", typeof(System.DateTimeOffset));
+            var registeredParameter = registered.HasValue ?
+                new ObjectParameter("Registered", registered) :
+                new ObjectParameter("Registered", typeof(System.DateTimeOffset));
     
-            var correoElectronicoParameter = correoElectronico != null ?
-                new ObjectParameter("CorreoElectronico", correoElectronico) :
-                new ObjectParameter("CorreoElectronico", typeof(string));
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
     
-            var telefonoParameter = telefono != null ?
-                new ObjectParameter("Telefono", telefono) :
-                new ObjectParameter("Telefono", typeof(string));
+            var phoneParameter = phone.HasValue ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(decimal));
     
-            var rolIdParameter = rolId.HasValue ?
-                new ObjectParameter("RolId", rolId) :
-                new ObjectParameter("RolId", typeof(int));
+            var roleIdParameter = roleId.HasValue ?
+                new ObjectParameter("RoleId", roleId) :
+                new ObjectParameter("RoleId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertUsuario", rutParameter, nombreParameter, apellidoParameter, fechaNacimientoParameter, contrasenaParameter, activoParameter, registradoParameter, correoElectronicoParameter, telefonoParameter, rolIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertUser", rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, registeredParameter, emailParameter, phoneParameter, roleIdParameter);
         }
     
-        public virtual ObjectResult<SPListBiografia_Result> SPListBiografia()
+        public virtual ObjectResult<SPListBiography_Result> SPListBiography()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiografia_Result>("SPListBiografia");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiography_Result>("SPListBiography");
         }
     
-        public virtual ObjectResult<SPListBiografiaPaginated_Result> SPListBiografiaPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
-        {
-            var pageIndexParameter = pageIndex.HasValue ?
-                new ObjectParameter("PageIndex", pageIndex) :
-                new ObjectParameter("PageIndex", typeof(int));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiografiaPaginated_Result>("SPListBiografiaPaginated", pageIndexParameter, pageSizeParameter);
-        }
-    
-        public virtual ObjectResult<SPListContacto_Result> SPListContacto()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContacto_Result>("SPListContacto");
-        }
-    
-        public virtual ObjectResult<SPListContactoPaginated_Result> SPListContactoPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        public virtual ObjectResult<SPListBiographyPaginated_Result> SPListBiographyPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
         {
             var pageIndexParameter = pageIndex.HasValue ?
                 new ObjectParameter("PageIndex", pageIndex) :
@@ -191,33 +173,15 @@ namespace DataSource.Comic
                 new ObjectParameter("PageSize", pageSize) :
                 new ObjectParameter("PageSize", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContactoPaginated_Result>("SPListContactoPaginated", pageIndexParameter, pageSizeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiographyPaginated_Result>("SPListBiographyPaginated", pageIndexParameter, pageSizeParameter);
         }
     
-        public virtual ObjectResult<SPListEstadisticasPoder_Result> SPListEstadisticasPoder()
+        public virtual ObjectResult<SPListContact_Result> SPListContact()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListEstadisticasPoder_Result>("SPListEstadisticasPoder");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContact_Result>("SPListContact");
         }
     
-        public virtual ObjectResult<SPListEstadisticasPoderPaginated_Result> SPListEstadisticasPoderPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
-        {
-            var pageIndexParameter = pageIndex.HasValue ?
-                new ObjectParameter("PageIndex", pageIndex) :
-                new ObjectParameter("PageIndex", typeof(int));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListEstadisticasPoderPaginated_Result>("SPListEstadisticasPoderPaginated", pageIndexParameter, pageSizeParameter);
-        }
-    
-        public virtual ObjectResult<SPListHeroe_Result> SPListHeroe()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListHeroe_Result>("SPListHeroe");
-        }
-    
-        public virtual ObjectResult<SPListHeroePaginated_Result> SPListHeroePaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        public virtual ObjectResult<SPListContactPaginated_Result> SPListContactPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
         {
             var pageIndexParameter = pageIndex.HasValue ?
                 new ObjectParameter("PageIndex", pageIndex) :
@@ -227,15 +191,15 @@ namespace DataSource.Comic
                 new ObjectParameter("PageSize", pageSize) :
                 new ObjectParameter("PageSize", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListHeroePaginated_Result>("SPListHeroePaginated", pageIndexParameter, pageSizeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContactPaginated_Result>("SPListContactPaginated", pageIndexParameter, pageSizeParameter);
         }
     
-        public virtual ObjectResult<SPListRol_Result> SPListRol()
+        public virtual ObjectResult<SPListHero_Result> SPListHero()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRol_Result>("SPListRol");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListHero_Result>("SPListHero");
         }
     
-        public virtual ObjectResult<SPListRolPaginated_Result> SPListRolPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        public virtual ObjectResult<SPListHeroPaginated_Result> SPListHeroPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
         {
             var pageIndexParameter = pageIndex.HasValue ?
                 new ObjectParameter("PageIndex", pageIndex) :
@@ -245,19 +209,55 @@ namespace DataSource.Comic
                 new ObjectParameter("PageSize", pageSize) :
                 new ObjectParameter("PageSize", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRolPaginated_Result>("SPListRolPaginated", pageIndexParameter, pageSizeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListHeroPaginated_Result>("SPListHeroPaginated", pageIndexParameter, pageSizeParameter);
         }
     
-        public virtual ObjectResult<SPListUsuario_Result> SPListUsuario(string timeZoneInfoName)
+        public virtual ObjectResult<SPListPowerStats_Result> SPListPowerStats()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListPowerStats_Result>("SPListPowerStats");
+        }
+    
+        public virtual ObjectResult<SPListPowerStatsPaginated_Result> SPListPowerStatsPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListPowerStatsPaginated_Result>("SPListPowerStatsPaginated", pageIndexParameter, pageSizeParameter);
+        }
+    
+        public virtual ObjectResult<SPListRole_Result> SPListRole()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRole_Result>("SPListRole");
+        }
+    
+        public virtual ObjectResult<SPListRolePaginated_Result> SPListRolePaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRolePaginated_Result>("SPListRolePaginated", pageIndexParameter, pageSizeParameter);
+        }
+    
+        public virtual ObjectResult<SPListUser_Result> SPListUser(string timeZoneInfoName)
         {
             var timeZoneInfoNameParameter = timeZoneInfoName != null ?
                 new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
                 new ObjectParameter("TimeZoneInfoName", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUsuario_Result>("SPListUsuario", timeZoneInfoNameParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUser_Result>("SPListUser", timeZoneInfoNameParameter);
         }
     
-        public virtual ObjectResult<SPListUsuarioPaginated_Result> SPListUsuarioPaginated(Nullable<int> pageIndex, Nullable<int> pageSize, string timeZoneInfoName)
+        public virtual ObjectResult<SPListUserPaginated_Result> SPListUserPaginated(Nullable<int> pageIndex, Nullable<int> pageSize, string timeZoneInfoName)
         {
             var pageIndexParameter = pageIndex.HasValue ?
                 new ObjectParameter("PageIndex", pageIndex) :
@@ -271,164 +271,160 @@ namespace DataSource.Comic
                 new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
                 new ObjectParameter("TimeZoneInfoName", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUsuarioPaginated_Result>("SPListUsuarioPaginated", pageIndexParameter, pageSizeParameter, timeZoneInfoNameParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUserPaginated_Result>("SPListUserPaginated", pageIndexParameter, pageSizeParameter, timeZoneInfoNameParameter);
         }
     
-        public virtual ObjectResult<SPLogin_Result> SPLogin(string userRut, string userContrasena)
+        public virtual ObjectResult<SPLogin_Result> SPLogin(string userRut, string userPassword)
         {
             var userRutParameter = userRut != null ?
                 new ObjectParameter("UserRut", userRut) :
                 new ObjectParameter("UserRut", typeof(string));
     
-            var userContrasenaParameter = userContrasena != null ?
-                new ObjectParameter("UserContrasena", userContrasena) :
-                new ObjectParameter("UserContrasena", typeof(string));
+            var userPasswordParameter = userPassword != null ?
+                new ObjectParameter("UserPassword", userPassword) :
+                new ObjectParameter("UserPassword", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPLogin_Result>("SPLogin", userRutParameter, userContrasenaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPLogin_Result>("SPLogin", userRutParameter, userPasswordParameter);
         }
     
-        public virtual ObjectResult<SPSelectHeroe_Result> SPSelectHeroe(Nullable<int> heroeId)
+        public virtual ObjectResult<SPSelectHero_Result> SPSelectHero(Nullable<int> heroeId)
         {
             var heroeIdParameter = heroeId.HasValue ?
                 new ObjectParameter("HeroeId", heroeId) :
                 new ObjectParameter("HeroeId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectHeroe_Result>("SPSelectHeroe", heroeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectHero_Result>("SPSelectHero", heroeIdParameter);
         }
     
-        public virtual ObjectResult<SPSelectUsuario_Result> SPSelectUsuario(Nullable<int> usuarioId, string timeZoneInfoName)
+        public virtual ObjectResult<SPSelectUser_Result> SPSelectUser(Nullable<int> userId)
         {
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
     
-            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
-                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
-                new ObjectParameter("TimeZoneInfoName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectUsuario_Result>("SPSelectUsuario", usuarioIdParameter, timeZoneInfoNameParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectUser_Result>("SPSelectUser", userIdParameter);
         }
     
-        public virtual int SPUpdateHeroe(Nullable<int> heroeId, string nombre, string descripcion, string rutaImagen, Nullable<int> biografiaId, string nombreCompleto, string genero, Nullable<System.DateTime> aparicion, string alias, string editor, Nullable<int> estadisticasPoderId, Nullable<int> inteligencia, Nullable<int> fuerza, Nullable<int> velocidad, Nullable<int> durabilidad, Nullable<int> poder, Nullable<int> combate)
+        public virtual int SPUpdateHero(Nullable<int> heroId, string name, string description, string imagePath, Nullable<int> biographyId, string fullName, string gender, Nullable<System.DateTime> appearance, string alias, string publisher, Nullable<int> powerStatsId, Nullable<int> intelligence, Nullable<int> strength, Nullable<int> speed, Nullable<int> durability, Nullable<int> power, Nullable<int> combat)
         {
-            var heroeIdParameter = heroeId.HasValue ?
-                new ObjectParameter("HeroeId", heroeId) :
-                new ObjectParameter("HeroeId", typeof(int));
+            var heroIdParameter = heroId.HasValue ?
+                new ObjectParameter("HeroId", heroId) :
+                new ObjectParameter("HeroId", typeof(int));
     
-            var nombreParameter = nombre != null ?
-                new ObjectParameter("Nombre", nombre) :
-                new ObjectParameter("Nombre", typeof(string));
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
     
-            var descripcionParameter = descripcion != null ?
-                new ObjectParameter("Descripcion", descripcion) :
-                new ObjectParameter("Descripcion", typeof(string));
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
     
-            var rutaImagenParameter = rutaImagen != null ?
-                new ObjectParameter("RutaImagen", rutaImagen) :
-                new ObjectParameter("RutaImagen", typeof(string));
+            var imagePathParameter = imagePath != null ?
+                new ObjectParameter("ImagePath", imagePath) :
+                new ObjectParameter("ImagePath", typeof(string));
     
-            var biografiaIdParameter = biografiaId.HasValue ?
-                new ObjectParameter("BiografiaId", biografiaId) :
-                new ObjectParameter("BiografiaId", typeof(int));
+            var biographyIdParameter = biographyId.HasValue ?
+                new ObjectParameter("BiographyId", biographyId) :
+                new ObjectParameter("BiographyId", typeof(int));
     
-            var nombreCompletoParameter = nombreCompleto != null ?
-                new ObjectParameter("NombreCompleto", nombreCompleto) :
-                new ObjectParameter("NombreCompleto", typeof(string));
+            var fullNameParameter = fullName != null ?
+                new ObjectParameter("FullName", fullName) :
+                new ObjectParameter("FullName", typeof(string));
     
-            var generoParameter = genero != null ?
-                new ObjectParameter("Genero", genero) :
-                new ObjectParameter("Genero", typeof(string));
+            var genderParameter = gender != null ?
+                new ObjectParameter("Gender", gender) :
+                new ObjectParameter("Gender", typeof(string));
     
-            var aparicionParameter = aparicion.HasValue ?
-                new ObjectParameter("Aparicion", aparicion) :
-                new ObjectParameter("Aparicion", typeof(System.DateTime));
+            var appearanceParameter = appearance.HasValue ?
+                new ObjectParameter("Appearance", appearance) :
+                new ObjectParameter("Appearance", typeof(System.DateTime));
     
             var aliasParameter = alias != null ?
                 new ObjectParameter("Alias", alias) :
                 new ObjectParameter("Alias", typeof(string));
     
-            var editorParameter = editor != null ?
-                new ObjectParameter("Editor", editor) :
-                new ObjectParameter("Editor", typeof(string));
+            var publisherParameter = publisher != null ?
+                new ObjectParameter("Publisher", publisher) :
+                new ObjectParameter("Publisher", typeof(string));
     
-            var estadisticasPoderIdParameter = estadisticasPoderId.HasValue ?
-                new ObjectParameter("EstadisticasPoderId", estadisticasPoderId) :
-                new ObjectParameter("EstadisticasPoderId", typeof(int));
+            var powerStatsIdParameter = powerStatsId.HasValue ?
+                new ObjectParameter("PowerStatsId", powerStatsId) :
+                new ObjectParameter("PowerStatsId", typeof(int));
     
-            var inteligenciaParameter = inteligencia.HasValue ?
-                new ObjectParameter("Inteligencia", inteligencia) :
-                new ObjectParameter("Inteligencia", typeof(int));
+            var intelligenceParameter = intelligence.HasValue ?
+                new ObjectParameter("Intelligence", intelligence) :
+                new ObjectParameter("Intelligence", typeof(int));
     
-            var fuerzaParameter = fuerza.HasValue ?
-                new ObjectParameter("Fuerza", fuerza) :
-                new ObjectParameter("Fuerza", typeof(int));
+            var strengthParameter = strength.HasValue ?
+                new ObjectParameter("Strength", strength) :
+                new ObjectParameter("Strength", typeof(int));
     
-            var velocidadParameter = velocidad.HasValue ?
-                new ObjectParameter("Velocidad", velocidad) :
-                new ObjectParameter("Velocidad", typeof(int));
+            var speedParameter = speed.HasValue ?
+                new ObjectParameter("Speed", speed) :
+                new ObjectParameter("Speed", typeof(int));
     
-            var durabilidadParameter = durabilidad.HasValue ?
-                new ObjectParameter("Durabilidad", durabilidad) :
-                new ObjectParameter("Durabilidad", typeof(int));
+            var durabilityParameter = durability.HasValue ?
+                new ObjectParameter("Durability", durability) :
+                new ObjectParameter("Durability", typeof(int));
     
-            var poderParameter = poder.HasValue ?
-                new ObjectParameter("Poder", poder) :
-                new ObjectParameter("Poder", typeof(int));
+            var powerParameter = power.HasValue ?
+                new ObjectParameter("Power", power) :
+                new ObjectParameter("Power", typeof(int));
     
-            var combateParameter = combate.HasValue ?
-                new ObjectParameter("Combate", combate) :
-                new ObjectParameter("Combate", typeof(int));
+            var combatParameter = combat.HasValue ?
+                new ObjectParameter("Combat", combat) :
+                new ObjectParameter("Combat", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateHeroe", heroeIdParameter, nombreParameter, descripcionParameter, rutaImagenParameter, biografiaIdParameter, nombreCompletoParameter, generoParameter, aparicionParameter, aliasParameter, editorParameter, estadisticasPoderIdParameter, inteligenciaParameter, fuerzaParameter, velocidadParameter, durabilidadParameter, poderParameter, combateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateHero", heroIdParameter, nameParameter, descriptionParameter, imagePathParameter, biographyIdParameter, fullNameParameter, genderParameter, appearanceParameter, aliasParameter, publisherParameter, powerStatsIdParameter, intelligenceParameter, strengthParameter, speedParameter, durabilityParameter, powerParameter, combatParameter);
         }
     
-        public virtual int SPUpdateUsuario(Nullable<int> usuarioId, string rut, string nombre, string apellido, Nullable<System.DateTime> fechaNacimiento, string contrasena, Nullable<bool> activo, Nullable<int> contactoId, string correoElectronico, Nullable<decimal> telefono, Nullable<int> rolId)
+        public virtual int SPUpdateUser(Nullable<int> userId, string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<int> contactId, string email, Nullable<decimal> phone, Nullable<int> roleId)
         {
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
     
             var rutParameter = rut != null ?
                 new ObjectParameter("Rut", rut) :
                 new ObjectParameter("Rut", typeof(string));
     
-            var nombreParameter = nombre != null ?
-                new ObjectParameter("Nombre", nombre) :
-                new ObjectParameter("Nombre", typeof(string));
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
     
-            var apellidoParameter = apellido != null ?
-                new ObjectParameter("Apellido", apellido) :
-                new ObjectParameter("Apellido", typeof(string));
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
     
-            var fechaNacimientoParameter = fechaNacimiento.HasValue ?
-                new ObjectParameter("FechaNacimiento", fechaNacimiento) :
-                new ObjectParameter("FechaNacimiento", typeof(System.DateTime));
+            var birthDateParameter = birthDate.HasValue ?
+                new ObjectParameter("BirthDate", birthDate) :
+                new ObjectParameter("BirthDate", typeof(System.DateTime));
     
-            var contrasenaParameter = contrasena != null ?
-                new ObjectParameter("Contrasena", contrasena) :
-                new ObjectParameter("Contrasena", typeof(string));
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
     
-            var activoParameter = activo.HasValue ?
-                new ObjectParameter("Activo", activo) :
-                new ObjectParameter("Activo", typeof(bool));
+            var activeParameter = active.HasValue ?
+                new ObjectParameter("Active", active) :
+                new ObjectParameter("Active", typeof(bool));
     
-            var contactoIdParameter = contactoId.HasValue ?
-                new ObjectParameter("ContactoId", contactoId) :
-                new ObjectParameter("ContactoId", typeof(int));
+            var contactIdParameter = contactId.HasValue ?
+                new ObjectParameter("ContactId", contactId) :
+                new ObjectParameter("ContactId", typeof(int));
     
-            var correoElectronicoParameter = correoElectronico != null ?
-                new ObjectParameter("CorreoElectronico", correoElectronico) :
-                new ObjectParameter("CorreoElectronico", typeof(string));
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
     
-            var telefonoParameter = telefono.HasValue ?
-                new ObjectParameter("Telefono", telefono) :
-                new ObjectParameter("Telefono", typeof(decimal));
+            var phoneParameter = phone.HasValue ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(decimal));
     
-            var rolIdParameter = rolId.HasValue ?
-                new ObjectParameter("RolId", rolId) :
-                new ObjectParameter("RolId", typeof(int));
+            var roleIdParameter = roleId.HasValue ?
+                new ObjectParameter("RoleId", roleId) :
+                new ObjectParameter("RoleId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateUsuario", usuarioIdParameter, rutParameter, nombreParameter, apellidoParameter, fechaNacimientoParameter, contrasenaParameter, activoParameter, contactoIdParameter, correoElectronicoParameter, telefonoParameter, rolIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateUser", userIdParameter, rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, contactIdParameter, emailParameter, phoneParameter, roleIdParameter);
         }
     }
 }

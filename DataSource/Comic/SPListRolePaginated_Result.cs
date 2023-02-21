@@ -10,20 +10,10 @@
 namespace DataSource.Comic
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Rol
+    public partial class SPListRolePaginated_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Rol()
-        {
-            this.Usuario = new HashSet<Usuario>();
-        }
-    
         public int Id { get; set; }
-        public string Nombre { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Usuario> Usuario { get; set; }
+        public string Name { get; set; }
     }
 }

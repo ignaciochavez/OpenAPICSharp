@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comic\Biografia.cs">
+    <Compile Include="Comic\Biography.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Comic\ComicEDM.Context.cs">
@@ -69,65 +69,65 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ComicEDM.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Comic\Contacto.cs">
+    <Compile Include="Comic\Contact.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\EstadisticasPoder.cs">
-      <DependentUpon>ComicEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Comic\Heroe.cs">
+    <Compile Include="Comic\Hero.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Comic\ModelComic.cs" />
-    <Compile Include="Comic\Rol.cs">
+    <Compile Include="Comic\PowerStats.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListBiografiaPaginated_Result.cs">
+    <Compile Include="Comic\Role.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListBiografia_Result.cs">
+    <Compile Include="Comic\SPListBiographyPaginated_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListContactoPaginated_Result.cs">
+    <Compile Include="Comic\SPListBiography_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListContacto_Result.cs">
+    <Compile Include="Comic\SPListContactPaginated_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListEstadisticasPoderPaginated_Result.cs">
+    <Compile Include="Comic\SPListContact_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListEstadisticasPoder_Result.cs">
+    <Compile Include="Comic\SPListHeroPaginated_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListHeroePaginated_Result.cs">
+    <Compile Include="Comic\SPListHero_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListHeroe_Result.cs">
+    <Compile Include="Comic\SPListPowerStatsPaginated_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListRolPaginated_Result.cs">
+    <Compile Include="Comic\SPListPowerStats_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListRol_Result.cs">
+    <Compile Include="Comic\SPListRolePaginated_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListUsuarioPaginated_Result.cs">
+    <Compile Include="Comic\SPListRole_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPListUsuario_Result.cs">
+    <Compile Include="Comic\SPListUserPaginated_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListUser_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Comic\SPLogin_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPSelectHeroe_Result.cs">
+    <Compile Include="Comic\SPSelectHero_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\SPSelectUsuario_Result.cs">
+    <Compile Include="Comic\SPSelectUser_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Comic\Usuario.cs">
+    <Compile Include="Comic\User.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

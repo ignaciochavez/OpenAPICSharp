@@ -12,23 +12,23 @@ namespace DataSource.Comic
     using System;
     using System.Collections.Generic;
     
-    public partial class EstadisticasPoder
+    public partial class PowerStats
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EstadisticasPoder()
+        public PowerStats()
         {
-            this.Heroe = new HashSet<Heroe>();
+            this.Hero = new HashSet<Hero>();
         }
     
         public int Id { get; set; }
-        public int Inteligencia { get; set; }
-        public int Fuerza { get; set; }
-        public int Velocidad { get; set; }
-        public int Durabilidad { get; set; }
-        public int Poder { get; set; }
-        public int Combate { get; set; }
+        public int Intelligence { get; set; }
+        public int Strength { get; set; }
+        public int Speed { get; set; }
+        public int Durability { get; set; }
+        public int Power { get; set; }
+        public int Combat { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Heroe> Heroe { get; set; }
+        public virtual ICollection<Hero> Hero { get; set; }
     }
 }

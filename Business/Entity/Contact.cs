@@ -6,20 +6,22 @@ using System.Threading.Tasks;
 
 namespace Business.Entity
 {
-    public class Rol
+    public class Contact
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
 
-        public Rol()
+        public Contact()
         {
 
         }
 
-        public Rol(int id, string nombre)
+        public Contact(int id, string email, string phone)
         {
             Id = id;
-            Nombre = nombre;
+            Email = email;
+            Phone = phone;
         }
     }
 }

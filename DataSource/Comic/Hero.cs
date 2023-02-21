@@ -10,10 +10,18 @@
 namespace DataSource.Comic
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SPListRolPaginated_Result
+    public partial class Hero
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public int BiographyId { get; set; }
+        public int PowerStatsId { get; set; }
+    
+        public virtual Biography Biography { get; set; }
+        public virtual PowerStats PowerStats { get; set; }
     }
 }

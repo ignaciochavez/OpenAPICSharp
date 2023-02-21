@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Business.DTO
 {
-    public class RolSearchDTO
+    public class RoleSearchDTO
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Name { get; set; }
         public ListPaginatedDTO ListPaginatedDTO { get; set; }
 
-        public RolSearchDTO()
+        public RoleSearchDTO()
         {
 
         }
 
-        public RolSearchDTO(int id, string nombre, ListPaginatedDTO listPaginatedDTO)
+        public RoleSearchDTO(int id, string name, ListPaginatedDTO listPaginatedDTO)
         {
             Id = id;
-            Nombre = nombre;
+            Name = name;
             ListPaginatedDTO = listPaginatedDTO;
         }
     }

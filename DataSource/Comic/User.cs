@@ -12,19 +12,20 @@ namespace DataSource.Comic
     using System;
     using System.Collections.Generic;
     
-    public partial class Contacto
+    public partial class User
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Contacto()
-        {
-            this.Usuario = new HashSet<Usuario>();
-        }
-    
         public int Id { get; set; }
-        public string CorreoElectronico { get; set; }
-        public string Telefono { get; set; }
+        public string Rut { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public System.DateTime BirthDate { get; set; }
+        public string Password { get; set; }
+        public bool Active { get; set; }
+        public System.DateTimeOffset Registered { get; set; }
+        public int ContactId { get; set; }
+        public int RoleId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Usuario> Usuario { get; set; }
+        public virtual Contact Contact { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

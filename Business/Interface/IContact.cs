@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Business.Interface
 {
-    public interface IContacto
+    public interface IContact
     {
-        Contacto Select(int id);
-        int Insert(ContactoInsertDTO contactoInsertDTO);
-        bool Update(Contacto contacto);
+        Contact Select(int id);
+        int Insert(ContactInsertDTO contactInsertDTO);
+        bool Update(Contact contact);
         bool Delete(int id);
-        List<Contacto> ListPaginated(ListPaginatedDTO listPaginatedDTO);
+        List<Contact> ListPaginated(ListPaginatedDTO listPaginatedDTO);
         long TotalRecords();
-        List<Contacto> Search(ContactoSearchDTO contactoSearchDTO);
+        List<Contact> Search(ContactSearchDTO ContactSearchDTO);
         FileDTO Excel();
         FileDTO PDF();
     }

@@ -13,25 +13,25 @@ using System.Web.Http;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    ///  Controlador api/rol
+    ///  Controlador api/role
     /// </summary>    
-    [RoutePrefix("api/rol")]
-    public class RolController : ApiController
+    [RoutePrefix("api/role")]
+    public class RoleController : ApiController
     {
         private MessageVO messageVO = new MessageVO();
         private ContentHTML contentHTML = new ContentHTML();
 
         /// <summary>
-        /// Metodo para seleccionar Rol
+        /// Metodo para seleccionar Role
         /// </summary>
         /// <remarks>
-        /// api/rol/Select?id=1
+        /// api/role/Select?id=1
         /// </remarks>
         /// <param name="id">Id Role</param>
         /// <returns>Retorna el objeto</returns>
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(Rol))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(Role))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Select")]
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = RolImpl.Select(id);
+                var entity = RoleImpl.Select(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -56,17 +56,17 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para insertar Rol
+        /// Metodo para insertar Role
         /// </summary>
         /// <remarks>
         /// Request POST:
         ///
         ///     {
-        ///        "Nombre": "Administrador"
+        ///        "Name": "Administrator"
         ///     }
         ///
         /// </remarks>
-        /// <param name="Nombre">Nombre Rol</param>
+        /// <param name="Name">Nombre Role</param>
         /// <returns>Retorna el objeto</returns>    
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -74,29 +74,29 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Insert")]
-        public IHttpActionResult Insert([FromBody] string Nombre)
+        public IHttpActionResult Insert([FromBody] string Name)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Nombre))
+                if (string.IsNullOrWhiteSpace(Name))
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Nombre"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
-                else if (Nombre.Trim().Length > 50)
+                else if (Name.Trim().Length > 50)
                 {
-                    messageVO.SetMessage(1, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Nombre").Replace("{1}", "50"));
+                    messageVO.SetMessage(1, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "50"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
                 
-                bool existsEntity = RolImpl.Exist(Nombre);
+                bool existsEntity = RoleImpl.ExistByName(Name);
                 if (existsEntity)
                 {
-                    messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Rol").Replace("{1}", "Nombre"));
+                    messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Role").Replace("{1}", "Name"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = RolImpl.Insert(Nombre);
+                var insert = RoleImpl.Insert(Name);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -107,18 +107,18 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para actualizar Rol
+        /// Metodo para actualizar Role
         /// </summary>
         /// <remarks>
         /// Request PUT:
         ///
         ///     {
         ///        "Id": 1,
-        ///        "Nombre": "Administrador"
+        ///        "Name": "Administrator"
         ///     }
         ///
         /// </remarks>
-        /// <param name="rol">Modelo Rol</param>
+        /// <param name="role">Modelo Role</param>
         /// <returns>Retorna el objeto</returns>    
         [HttpPut]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -126,23 +126,23 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Update")]
-        public IHttpActionResult Update([FromBody] Rol rol)
+        public IHttpActionResult Update([FromBody] Role role)
         {
             try
             {
-                if (rol == null)
+                if (role == null)
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "Rol"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "Role"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (rol.Id <= 0)
+                if (role.Id <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
 
-                if (string.IsNullOrWhiteSpace(rol.Nombre))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Nombre"));
-                else if (rol.Nombre.Trim().Length > 50)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Nombre").Replace("{1}", "50"));
+                if (string.IsNullOrWhiteSpace(role.Name))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
+                else if (role.Name.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "50"));
                                 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -150,14 +150,14 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                bool existAndNotSameEntity = RolImpl.ExistAndNotSameEntity(new Rol(rol.Id, rol.Nombre));
-                if (existAndNotSameEntity)
+                bool existByRutAndNotSameEntity = RoleImpl.ExistByNameAndNotSameEntity(new Role(role.Id, role.Name));
+                if (existByRutAndNotSameEntity)
                 {
-                    messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Rol").Replace("{1}", "Nombre").Replace("{2}", "Rol"));
+                    messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Role").Replace("{1}", "Name").Replace("{2}", "Role"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = RolImpl.Update(rol);
+                var update = RoleImpl.Update(role);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -168,12 +168,12 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para eliminar entidad Rol
+        /// Metodo para eliminar entidad Role
         /// </summary>
         /// <remarks>
-        /// api/rol/Delete?id=1
+        /// api/role/Delete?id=1
         /// </remarks>
-        /// <param name="id">Id Rol</param>
+        /// <param name="id">Id Role</param>
         /// <returns>Retorna el objeto</returns>
         [HttpDelete]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -191,7 +191,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = RolImpl.Delete(id);
+                var delete = RoleImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -202,7 +202,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para listar Rol
+        /// Metodo para listar Role
         /// </summary>
         /// <remarks>
         /// Request POST:
@@ -213,11 +213,11 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="listPaginatedDTO">Objeto ListPaginatedDTO</param>
+        /// <param name="listPaginatedDTO">Objeto</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Rol>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Role>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("List")]
@@ -245,7 +245,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = RolImpl.ListPaginated(listPaginatedDTO);
+                var entitys = RoleImpl.ListPaginated(listPaginatedDTO);
                 return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
@@ -256,10 +256,10 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para contar registros de entidad Rol
+        /// Metodo para contar registros de entidad Role 
         /// </summary>
         /// <remarks>
-        /// api/rol/TotalRecords
+        /// api/role/TotalRecords
         /// </remarks>
         /// <returns>Retorna el objeto</returns>
         [HttpGet]
@@ -272,7 +272,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = RolImpl.TotalRecords();
+                var totalRecords = RoleImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -283,14 +283,14 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para buscar Rol
+        /// Metodo para buscar Role
         /// </summary>
         /// <remarks>
         /// Request POST:
         ///
         ///     {
         ///        "Id": 0,
-        ///        "Nombre": "Administador",
+        ///        "Name": "Administador",
         ///        "ListPaginatedDTO": {
         ///          "PageIndex": 1,
         ///          "PageSize": 10
@@ -298,44 +298,44 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="rolSearchDTO">Objeto RolSearchDTO</param>
+        /// <param name="roleSearchDTO">Objeto RoleSearchDTO</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Rol>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Role>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Search")]
-        public IHttpActionResult Search([FromBody] RolSearchDTO rolSearchDTO)
+        public IHttpActionResult Search([FromBody] RoleSearchDTO roleSearchDTO)
         {
             try
             {
-                if (rolSearchDTO == null)
+                if (roleSearchDTO == null)
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "RolSearchDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "RoleSearchDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
-                else if (rolSearchDTO.ListPaginatedDTO == null)
+                else if (roleSearchDTO.ListPaginatedDTO == null)
                 {
                     messageVO.SetMessage(1, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ListPaginatedDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (rolSearchDTO.Id < 0)
+                if (roleSearchDTO.Id < 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id").Replace("{1}", "0"));
 
-                if (!string.IsNullOrWhiteSpace(rolSearchDTO.Nombre) && rolSearchDTO.Nombre.Trim().Length > 50)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Nombre").Replace("{1}", "50"));
+                if (!string.IsNullOrWhiteSpace(roleSearchDTO.Name) && roleSearchDTO.Name.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Name").Replace("{1}", "50"));
 
-                if (rolSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(rolSearchDTO.Nombre))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id y Nombre,").Replace("{1}", "n").Replace("{2}", "s"));
+                if (roleSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(roleSearchDTO.Name))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id y Name,").Replace("{1}", "n").Replace("{2}", "s"));
 
-                if (rolSearchDTO.ListPaginatedDTO.PageIndex <= 0)
+                if (roleSearchDTO.ListPaginatedDTO.PageIndex <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
-                if (rolSearchDTO.ListPaginatedDTO.PageSize <= 0)
+                if (roleSearchDTO.ListPaginatedDTO.PageSize <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
-                else if (rolSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
+                else if (roleSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
                 if (messageVO.Messages.Count() > 0)
@@ -344,7 +344,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = RolImpl.Search(rolSearchDTO);
+                var entitys = RoleImpl.Search(roleSearchDTO);
                 return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
@@ -368,7 +368,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var excel = RolImpl.Excel();
+                var excel = RoleImpl.Excel();
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -392,7 +392,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var pdf = RolImpl.PDF();
+                var pdf = RoleImpl.PDF();
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

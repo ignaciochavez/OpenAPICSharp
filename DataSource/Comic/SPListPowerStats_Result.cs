@@ -11,13 +11,14 @@ namespace DataSource.Comic
 {
     using System;
     
-    public partial class SPListHeroe_Result
+    public partial class SPListPowerStats_Result
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public string RutaImagen { get; set; }
-        public int BiografiaId { get; set; }
-        public int EstadisticasPoderId { get; set; }
+        public int Intelligence { get; set; }
+        public int Strength { get; set; }
+        public int Speed { get; set; }
+        public int Durability { get; set; }
+        public int Power { get; set; }
+        public int Combat { get; set; }
     }
 }

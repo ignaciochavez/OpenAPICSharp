@@ -12,16 +12,18 @@ namespace DataSource.Comic
     using System;
     using System.Collections.Generic;
     
-    public partial class Heroe
+    public partial class Role
     {
-        public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public string RutaImagen { get; set; }
-        public int BiografiaId { get; set; }
-        public int EstadisticasPoderId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Role()
+        {
+            this.User = new HashSet<User>();
+        }
     
-        public virtual Biografia Biografia { get; set; }
-        public virtual EstadisticasPoder EstadisticasPoder { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> User { get; set; }
     }
 }
