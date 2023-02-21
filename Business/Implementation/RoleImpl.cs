@@ -23,7 +23,7 @@ namespace Business.Implementation
             return roleDAO.ExistByName(name);
         }
 
-        public static bool Insert(string name)
+        public static int Insert(string name)
         {
             return roleDAO.Insert(name);
         }
@@ -46,6 +46,10 @@ namespace Business.Implementation
         public static long TotalRecords()
         {
             return roleDAO.TotalRecords();
+        }
+        public static List<Role> Search(RoleSearchDTO roleSearchDTO)
+        {
+            return roleDAO.Search(roleSearchDTO);
         }
 
         public static bool ExistByNameAndNotSameEntity(Role role)

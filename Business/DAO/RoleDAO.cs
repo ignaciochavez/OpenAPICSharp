@@ -13,6 +13,7 @@ using Business.Tool;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Business.Interface;
+using System.Data.SqlClient;
 
 namespace Business.DAO
 {
@@ -37,16 +38,16 @@ namespace Business.DAO
 
         public bool ExistByName(string name)
         {
-            bool exist = ModelComic.ComicEntities.Role.Any(o => o.Name == name);
+            bool exist = ModelComic.ComicEntities.Role.Any(o => o.Name == name.Trim());
             return exist;
         }
 
-        public bool Insert(string name)
+        public int Insert(string name)
         {
             Role role = new Role();
-            role.Name = name;
+            role.Name = Useful.GetTitleCaseWords(name.Trim());
             int insert = ModelComic.ComicEntities.SaveChanges();
-            return (insert > 0);
+            return (insert > 0) ? role.Id : 0;
         }
 
         public bool Update(Entity.Role role)
@@ -55,7 +56,7 @@ namespace Business.DAO
             Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == role.Id);
             if (entity != null)
             {
-                entity.Name = role.Name;
+                entity.Name = Useful.GetTitleCaseWords(role.Name.Trim());
                 isUpdate = ModelComic.ComicEntities.SaveChanges();
             }
             return (isUpdate > 0);
@@ -76,7 +77,7 @@ namespace Business.DAO
         public List<Entity.Role> List()
         {
             List<Entity.Role> list = new List<Entity.Role>();
-            List<Role> entities = ModelComic.ComicEntities.Role.ToList();
+            var entities = ModelComic.ComicEntities.SPListRole();
             foreach (var item in entities)
             {
                 Entity.Role role = new Entity.Role(item.Id, item.Name);
@@ -88,7 +89,7 @@ namespace Business.DAO
         public List<Entity.Role> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
             List<Entity.Role> list = new List<Entity.Role>();
-            List<Role> entities = ModelComic.ComicEntities.Role.OrderByDescending(o => o.Id).Skip((listPaginatedDTO.PageSize * (listPaginatedDTO.PageIndex - 1))).Take(listPaginatedDTO.PageSize).ToList();
+            var entities = ModelComic.ComicEntities.SPListRolePaginated(listPaginatedDTO.PageIndex, listPaginatedDTO.PageSize);
             foreach (var item in entities)
             {
                 Entity.Role role = new Entity.Role(item.Id, item.Name);
@@ -101,6 +102,30 @@ namespace Business.DAO
         {
             long totalRecords = ModelComic.ComicEntities.Role.LongCount();
             return totalRecords;
+        }
+
+        public List<Entity.Role> Search(RoleSearchDTO roleSearchDTO)
+        {
+            string whereClause = string.Empty;
+            whereClause = ((roleSearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
+            whereClause += ((!string.IsNullOrEmpty(roleSearchDTO.Name)) ? ((whereClause.Length > 0) ? " AND [Name] LIKE '%' + @Name + '%'" : "[Name] LIKE '%' + @Name + '%'") : string.Empty);
+            string paginatedClause = $"ORDER BY [Id] ASC OFFSET({roleSearchDTO.ListPaginatedDTO.PageIndex - 1}) * {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            if (roleSearchDTO.Id > 0)
+                parameters.Add(new SqlParameter("Id", roleSearchDTO.Id));
+            if (!string.IsNullOrWhiteSpace(roleSearchDTO.Name))
+                parameters.Add(new SqlParameter("Name", roleSearchDTO.Name.Trim()));
+
+            List<Entity.Role> list = new List<Entity.Role>();
+            List<Role> entities = ModelComic.ComicEntities.Role.SqlQuery($"SELECT [Id], [Name] FROM [Comic].[dbo].[Role] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            foreach (var item in entities)
+            {
+                Entity.Role entity = new Entity.Role(item.Id, item.Name);
+                list.Add(entity);
+            }
+            return list;
+
         }
 
         public bool ExistByNameAndNotSameEntity(Entity.Role role)
@@ -124,8 +149,7 @@ namespace Business.DAO
                 sLDocument.SetCellStyle("E9", sLStyleHeaderTable);
                 sLDocument.SetCellValue("F9", "Name");
                 sLDocument.SetCellStyle("F9", sLStyleHeaderTable);
-                sLDocument.SetColumnWidth("F9", 25.00);
-
+                            
                 SLStyle sLStyleId = Useful.GetSpreadsheetLightStyleCellIdTable(sLDocument);
                 sLStyleId.Alignment.Horizontal = HorizontalAlignmentValues.Left;
 
@@ -135,7 +159,9 @@ namespace Business.DAO
                 sLStyleIdDegrade.Alignment.Horizontal = HorizontalAlignmentValues.Left;
 
                 SLStyle sLStyleBodyDegrade = Useful.GetSpreadsheetLightStyleCellTableBodyDegrade(sLDocument);
-                
+
+                sLDocument.SetColumnWidth("F10", 25.00);
+
                 int index = 10;
                 var roles = List();
                 foreach (var item in roles)
@@ -217,11 +243,12 @@ namespace Business.DAO
                 documentPDF.Add(new Phrase("\n"));
                 
                 int index = 1;
-                int size = GetSizeMaximunOfRecords();
+                int size = GetPDFRoleSizeMaximunOfRecordsByPage();
                 long length = TotalRecords() / size;
+                List<Entity.Role> roles = List();
                 for (int i = 0; i <= length; i++)
                 {
-                    List<Role> rolesByPage = ModelComic.ComicEntities.Role.OrderBy(o => o.Id).Skip(size * (index - 1)).Take(size).ToList();
+                    List<Entity.Role> rolesByPage = roles.Skip(size * (index - 1)).Take(size).ToList(); ;
 
                     if (rolesByPage.Count() == 0)
                         break;
@@ -296,9 +323,9 @@ namespace Business.DAO
             return fileDTO;
         }
 
-        private int GetSizeMaximunOfRecords()
+        private int GetPDFRoleSizeMaximunOfRecordsByPage()
         {
-            return Convert.ToInt32(Useful.GetAppSettings("PDFRoleSizeMaximunOfRecords"));
+            return Convert.ToInt32(Useful.GetAppSettings("PDFRoleSizeMaximunOfRecordsByPage"));
         }
 
         private System.Drawing.Color GetBackgroundColorHeaders()

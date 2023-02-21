@@ -113,7 +113,7 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertHero", nameParameter, descriptionParameter, imagePathParameter, fullNameParameter, genderParameter, appearanceParameter, aliasParameter, publisherParameter, intelligenceParameter, strengthParameter, speedParameter, durabilityParameter, powerParameter, combatParameter);
         }
     
-        public virtual int SPInsertUser(string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<System.DateTimeOffset> registered, string email, Nullable<decimal> phone, string address, Nullable<int> roleId)
+        public virtual int SPInsertUser(string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<System.DateTimeOffset> registered, string email, Nullable<decimal> phone, Nullable<int> roleId)
         {
             var rutParameter = rut != null ?
                 new ObjectParameter("Rut", rut) :
@@ -151,15 +151,47 @@ namespace DataSource.Comic
                 new ObjectParameter("Phone", phone) :
                 new ObjectParameter("Phone", typeof(decimal));
     
-            var addressParameter = address != null ?
-                new ObjectParameter("Address", address) :
-                new ObjectParameter("Address", typeof(string));
-    
             var roleIdParameter = roleId.HasValue ?
                 new ObjectParameter("RoleId", roleId) :
                 new ObjectParameter("RoleId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertUser", rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, registeredParameter, emailParameter, phoneParameter, addressParameter, roleIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertUser", rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, registeredParameter, emailParameter, phoneParameter, roleIdParameter);
+        }
+    
+        public virtual ObjectResult<SPListBiography_Result> SPListBiography()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiography_Result>("SPListBiography");
+        }
+    
+        public virtual ObjectResult<SPListBiographyPaginated_Result> SPListBiographyPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiographyPaginated_Result>("SPListBiographyPaginated", pageIndexParameter, pageSizeParameter);
+        }
+    
+        public virtual ObjectResult<SPListContact_Result> SPListContact()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContact_Result>("SPListContact");
+        }
+    
+        public virtual ObjectResult<SPListContactPaginated_Result> SPListContactPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContactPaginated_Result>("SPListContactPaginated", pageIndexParameter, pageSizeParameter);
         }
     
         public virtual ObjectResult<SPListHero_Result> SPListHero()
@@ -178,6 +210,42 @@ namespace DataSource.Comic
                 new ObjectParameter("PageSize", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListHeroPaginated_Result>("SPListHeroPaginated", pageIndexParameter, pageSizeParameter);
+        }
+    
+        public virtual ObjectResult<SPListPowerStats_Result> SPListPowerStats()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListPowerStats_Result>("SPListPowerStats");
+        }
+    
+        public virtual ObjectResult<SPListPowerStatsPaginated_Result> SPListPowerStatsPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListPowerStatsPaginated_Result>("SPListPowerStatsPaginated", pageIndexParameter, pageSizeParameter);
+        }
+    
+        public virtual ObjectResult<SPListRole_Result> SPListRole()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRole_Result>("SPListRole");
+        }
+    
+        public virtual ObjectResult<SPListRolePaginated_Result> SPListRolePaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRolePaginated_Result>("SPListRolePaginated", pageIndexParameter, pageSizeParameter);
         }
     
         public virtual ObjectResult<SPListUser_Result> SPListUser(string timeZoneInfoName)
@@ -310,7 +378,7 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateHero", heroIdParameter, nameParameter, descriptionParameter, imagePathParameter, biographyIdParameter, fullNameParameter, genderParameter, appearanceParameter, aliasParameter, publisherParameter, powerStatsIdParameter, intelligenceParameter, strengthParameter, speedParameter, durabilityParameter, powerParameter, combatParameter);
         }
     
-        public virtual int SPUpdateUser(Nullable<int> userId, string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<int> contactId, string email, Nullable<decimal> phone, string address, Nullable<int> roleId)
+        public virtual int SPUpdateUser(Nullable<int> userId, string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<int> contactId, string email, Nullable<decimal> phone, Nullable<int> roleId)
         {
             var userIdParameter = userId.HasValue ?
                 new ObjectParameter("UserId", userId) :
@@ -352,15 +420,11 @@ namespace DataSource.Comic
                 new ObjectParameter("Phone", phone) :
                 new ObjectParameter("Phone", typeof(decimal));
     
-            var addressParameter = address != null ?
-                new ObjectParameter("Address", address) :
-                new ObjectParameter("Address", typeof(string));
-    
             var roleIdParameter = roleId.HasValue ?
                 new ObjectParameter("RoleId", roleId) :
                 new ObjectParameter("RoleId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateUser", userIdParameter, rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, contactIdParameter, emailParameter, phoneParameter, addressParameter, roleIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateUser", userIdParameter, rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, contactIdParameter, emailParameter, phoneParameter, roleIdParameter);
         }
     }
 }

@@ -82,10 +82,34 @@
     <Compile Include="Comic\Role.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Comic\SPListBiographyPaginated_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListBiography_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListContactPaginated_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListContact_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Comic\SPListHeroPaginated_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Comic\SPListHero_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListPowerStatsPaginated_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListPowerStats_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListRolePaginated_Result.cs">
+      <DependentUpon>ComicEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comic\SPListRole_Result.cs">
       <DependentUpon>ComicEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Comic\SPListUserPaginated_Result.cs">

@@ -23,7 +23,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Phone" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Hero">
           <Key>
@@ -154,11 +153,30 @@
           <Parameter Name="Registered" Type="datetimeoffset" Mode="In" />
           <Parameter Name="Email" Type="nvarchar" Mode="In" />
           <Parameter Name="Phone" Type="numeric" Mode="In" />
-          <Parameter Name="Address" Type="nvarchar" Mode="In" />
           <Parameter Name="RoleId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SPListBiography" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPListBiographyPaginated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageIndex" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SPListContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPListContactPaginated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageIndex" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
         </Function>
         <Function Name="SPListHero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SPListHeroPaginated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageIndex" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SPListPowerStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPListPowerStatsPaginated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageIndex" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SPListRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SPListRolePaginated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PageIndex" Type="int" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
         </Function>
@@ -210,7 +228,6 @@
           <Parameter Name="ContactId" Type="int" Mode="In" />
           <Parameter Name="Email" Type="nvarchar" Mode="In" />
           <Parameter Name="Phone" Type="numeric" Mode="In" />
-          <Parameter Name="Address" Type="nvarchar" Mode="In" />
           <Parameter Name="RoleId" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ComicModelStoreContainer">
@@ -241,155 +258,34 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ComicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Biography">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Appearance" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Alias" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Publisher" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Hero" Relationship="Self.FK_Biography_Hero" FromRole="Biography" ToRole="Hero" />
-        </EntityType>
-        <EntityType Name="Contact">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Contact_User" FromRole="Contact" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Hero">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ImagePath" Type="String" MaxLength="355" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BiographyId" Type="Int32" Nullable="false" />
-          <Property Name="PowerStatsId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Biography" Relationship="Self.FK_Biography_Hero" FromRole="Hero" ToRole="Biography" />
-          <NavigationProperty Name="PowerStats" Relationship="Self.FK_PowerStats_Hero" FromRole="Hero" ToRole="PowerStats" />
-        </EntityType>
-        <EntityType Name="PowerStats">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Intelligence" Type="Int32" Nullable="false" />
-          <Property Name="Strength" Type="Int32" Nullable="false" />
-          <Property Name="Speed" Type="Int32" Nullable="false" />
-          <Property Name="Durability" Type="Int32" Nullable="false" />
-          <Property Name="Power" Type="Int32" Nullable="false" />
-          <Property Name="Combat" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Hero" Relationship="Self.FK_PowerStats_Hero" FromRole="PowerStats" ToRole="Hero" />
-        </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Role_User" FromRole="Role" ToRole="User" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Rut" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Password" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Registered" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <Property Name="ContactId" Type="Int32" Nullable="false" />
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Contact" Relationship="Self.FK_Contact_User" FromRole="User" ToRole="Contact" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_Role_User" FromRole="User" ToRole="Role" />
-        </EntityType>
-        <Association Name="FK_Biography_Hero">
-          <End Role="Biography" Type="Self.Biography" Multiplicity="1" />
-          <End Role="Hero" Type="Self.Hero" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Biography">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Hero">
-              <PropertyRef Name="BiographyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Contact_User">
-          <End Role="Contact" Type="Self.Contact" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Contact">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="ContactId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PowerStats_Hero">
-          <End Role="PowerStats" Type="Self.PowerStats" Multiplicity="1" />
-          <End Role="Hero" Type="Self.Hero" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PowerStats">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Hero">
-              <PropertyRef Name="PowerStatsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Role_User">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="ComicEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Biography" EntityType="Self.Biography" />
-          <EntitySet Name="Contact" EntityType="Self.Contact" />
-          <EntitySet Name="Hero" EntityType="Self.Hero" />
-          <EntitySet Name="PowerStats" EntityType="Self.PowerStats" />
-          <EntitySet Name="Role" EntityType="Self.Role" />
-          <EntitySet Name="User" EntityType="Self.User" />
-          <AssociationSet Name="FK_Biography_Hero" Association="Self.FK_Biography_Hero">
+          <EntitySet Name="Biography" EntityType="ComicModel.Biography" />
+          <EntitySet Name="Contact" EntityType="ComicModel.Contact" />
+          <EntitySet Name="Hero" EntityType="ComicModel.Hero" />
+          <EntitySet Name="PowerStats" EntityType="ComicModel.PowerStats" />
+          <EntitySet Name="Role" EntityType="ComicModel.Role" />
+          <EntitySet Name="User" EntityType="ComicModel.User" />
+          <AssociationSet Name="FK_Biography_Hero" Association="ComicModel.FK_Biography_Hero">
             <End Role="Biography" EntitySet="Biography" />
             <End Role="Hero" EntitySet="Hero" />
           </AssociationSet>
-          <AssociationSet Name="FK_Contact_User" Association="Self.FK_Contact_User">
+          <AssociationSet Name="FK_Contact_User" Association="ComicModel.FK_Contact_User">
             <End Role="Contact" EntitySet="Contact" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <AssociationSet Name="FK_PowerStats_Hero" Association="Self.FK_PowerStats_Hero">
+          <AssociationSet Name="FK_PowerStats_Hero" Association="ComicModel.FK_PowerStats_Hero">
             <End Role="PowerStats" EntitySet="PowerStats" />
             <End Role="Hero" EntitySet="Hero" />
           </AssociationSet>
-          <AssociationSet Name="FK_Role_User" Association="Self.FK_Role_User">
+          <AssociationSet Name="FK_Role_User" Association="ComicModel.FK_Role_User">
             <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
           <FunctionImport Name="SPDeleteHero">
-          <Parameter Name="HeroId" Mode="In" Type="Int32" />
+            <Parameter Name="HeroId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPDeleteUser">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPInsertHero">
             <Parameter Name="Name" Mode="In" Type="String" />
@@ -417,16 +313,35 @@
             <Parameter Name="Registered" Mode="In" Type="DateTimeOffset" />
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="Phone" Mode="In" Type="Decimal" />
-            <Parameter Name="Address" Mode="In" Type="String" />
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SPListBiography" ReturnType="Collection(ComicModel.SPListBiography_Result)" />
+          <FunctionImport Name="SPListBiographyPaginated" ReturnType="Collection(ComicModel.SPListBiographyPaginated_Result)">
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SPListContact" ReturnType="Collection(ComicModel.SPListContact_Result)" />
+          <FunctionImport Name="SPListContactPaginated" ReturnType="Collection(ComicModel.SPListContactPaginated_Result)">
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPListHero" ReturnType="Collection(ComicModel.SPListHero_Result)" />
           <FunctionImport Name="SPListHeroPaginated" ReturnType="Collection(ComicModel.SPListHeroPaginated_Result)">
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SPListPowerStats" ReturnType="Collection(ComicModel.SPListPowerStats_Result)" />
+          <FunctionImport Name="SPListPowerStatsPaginated" ReturnType="Collection(ComicModel.SPListPowerStatsPaginated_Result)">
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SPListRole" ReturnType="Collection(ComicModel.SPListRole_Result)" />
+          <FunctionImport Name="SPListRolePaginated" ReturnType="Collection(ComicModel.SPListRolePaginated_Result)">
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SPListUser" ReturnType="Collection(ComicModel.SPListUser_Result)">
-          <Parameter Name="TimeZoneInfoName" Mode="In" Type="String" />
+            <Parameter Name="TimeZoneInfoName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SPListUserPaginated" ReturnType="Collection(ComicModel.SPListUserPaginated_Result)">
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
@@ -438,10 +353,10 @@
             <Parameter Name="UserPassword" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SPSelectHero" ReturnType="Collection(ComicModel.SPSelectHero_Result)">
-          <Parameter Name="HeroeId" Mode="In" Type="Int32" />
+            <Parameter Name="HeroeId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPSelectUser" ReturnType="Collection(ComicModel.SPSelectUser_Result)">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPUpdateHero">
             <Parameter Name="HeroId" Mode="In" Type="Int32" />
@@ -473,10 +388,155 @@
             <Parameter Name="ContactId" Mode="In" Type="Int32" />
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="Phone" Mode="In" Type="Decimal" />
-            <Parameter Name="Address" Mode="In" Type="String" />
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <EntityType Name="Biography">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Appearance" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Alias" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Publisher" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Hero" Relationship="ComicModel.FK_Biography_Hero" FromRole="Biography" ToRole="Hero" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="ComicModel.FK_Contact_User" FromRole="Contact" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Hero">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" Nullable="false" MaxLength="355" FixedLength="false" Unicode="true" />
+          <Property Name="BiographyId" Type="Int32" Nullable="false" />
+          <Property Name="PowerStatsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Biography" Relationship="ComicModel.FK_Biography_Hero" FromRole="Hero" ToRole="Biography" />
+          <NavigationProperty Name="PowerStats" Relationship="ComicModel.FK_PowerStats_Hero" FromRole="Hero" ToRole="PowerStats" />
+        </EntityType>
+        <EntityType Name="PowerStats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Intelligence" Type="Int32" Nullable="false" />
+          <Property Name="Strength" Type="Int32" Nullable="false" />
+          <Property Name="Speed" Type="Int32" Nullable="false" />
+          <Property Name="Durability" Type="Int32" Nullable="false" />
+          <Property Name="Power" Type="Int32" Nullable="false" />
+          <Property Name="Combat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hero" Relationship="ComicModel.FK_PowerStats_Hero" FromRole="PowerStats" ToRole="Hero" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="ComicModel.FK_Role_User" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rut" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Registered" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="ContactId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Contact" Relationship="ComicModel.FK_Contact_User" FromRole="User" ToRole="Contact" />
+          <NavigationProperty Name="Role" Relationship="ComicModel.FK_Role_User" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <Association Name="FK_Biography_Hero">
+          <End Type="ComicModel.Biography" Role="Biography" Multiplicity="1" />
+          <End Type="ComicModel.Hero" Role="Hero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Biography">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hero">
+              <PropertyRef Name="BiographyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_User">
+          <End Type="ComicModel.Contact" Role="Contact" Multiplicity="1" />
+          <End Type="ComicModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PowerStats_Hero">
+          <End Type="ComicModel.PowerStats" Role="PowerStats" Multiplicity="1" />
+          <End Type="ComicModel.Hero" Role="Hero" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PowerStats">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hero">
+              <PropertyRef Name="PowerStatsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_User">
+          <End Type="ComicModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="ComicModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SPListBiography_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="6" />
+          <Property Type="DateTime" Name="Appearance" Nullable="false" />
+          <Property Type="String" Name="Alias" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Publisher" Nullable="false" MaxLength="25" />
+        </ComplexType>
+        <ComplexType Name="SPListBiographyPaginated_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="6" />
+          <Property Type="DateTime" Name="Appearance" Nullable="false" />
+          <Property Type="String" Name="Alias" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Publisher" Nullable="false" MaxLength="25" />
+        </ComplexType>
+        <ComplexType Name="SPListContact_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="15" />
+        </ComplexType>
+        <ComplexType Name="SPListContactPaginated_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="15" />
+        </ComplexType>
         <ComplexType Name="SPListHero_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
@@ -492,6 +552,32 @@
           <Property Type="String" Name="ImagePath" Nullable="false" MaxLength="355" />
           <Property Type="Int32" Name="BiographyId" Nullable="false" />
           <Property Type="Int32" Name="PowerStatsId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SPListPowerStats_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="Intelligence" Nullable="false" />
+          <Property Type="Int32" Name="Strength" Nullable="false" />
+          <Property Type="Int32" Name="Speed" Nullable="false" />
+          <Property Type="Int32" Name="Durability" Nullable="false" />
+          <Property Type="Int32" Name="Power" Nullable="false" />
+          <Property Type="Int32" Name="Combat" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SPListPowerStatsPaginated_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="Intelligence" Nullable="false" />
+          <Property Type="Int32" Name="Strength" Nullable="false" />
+          <Property Type="Int32" Name="Speed" Nullable="false" />
+          <Property Type="Int32" Name="Durability" Nullable="false" />
+          <Property Type="Int32" Name="Power" Nullable="false" />
+          <Property Type="Int32" Name="Combat" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SPListRole_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SPListRolePaginated_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="SPListUser_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -552,7 +638,6 @@
           <Property Type="Int32" Name="ContactId" Nullable="true" />
           <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Phone" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="RoleId" Nullable="true" />
           <Property Type="String" Name="Name1" Nullable="true" MaxLength="50" />
         </ComplexType>
@@ -565,71 +650,70 @@
           <EntitySetMapping Name="Biography">
             <EntityTypeMapping TypeName="ComicModel.Biography">
               <MappingFragment StoreEntitySet="Biography">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Contact">
             <EntityTypeMapping TypeName="ComicModel.Contact">
               <MappingFragment StoreEntitySet="Contact">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Hero">
             <EntityTypeMapping TypeName="ComicModel.Hero">
               <MappingFragment StoreEntitySet="Hero">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
-                <ScalarProperty Name="BiographyId" ColumnName="BiographyId" />
                 <ScalarProperty Name="PowerStatsId" ColumnName="PowerStatsId" />
+                <ScalarProperty Name="BiographyId" ColumnName="BiographyId" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PowerStats">
             <EntityTypeMapping TypeName="ComicModel.PowerStats">
               <MappingFragment StoreEntitySet="PowerStats">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Intelligence" ColumnName="Intelligence" />
-                <ScalarProperty Name="Strength" ColumnName="Strength" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Durability" ColumnName="Durability" />
-                <ScalarProperty Name="Power" ColumnName="Power" />
                 <ScalarProperty Name="Combat" ColumnName="Combat" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="Durability" ColumnName="Durability" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="Intelligence" ColumnName="Intelligence" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Role">
             <EntityTypeMapping TypeName="ComicModel.Role">
               <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="ComicModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Rut" ColumnName="Rut" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Registered" ColumnName="Registered" />
-                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="Registered" ColumnName="Registered" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Rut" ColumnName="Rut" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -637,6 +721,48 @@
           <FunctionImportMapping FunctionImportName="SPDeleteUser" FunctionName="ComicModel.Store.SPDeleteUser" />
           <FunctionImportMapping FunctionImportName="SPInsertHero" FunctionName="ComicModel.Store.SPInsertHero" />
           <FunctionImportMapping FunctionImportName="SPInsertUser" FunctionName="ComicModel.Store.SPInsertUser" />
+          <FunctionImportMapping FunctionImportName="SPListBiography" FunctionName="ComicModel.Store.SPListBiography">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListBiography_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListBiographyPaginated" FunctionName="ComicModel.Store.SPListBiographyPaginated">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListBiographyPaginated_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListContact" FunctionName="ComicModel.Store.SPListContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListContact_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListContactPaginated" FunctionName="ComicModel.Store.SPListContactPaginated">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListContactPaginated_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SPListHero" FunctionName="ComicModel.Store.SPListHero">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ComicModel.SPListHero_Result">
@@ -658,6 +784,48 @@
                 <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
                 <ScalarProperty Name="BiographyId" ColumnName="BiographyId" />
                 <ScalarProperty Name="PowerStatsId" ColumnName="PowerStatsId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListPowerStats" FunctionName="ComicModel.Store.SPListPowerStats">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListPowerStats_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Intelligence" ColumnName="Intelligence" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Durability" ColumnName="Durability" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="Combat" ColumnName="Combat" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListPowerStatsPaginated" FunctionName="ComicModel.Store.SPListPowerStatsPaginated">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListPowerStatsPaginated_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Intelligence" ColumnName="Intelligence" />
+                <ScalarProperty Name="Strength" ColumnName="Strength" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Durability" ColumnName="Durability" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="Combat" ColumnName="Combat" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListRole" FunctionName="ComicModel.Store.SPListRole">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListRole_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListRolePaginated" FunctionName="ComicModel.Store.SPListRolePaginated">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListRolePaginated_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -738,7 +906,6 @@
                 <ScalarProperty Name="ContactId" ColumnName="ContactId" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Name1" ColumnName="Name1" />
               </ComplexTypeMapping>

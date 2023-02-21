@@ -12,6 +12,7 @@ using iTextSharp.text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SpreadsheetLight.Drawing;
+using System.Globalization;
 
 namespace Business.Tool
 {
@@ -23,7 +24,7 @@ namespace Business.Tool
         {
             return System.AppDomain.CurrentDomain.BaseDirectory.Replace("WebAPIUnitTests\\bin\\Debug", "WebAPI\\");
         }
-                
+
         public static string GetAppSettings(string keyWebConfig)
         {
             return ConfigurationManager.AppSettings[keyWebConfig];
@@ -72,17 +73,48 @@ namespace Business.Tool
             return rutDigit;
         }
 
+
+
+
+        public static string GetEmailContact()
+        {
+            return GetAppSettings("EmailContact");
+        }
+
+        public static string GetPhoneContact()
+        {
+            return GetAppSettings("PhoneContact");
+        }
+
+        public static string GetApplicationNameText()
+        {
+            return "OpenAPI";
+        }
+
+        public static string GetImagePath()
+        {
+            return $"{GetApplicationDirectory()}Contents\\api-200.png";
+        }
+
+        public static string GetTitleCaseWords(string text)
+        {
+            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+            string pascalCaseWords = textInfo.ToTitleCase(text);
+            return pascalCaseWords;
+        }
+
+        #region SpreadSheetLight
         public static SLDocument GetSpreadsheetLightBase()
         {
             SLDocument sLDocument = new SLDocument();
             sLDocument.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Role");
 
-            sLDocument.MergeWorksheetCells("D3", "H3");
-            sLDocument.SetCellValue("D3", $"© Copyright IgnacioChavez {DateTime.Now.ToString("yyyy")}. Todos los derechos reservados");
-
             SLStyle sLStyleTitles = sLDocument.CreateStyle();
             sLStyleTitles.Alignment.Horizontal = HorizontalAlignmentValues.Center;
 
+            sLDocument.MergeWorksheetCells("D3", "H3");
+            sLDocument.SetCellValue("D3", $"© Copyright IgnacioChavez {DateTime.Now.ToString("yyyy")}. Todos los derechos reservados");
+            sLDocument.SetCellStyle("D3", sLStyleTitles);
             sLDocument.MergeWorksheetCells("D4", "H4");
             sLDocument.SetCellValue("D4", Useful.GetEmailContact());
             sLDocument.SetCellStyle("D4", sLStyleTitles);
@@ -170,8 +202,9 @@ namespace Business.Tool
             sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
             return sLStyleHeaderTable;
         }
+        #endregion
 
-
+        #region iTextSharp
         public static PdfPTable GetiTextSharpTableHeaderOne()
         {
             PdfPTable pdfPTableHeaderOne = new PdfPTable(3);
@@ -338,27 +371,9 @@ namespace Business.Tool
             pdfPCell.BorderWidthRight = 0;
             pdfPCell.BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#DADDE0"));
             return pdfPCell;
-        }        
-
-        public static string GetEmailContact()
-        {
-            return GetAppSettings("EmailContact");
         }
+        #endregion
 
-        public static string GetPhoneContact()
-        {
-            return GetAppSettings("PhoneContact");
-        }
-
-        public static string GetApplicationNameText()
-        {
-            return "OpenAPI";
-        }        
-
-        public static string GetImagePath()
-        {
-            return $"{GetApplicationDirectory()}Contents\\api-200.png";
-        }
         #endregion
 
         #region Validate
@@ -369,6 +384,28 @@ namespace Business.Tool
                 return false;
             else
                 return true;
+        }
+
+        public static bool ValidateEmail(string email)
+        {
+            string expresion = GetAppSettings("IsEmail");
+            if (Regex.IsMatch(email, expresion))
+            {
+                if (Regex.Replace(email, expresion, string.Empty).Length == 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool ValidatePhone(string phone)
+        {
+            string expresion = GetAppSettings("IsPhone");
+            return Regex.IsMatch(phone, expresion);
         }
 
         public static bool ValidateRut(string rut)

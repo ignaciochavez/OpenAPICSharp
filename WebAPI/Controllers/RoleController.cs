@@ -13,7 +13,7 @@ using System.Web.Http;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    ///  Controlador api/check
+    ///  Controlador api/role
     /// </summary>    
     [RoutePrefix("api/role")]
     public class RoleController : ApiController
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         /// <returns>Retorna el objeto</returns>    
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido creado y retornado", typeof(bool))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido creado y retornado", typeof(int))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Insert")]
@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
             {
                 if (string.IsNullOrWhiteSpace(Name))
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ExampleInsertDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
                 else if (Name.Trim().Length > 50)
@@ -110,7 +110,7 @@ namespace WebAPI.Controllers
         /// Metodo para actualizar Role
         /// </summary>
         /// <remarks>
-        /// Request POST:
+        /// Request PUT:
         ///
         ///     {
         ///        "Id": 1,
@@ -274,6 +274,78 @@ namespace WebAPI.Controllers
             {
                 var totalRecords = RoleImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para buscar Role
+        /// </summary>
+        /// <remarks>
+        /// Request POST:
+        ///
+        ///     {
+        ///        "Id": 0,
+        ///        "Name": "Administador",
+        ///        "ListPaginatedDTO": {
+        ///          "PageIndex": 1,
+        ///          "PageSize": 10
+        ///        }
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="roleSearchDTO">Objeto RoleSearchDTO</param>
+        /// <returns>Retorna el objeto</returns>
+        [HttpPost]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Role>))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("Search")]
+        public IHttpActionResult Search([FromBody] RoleSearchDTO roleSearchDTO)
+        {
+            try
+            {
+                if (roleSearchDTO == null)
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "RoleSearchDTO"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+                else if (roleSearchDTO.ListPaginatedDTO == null)
+                {
+                    messageVO.SetMessage(1, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ListPaginatedDTO"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                if (roleSearchDTO.Id < 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id").Replace("{1}", "0"));
+
+                if (!string.IsNullOrWhiteSpace(roleSearchDTO.Name) && roleSearchDTO.Name.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Name").Replace("{1}", "50"));
+
+                if (roleSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(roleSearchDTO.Name))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id y Name,").Replace("{1}", "n").Replace("{2}", "s"));
+
+                if (roleSearchDTO.ListPaginatedDTO.PageIndex <= 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+
+                if (roleSearchDTO.ListPaginatedDTO.PageSize <= 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                else if (roleSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
+
+                if (messageVO.Messages.Count() > 0)
+                {
+                    messageVO.SetIdTitle(2, contentHTML.GetInnerTextById("requeridTitle"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                var entitys = RoleImpl.Search(roleSearchDTO);
+                return Content(HttpStatusCode.OK, entitys);
             }
             catch (Exception ex)
             {

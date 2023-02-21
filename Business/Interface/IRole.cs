@@ -12,11 +12,12 @@ namespace Business.Interface
     {
         Role Select(int id);
         bool ExistByName(string name);
-        bool Insert(string name);
+        int Insert(string name);
         bool Update(Role role);
         bool Delete(int id);
         List<Role> ListPaginated(ListPaginatedDTO listPaginatedDTO);
         long TotalRecords();
+        List<Role> Search(RoleSearchDTO roleSearchDTO);
         bool ExistByNameAndNotSameEntity(Role role);
         FileDTO Excel();
         FileDTO PDF();
