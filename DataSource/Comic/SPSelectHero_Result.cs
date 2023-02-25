@@ -13,17 +13,17 @@ namespace DataSource.Comic
     
     public partial class SPSelectHero_Result
     {
-        public Nullable<int> Id { get; set; }
+        public Nullable<int> HeroId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }
-        public Nullable<int> Id1 { get; set; }
+        public Nullable<int> BiographyId { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
         public Nullable<System.DateTime> Appearance { get; set; }
         public string Alias { get; set; }
         public string Publisher { get; set; }
-        public int Id2 { get; set; }
+        public int PowerStatsId { get; set; }
         public int Intelligence { get; set; }
         public int Strength { get; set; }
         public int Speed { get; set; }

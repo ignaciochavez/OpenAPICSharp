@@ -8,18 +8,11 @@ namespace DataSource.Comic
 {
     public static class ModelComic
     {
-        private static ComicEntities comicEntities;
-
         public static ComicEntities ComicEntities
         {
             get
             {
-                if (comicEntities == null)
-                {
-                    comicEntities = new ComicEntities();
-                }
-
-                return comicEntities;
+                return new ComicEntities();
             }
         }
     }

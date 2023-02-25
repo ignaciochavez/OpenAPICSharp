@@ -6,10 +6,10 @@
     <edmx:Diagrams>
       <Diagram DiagramId="25a11dc32794416ab4e81c4964439ddc" Name="Diagram1">
         <EntityTypeShape EntityType="ComicModel.Biography" Width="1.5" PointX="5.75" PointY="5" />
-        <EntityTypeShape EntityType="ComicModel.Contact" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="ComicModel.Contact" Width="1.5" PointX="0.75" PointY="1.75" />
         <EntityTypeShape EntityType="ComicModel.Hero" Width="1.5" PointX="8" PointY="1" />
         <EntityTypeShape EntityType="ComicModel.PowerStats" Width="1.5" PointX="5.75" PointY="1" />
-        <EntityTypeShape EntityType="ComicModel.Role" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="ComicModel.Role" Width="1.5" PointX="0.75" PointY="5.875" />
         <EntityTypeShape EntityType="ComicModel.User" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="ComicModel.FK_Biography_Hero" />
         <AssociationConnector Association="ComicModel.FK_Contact_User" />

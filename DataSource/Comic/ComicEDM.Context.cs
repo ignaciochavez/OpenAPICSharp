@@ -113,7 +113,7 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertHero", nameParameter, descriptionParameter, imagePathParameter, fullNameParameter, genderParameter, appearanceParameter, aliasParameter, publisherParameter, intelligenceParameter, strengthParameter, speedParameter, durabilityParameter, powerParameter, combatParameter);
         }
     
-        public virtual int SPInsertUser(string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<System.DateTimeOffset> registered, string email, Nullable<decimal> phone, Nullable<int> roleId)
+        public virtual int SPInsertUser(string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<System.DateTimeOffset> registered, string email, string phone, Nullable<int> roleId)
         {
             var rutParameter = rut != null ?
                 new ObjectParameter("Rut", rut) :
@@ -147,9 +147,9 @@ namespace DataSource.Comic
                 new ObjectParameter("Email", email) :
                 new ObjectParameter("Email", typeof(string));
     
-            var phoneParameter = phone.HasValue ?
+            var phoneParameter = phone != null ?
                 new ObjectParameter("Phone", phone) :
-                new ObjectParameter("Phone", typeof(decimal));
+                new ObjectParameter("Phone", typeof(string));
     
             var roleIdParameter = roleId.HasValue ?
                 new ObjectParameter("RoleId", roleId) :
@@ -248,32 +248,6 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListRolePaginated_Result>("SPListRolePaginated", pageIndexParameter, pageSizeParameter);
         }
     
-        public virtual ObjectResult<SPListUser_Result> SPListUser(string timeZoneInfoName)
-        {
-            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
-                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
-                new ObjectParameter("TimeZoneInfoName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUser_Result>("SPListUser", timeZoneInfoNameParameter);
-        }
-    
-        public virtual ObjectResult<SPListUserPaginated_Result> SPListUserPaginated(Nullable<int> pageIndex, Nullable<int> pageSize, string timeZoneInfoName)
-        {
-            var pageIndexParameter = pageIndex.HasValue ?
-                new ObjectParameter("PageIndex", pageIndex) :
-                new ObjectParameter("PageIndex", typeof(int));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
-                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
-                new ObjectParameter("TimeZoneInfoName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUserPaginated_Result>("SPListUserPaginated", pageIndexParameter, pageSizeParameter, timeZoneInfoNameParameter);
-        }
-    
         public virtual ObjectResult<SPLogin_Result> SPLogin(string userRut, string userPassword)
         {
             var userRutParameter = userRut != null ?
@@ -287,22 +261,26 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPLogin_Result>("SPLogin", userRutParameter, userPasswordParameter);
         }
     
-        public virtual ObjectResult<SPSelectHero_Result> SPSelectHero(Nullable<int> heroeId)
+        public virtual ObjectResult<SPSelectHero_Result> SPSelectHero(Nullable<int> heroId)
         {
-            var heroeIdParameter = heroeId.HasValue ?
-                new ObjectParameter("HeroeId", heroeId) :
-                new ObjectParameter("HeroeId", typeof(int));
+            var heroIdParameter = heroId.HasValue ?
+                new ObjectParameter("HeroId", heroId) :
+                new ObjectParameter("HeroId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectHero_Result>("SPSelectHero", heroeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectHero_Result>("SPSelectHero", heroIdParameter);
         }
     
-        public virtual ObjectResult<SPSelectUser_Result> SPSelectUser(Nullable<int> userId)
+        public virtual ObjectResult<SPSelectUser_Result> SPSelectUser(Nullable<int> userId, string timeZoneInfoName)
         {
             var userIdParameter = userId.HasValue ?
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectUser_Result>("SPSelectUser", userIdParameter);
+            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
+                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
+                new ObjectParameter("TimeZoneInfoName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectUser_Result>("SPSelectUser", userIdParameter, timeZoneInfoNameParameter);
         }
     
         public virtual int SPUpdateHero(Nullable<int> heroId, string name, string description, string imagePath, Nullable<int> biographyId, string fullName, string gender, Nullable<System.DateTime> appearance, string alias, string publisher, Nullable<int> powerStatsId, Nullable<int> intelligence, Nullable<int> strength, Nullable<int> speed, Nullable<int> durability, Nullable<int> power, Nullable<int> combat)
@@ -378,7 +356,7 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateHero", heroIdParameter, nameParameter, descriptionParameter, imagePathParameter, biographyIdParameter, fullNameParameter, genderParameter, appearanceParameter, aliasParameter, publisherParameter, powerStatsIdParameter, intelligenceParameter, strengthParameter, speedParameter, durabilityParameter, powerParameter, combatParameter);
         }
     
-        public virtual int SPUpdateUser(Nullable<int> userId, string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<int> contactId, string email, Nullable<decimal> phone, Nullable<int> roleId)
+        public virtual int SPUpdateUser(Nullable<int> userId, string rut, string name, string lastName, Nullable<System.DateTime> birthDate, string password, Nullable<bool> active, Nullable<int> contactId, string email, string phone, Nullable<int> roleId)
         {
             var userIdParameter = userId.HasValue ?
                 new ObjectParameter("UserId", userId) :
@@ -416,15 +394,41 @@ namespace DataSource.Comic
                 new ObjectParameter("Email", email) :
                 new ObjectParameter("Email", typeof(string));
     
-            var phoneParameter = phone.HasValue ?
+            var phoneParameter = phone != null ?
                 new ObjectParameter("Phone", phone) :
-                new ObjectParameter("Phone", typeof(decimal));
+                new ObjectParameter("Phone", typeof(string));
     
             var roleIdParameter = roleId.HasValue ?
                 new ObjectParameter("RoleId", roleId) :
                 new ObjectParameter("RoleId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPUpdateUser", userIdParameter, rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, contactIdParameter, emailParameter, phoneParameter, roleIdParameter);
+        }
+    
+        public virtual ObjectResult<SPListUser_Result> SPListUser(string timeZoneInfoName)
+        {
+            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
+                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
+                new ObjectParameter("TimeZoneInfoName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUser_Result>("SPListUser", timeZoneInfoNameParameter);
+        }
+    
+        public virtual ObjectResult<SPListUserPaginated_Result> SPListUserPaginated(Nullable<int> pageIndex, Nullable<int> pageSize, string timeZoneInfoName)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
+                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
+                new ObjectParameter("TimeZoneInfoName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUserPaginated_Result>("SPListUserPaginated", pageIndexParameter, pageSizeParameter, timeZoneInfoNameParameter);
         }
     }
 }

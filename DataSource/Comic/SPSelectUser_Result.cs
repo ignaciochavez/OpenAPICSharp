@@ -18,9 +18,8 @@ namespace DataSource.Comic
         public string Name { get; set; }
         public string LastName { get; set; }
         public System.DateTime BirthDate { get; set; }
-        public string Password { get; set; }
         public bool Active { get; set; }
-        public System.DateTimeOffset Registered { get; set; }
+        public Nullable<System.DateTimeOffset> Registered { get; set; }
         public Nullable<int> ContactId { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
