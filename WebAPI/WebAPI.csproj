@@ -158,6 +158,7 @@
     <Compile Include="Configurations\TokenAuthorizeAttribute.cs" />
     <Compile Include="Configurations\TokenConfig.cs" />
     <Compile Include="Configurations\WebApiConfig.cs" />
+    <Compile Include="Controllers\BiographyController.cs" />
     <Compile Include="Controllers\CheckController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ExampleController.cs" />
