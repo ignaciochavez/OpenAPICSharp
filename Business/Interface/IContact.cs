@@ -11,13 +11,14 @@ namespace Business.Interface
     public interface IContact
     {
         Contact Select(int id);
+        bool ExistById(int id);
         int Insert(ContactInsertDTO contactInsertDTO);
         bool Update(Contact contact);
         bool Delete(int id);
         List<Contact> ListPaginated(ListPaginatedDTO listPaginatedDTO);
         long TotalRecords();
         List<Contact> Search(ContactSearchDTO ContactSearchDTO);
-        FileDTO Excel();
-        FileDTO PDF();
+        FileDTO Excel(string timeZoneInfoName);
+        FileDTO PDF(string timeZoneInfoName);
     }
 }

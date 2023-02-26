@@ -18,7 +18,6 @@ namespace Business.DAO
 {
     public class PowerStatsDAO : IPowerStats
     {
-
         public PowerStatsDAO()
         {
 
@@ -195,14 +194,14 @@ namespace Business.DAO
                         sLDocument.SetCellStyle($"D{index}", sLStyleBody);
                         sLDocument.SetCellValue($"E{index}", item.Strength);
                         sLDocument.SetCellStyle($"E{index}", sLStyleBody);
-                        sLDocument.SetCellValue($"E{index}", item.Speed);
-                        sLDocument.SetCellStyle($"E{index}", sLStyleBody);
-                        sLDocument.SetCellValue($"E{index}", item.Durability);
-                        sLDocument.SetCellStyle($"E{index}", sLStyleBody);
-                        sLDocument.SetCellValue($"E{index}", item.Power);
-                        sLDocument.SetCellStyle($"E{index}", sLStyleBody);
-                        sLDocument.SetCellValue($"E{index}", item.Combat);
-                        sLDocument.SetCellStyle($"E{index}", sLStyleBody);
+                        sLDocument.SetCellValue($"F{index}", item.Speed);
+                        sLDocument.SetCellStyle($"F{index}", sLStyleBody);
+                        sLDocument.SetCellValue($"G{index}", item.Durability);
+                        sLDocument.SetCellStyle($"G{index}", sLStyleBody);
+                        sLDocument.SetCellValue($"H{index}", item.Power);
+                        sLDocument.SetCellStyle($"H{index}", sLStyleBody);
+                        sLDocument.SetCellValue($"I{index}", item.Combat);
+                        sLDocument.SetCellStyle($"I{index}", sLStyleBody);
                     }
                     else
                     {
@@ -310,7 +309,7 @@ namespace Business.DAO
                         documentPDF.Add(new Phrase("\n\n"));
                     }
 
-                    PdfPTable pdfPTable = new PdfPTable(4);
+                    PdfPTable pdfPTable = new PdfPTable(7);
                     pdfPTable.HorizontalAlignment = 1;
 
                     PdfPCell pdfPCellId = Useful.GetiTextSharpCellTableHeader("Id");

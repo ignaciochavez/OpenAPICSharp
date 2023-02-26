@@ -11,6 +11,7 @@ namespace Business.Interface
     public interface IRole
     {
         Role Select(int id);
+        bool ExistById(int id);
         bool ExistByName(string name);
         int Insert(string name);
         bool Update(Role role);
@@ -19,7 +20,7 @@ namespace Business.Interface
         long TotalRecords();
         List<Role> Search(RoleSearchDTO roleSearchDTO);
         bool ExistByNameAndNotSameEntity(Role role);
-        FileDTO Excel();
-        FileDTO PDF();
+        FileDTO Excel(string timeZoneInfoName);
+        FileDTO PDF(string timeZoneInfoName);
     }
 }

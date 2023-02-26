@@ -250,8 +250,8 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("List")]
-        public IHttpActionResult List([FromBody] ListPaginatedDTO listPaginatedDTO)
+        [Route("ListPaginated")]
+        public IHttpActionResult ListPaginated([FromBody] ListPaginatedDTO listPaginatedDTO)
         {
             try
             {
@@ -357,25 +357,25 @@ namespace WebAPI.Controllers
                 }
 
                 if (powerStatsSearchDTO.Id < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Intelligence < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Intelligence"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Intelligence").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Strength < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Strength"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Strength").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Speed < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Speed"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Speed").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Durability < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Durability"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Durability").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Power < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Power"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Power").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Combat < 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Combat"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Combat").Replace("{1}", "0"));
 
                 if (powerStatsSearchDTO.Id == 0 && powerStatsSearchDTO.Intelligence == 0 && powerStatsSearchDTO.Strength == 0 && powerStatsSearchDTO.Speed == 0 && powerStatsSearchDTO.Durability == 0
                     && powerStatsSearchDTO.Power == 0 && powerStatsSearchDTO.Combat == 0)

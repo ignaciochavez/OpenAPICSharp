@@ -18,6 +18,6 @@ namespace DataSource.Comic
         public string Gender { get; set; }
         public System.DateTime Appearance { get; set; }
         public string Alias { get; set; }
-        public string Alias1 { get; set; }
+        public string Publisher { get; set; }
     }
 }

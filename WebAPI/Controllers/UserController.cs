@@ -9,12 +9,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
     /// <summary>
     ///  Controlador api/user
     /// </summary>    
+    [TokenAuthorize]
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
@@ -22,7 +24,7 @@ namespace WebAPI.Controllers
         private ContentHTML contentHTML = new ContentHTML();
 
         /// <summary>
-        /// Metodo para seleccionar Contact
+        /// Metodo para seleccionar User
         /// </summary>
         /// <remarks>
         /// Request POST:
@@ -41,7 +43,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Select")]
-        public IHttpActionResult Select([FromUri] UserSelectDTO userSelectDTO)
+        public IHttpActionResult Select([FromBody] UserSelectDTO userSelectDTO)
         {
             try
             {
@@ -157,6 +159,10 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
+                bool existUserByRut = UserImpl.ExistByRut(userInsertDTO.Rut);
+                if (existUserByRut)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "User").Replace("{1}", "Rut"));
+
                 bool existContact = ContactImpl.ExistById(userInsertDTO.ContactId);
                 if (!existContact)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Contact").Replace("{1}", "ContactId"));
@@ -265,6 +271,10 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
+                bool existUserByRutAndNotSameEntity = UserImpl.ExistByRutAndNotSameEntity(new UserExistByRutAndNotSameEntityDTO(userUpdateDTO.Id, userUpdateDTO.Rut));
+                if (existUserByRutAndNotSameEntity)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "User").Replace("{1}", "Rut").Replace("{2}", "User"));
+                
                 bool existContact = ContactImpl.ExistById(userUpdateDTO.ContactId);
                 if (!existContact)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Contact").Replace("{1}", "ContactId"));
@@ -345,8 +355,8 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("List")]
-        public IHttpActionResult List([FromBody] UserListPaginatedDTO userListPaginatedDTO)
+        [Route("ListPaginated")]
+        public IHttpActionResult ListPaginated([FromBody] UserListPaginatedDTO userListPaginatedDTO)
         {
             try
             {
@@ -396,7 +406,7 @@ namespace WebAPI.Controllers
         /// Metodo para contar registros de entidad User 
         /// </summary>
         /// <remarks>
-        /// api/contact/TotalRecords
+        /// api/user/TotalRecords
         /// </remarks>
         /// <returns>Retorna el objeto</returns>
         [HttpGet]
@@ -466,48 +476,39 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (userSearchDTO.Id <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
-
-                if (string.IsNullOrWhiteSpace(userSearchDTO.Rut))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Rut"));
-                else if (userSearchDTO.Rut.Trim().Length > 10)
+                if (userSearchDTO.Id < 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id").Replace("{1}", "0"));
+                
+                if (!string.IsNullOrWhiteSpace(userSearchDTO.Rut) && userSearchDTO.Rut.Trim().Length > 10)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Rut").Replace("{1}", "10"));
-                else if (!Useful.ValidateRut(userSearchDTO.Rut))
+                else if (!string.IsNullOrWhiteSpace(userSearchDTO.Rut) && !Useful.ValidateRut(userSearchDTO.Rut))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Rut"));
 
-                if (string.IsNullOrWhiteSpace(userSearchDTO.Name))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Name"));
-                else if (userSearchDTO.Name.Trim().Length > 45)
+                if (!string.IsNullOrWhiteSpace(userSearchDTO.Name) && userSearchDTO.Name.Trim().Length > 45)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "45"));
 
-                if (string.IsNullOrWhiteSpace(userSearchDTO.LastName))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "LastName"));
-                else if (userSearchDTO.LastName.Trim().Length > 45)
+                if (!string.IsNullOrWhiteSpace(userSearchDTO.LastName) && userSearchDTO.LastName.Trim().Length > 45)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "45"));
                 
-                if (userSearchDTO.BirthDate == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "BirthDate"));
-                if (!Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate))
+                if (userSearchDTO.BirthDate != null && !Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
-                else if (userSearchDTO.BirthDate > DateTimeOffset.Now)
+                else if (userSearchDTO.BirthDate != null && userSearchDTO.BirthDate > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
-
-                if (userSearchDTO.Active == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Active"));
-
-                if (userSearchDTO.Registered == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Registered"));
-                if (!Useful.ValidateDateTimeOffset(userSearchDTO.Registered))
+                
+                if (userSearchDTO.Registered != null && !Useful.ValidateDateTimeOffset(userSearchDTO.Registered))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Registered"));
-                else if (userSearchDTO.Registered > DateTimeOffset.Now)
+                else if (userSearchDTO.Registered != null && userSearchDTO.Registered > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Registered"));
 
-                if (userSearchDTO.ContactId <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "ContactId"));
+                if (userSearchDTO.ContactId < 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "ContactId").Replace("{1}", "0"));
 
-                if (userSearchDTO.RoleId <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "RoleId"));
+                if (userSearchDTO.RoleId < 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "RoleId").Replace("{1}", "0"));
+
+                if (userSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(userSearchDTO.Rut) && string.IsNullOrWhiteSpace(userSearchDTO.Name) && string.IsNullOrWhiteSpace(userSearchDTO.LastName)
+                    && userSearchDTO.BirthDate == null && userSearchDTO.Active == null && userSearchDTO.Registered == null && userSearchDTO.ContactId == 0 && userSearchDTO.RoleId == 0)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id, Rut, Name, LastName, BirthDate, Active, Registered, ContactId y RoleId,").Replace("{1}", "n").Replace("{2}", "s"));
 
                 if (string.IsNullOrWhiteSpace(userSearchDTO.TimeZoneInfoName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "TimeZoneInfoName"));
@@ -567,7 +568,7 @@ namespace WebAPI.Controllers
                 }
                 else if (!Useful.ValidateTimeZoneInfo(TimeZoneInfoName))
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "invalidFormatParameters"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "TimeZoneInfoName"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
@@ -608,7 +609,7 @@ namespace WebAPI.Controllers
                 }
                 else if (!Useful.ValidateTimeZoneInfo(TimeZoneInfoName))
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "invalidFormatParameters"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "TimeZoneInfoName"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 

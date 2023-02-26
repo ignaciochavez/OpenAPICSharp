@@ -18,6 +18,11 @@ namespace Business.Implementation
             return roleDAO.Select(id);
         }
 
+        public static bool ExistById(int id)
+        {
+            return roleDAO.ExistById(id);
+        }
+
         public static bool ExistByName(string name)
         {
             return roleDAO.ExistByName(name);
@@ -57,14 +62,14 @@ namespace Business.Implementation
             return roleDAO.ExistByNameAndNotSameEntity(role);
         }
 
-        public static FileDTO Excel()
+        public static FileDTO Excel(string timeZoneInfoName)
         {
-            return roleDAO.Excel();
+            return roleDAO.Excel(timeZoneInfoName);
         }
 
-        public static FileDTO PDF()
+        public static FileDTO PDF(string timeZoneInfoName)
         {
-            return roleDAO.PDF();
+            return roleDAO.PDF(timeZoneInfoName);
         }
     }
 }

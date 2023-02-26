@@ -266,8 +266,8 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("List")]
-        public IHttpActionResult List([FromBody] ListPaginatedDTO listPaginatedDTO)
+        [Route("ListPaginated")]
+        public IHttpActionResult ListPaginated([FromBody] ListPaginatedDTO listPaginatedDTO)
         {
             try
             {

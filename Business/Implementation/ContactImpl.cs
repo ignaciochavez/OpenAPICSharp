@@ -19,6 +19,11 @@ namespace Business.Implementation
             return contactDAO.Select(id);
         }
 
+        public static bool ExistById(int id)
+        {
+            return contactDAO.ExistById(id);
+        }
+
         public static int Insert(ContactInsertDTO contactInsertDTO)
         {
             return contactDAO.Insert(contactInsertDTO);
@@ -49,14 +54,14 @@ namespace Business.Implementation
             return contactDAO.Search(contactSearchDTO);
         }
 
-        public static FileDTO Excel()
+        public static FileDTO Excel(string timeZoneInfoName)
         {
-            return contactDAO.Excel();
+            return contactDAO.Excel(timeZoneInfoName);
         }
 
-        public static FileDTO PDF()
+        public static FileDTO PDF(string timeZoneInfoName)
         {
-            return contactDAO.PDF();
+            return contactDAO.PDF(timeZoneInfoName);
         }
     }
 }

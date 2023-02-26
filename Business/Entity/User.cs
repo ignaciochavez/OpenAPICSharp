@@ -12,9 +12,9 @@ namespace Business.Entity
         public string Rut { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
-        public System.DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         public bool Active { get; set; }
-        public System.DateTimeOffset Registered { get; set; }
+        public DateTimeOffset Registered { get; set; }
         public int ContactId { get; set; }
         public int RoleId { get; set; }
 

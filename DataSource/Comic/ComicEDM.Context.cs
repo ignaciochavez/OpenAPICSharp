@@ -158,24 +158,6 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SPInsertUser", rutParameter, nameParameter, lastNameParameter, birthDateParameter, passwordParameter, activeParameter, registeredParameter, emailParameter, phoneParameter, roleIdParameter);
         }
     
-        public virtual ObjectResult<SPListBiography_Result> SPListBiography()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiography_Result>("SPListBiography");
-        }
-    
-        public virtual ObjectResult<SPListBiographyPaginated_Result> SPListBiographyPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
-        {
-            var pageIndexParameter = pageIndex.HasValue ?
-                new ObjectParameter("PageIndex", pageIndex) :
-                new ObjectParameter("PageIndex", typeof(int));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiographyPaginated_Result>("SPListBiographyPaginated", pageIndexParameter, pageSizeParameter);
-        }
-    
         public virtual ObjectResult<SPListContact_Result> SPListContact()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListContact_Result>("SPListContact");
@@ -429,6 +411,24 @@ namespace DataSource.Comic
                 new ObjectParameter("TimeZoneInfoName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListUserPaginated_Result>("SPListUserPaginated", pageIndexParameter, pageSizeParameter, timeZoneInfoNameParameter);
+        }
+    
+        public virtual ObjectResult<SPListBiography_Result> SPListBiography()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiography_Result>("SPListBiography");
+        }
+    
+        public virtual ObjectResult<SPListBiographyPaginated_Result> SPListBiographyPaginated(Nullable<int> pageIndex, Nullable<int> pageSize)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiographyPaginated_Result>("SPListBiographyPaginated", pageIndexParameter, pageSizeParameter);
         }
     }
 }

@@ -9,13 +9,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
     /// <summary>
     ///  Controlador api/contact
-    /// </summary>    
-    [RoutePrefix("api/contact")]
+    /// </summary>   
+    [TokenAuthorize]
+    [RoutePrefix("api/contact")]    
     public class ContactController : ApiController
     {
         private MessageVO messageVO = new MessageVO();
@@ -225,15 +227,15 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="listPaginatedDTO">Objeto</param>
+        /// <param name="listPaginatedDTO">Objeto ListPaginatedDTO</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Contact>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("List")]
-        public IHttpActionResult List([FromBody] ListPaginatedDTO listPaginatedDTO)
+        [Route("ListPaginated")]
+        public IHttpActionResult ListPaginated([FromBody] ListPaginatedDTO listPaginatedDTO)
         {
             try
             {
@@ -372,7 +374,8 @@ namespace WebAPI.Controllers
 
         /// <summary>
         /// Metodo para retornar Excel
-        /// </summary>
+        /// </summary>+
+        /// <param name="TimeZoneInfoName">TimeZoneInfoName</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -380,11 +383,27 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Excel")]
-        public IHttpActionResult Excel()
+        public IHttpActionResult Excel([FromBody] string TimeZoneInfoName)
         {
             try
             {
-                var excel = ContactImpl.Excel();
+                if (string.IsNullOrWhiteSpace(TimeZoneInfoName))
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "TimeZoneInfoName"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+                else if (TimeZoneInfoName.Length > 50)
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "TimeZoneInfoName").Replace("{1}", "50"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+                else if (!Useful.ValidateTimeZoneInfo(TimeZoneInfoName))
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "TimeZoneInfoName"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                var excel = ContactImpl.Excel(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -397,6 +416,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Metodo para retornar PDF
         /// </summary>
+        /// <param name="TimeZoneInfoName">TimeZoneInfoName</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -404,11 +424,27 @@ namespace WebAPI.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("PDF")]
-        public IHttpActionResult PDF()
+        public IHttpActionResult PDF([FromBody] string TimeZoneInfoName)
         {
             try
             {
-                var pdf = ContactImpl.PDF();
+                if (string.IsNullOrWhiteSpace(TimeZoneInfoName))
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "TimeZoneInfoName"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+                else if (TimeZoneInfoName.Length > 50)
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "TimeZoneInfoName").Replace("{1}", "50"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+                else if (!Useful.ValidateTimeZoneInfo(TimeZoneInfoName))
+                {
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "TimeZoneInfoName"));
+                    return Content(HttpStatusCode.BadRequest, messageVO);
+                }
+
+                var pdf = ContactImpl.PDF(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

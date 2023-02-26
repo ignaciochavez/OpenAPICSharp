@@ -19,7 +19,6 @@ namespace Business.DAO
 {
     public class RoleDAO : IRole
     {
-
         public RoleDAO()
         {
 
@@ -27,13 +26,15 @@ namespace Business.DAO
 
         public Entity.Role Select(int id)
         {
-            Entity.Role role = null;
-            var entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
-
-            if (entity != null)
-                role = new Entity.Role(entity.Id, entity.Name);
-
+            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
+            Entity.Role role = (entity != null) ? new Entity.Role(entity.Id, entity.Name) : null;
             return role;
+        }
+
+        public bool ExistById(int id)
+        {
+            bool exist = ModelComic.ComicEntities.Role.Any(o => o.Id == id);
+            return exist;
         }
 
         public bool ExistByName(string name)
@@ -46,8 +47,8 @@ namespace Business.DAO
         {
             Role role = new Role();
             role.Name = Useful.GetTitleCaseWords(name.Trim());
-            int insert = ModelComic.ComicEntities.SaveChanges();
-            return (insert > 0) ? role.Id : 0;
+            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            return (isInsert > 0) ? role.Id : 0;
         }
 
         public bool Update(Entity.Role role)
@@ -109,7 +110,7 @@ namespace Business.DAO
             string whereClause = string.Empty;
             whereClause = ((roleSearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
             whereClause += ((!string.IsNullOrEmpty(roleSearchDTO.Name)) ? ((whereClause.Length > 0) ? " AND [Name] LIKE '%' + @Name + '%'" : "[Name] LIKE '%' + @Name + '%'") : string.Empty);
-            string paginatedClause = $"ORDER BY [Id] ASC OFFSET({roleSearchDTO.ListPaginatedDTO.PageIndex - 1}) * {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
+            string paginatedClause = $"ORDER BY [Id] ASC OFFSET {(roleSearchDTO.ListPaginatedDTO.PageIndex - 1) * roleSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {roleSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
             if (roleSearchDTO.Id > 0)
@@ -118,7 +119,7 @@ namespace Business.DAO
                 parameters.Add(new SqlParameter("Name", roleSearchDTO.Name.Trim()));
 
             List<Entity.Role> list = new List<Entity.Role>();
-            List<Role> entities = ModelComic.ComicEntities.Role.SqlQuery($"SELECT [Id], [Name] FROM [Comic].[dbo].[Role] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            List<Role> entities = ModelComic.ComicEntities.Role.SqlQuery($"SELECT [Id], [Name] FROM [dbo].[Role] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
             foreach (var item in entities)
             {
                 Entity.Role entity = new Entity.Role(item.Id, item.Name);
@@ -134,7 +135,7 @@ namespace Business.DAO
             return exist;
         }
 
-        public FileDTO Excel()
+        public FileDTO Excel(string timeZoneInfoName)
         {
             FileDTO fileDTO = null;
             MemoryStream memoryStream = null;
@@ -142,7 +143,7 @@ namespace Business.DAO
             try
             {
                 memoryStream = new MemoryStream();
-                sLDocument = Useful.GetSpreadsheetLightBase();
+                sLDocument = Useful.GetSpreadsheetLightBase("Role", timeZoneInfoName);
 
                 SLStyle sLStyleHeaderTable = Useful.GetSpreadsheetLightStyleCellTableHeader(sLDocument);
                 sLDocument.SetCellValue("E9", "Id");
@@ -200,7 +201,7 @@ namespace Business.DAO
             return fileDTO;
         }
 
-        public FileDTO PDF()
+        public FileDTO PDF(string timeZoneInfoName)
         {
             FileDTO fileDTO = null;
             MemoryStream memoryStream = null;
@@ -216,7 +217,7 @@ namespace Business.DAO
 
                 PdfContentByte pdfContentByte = pdfWriter.DirectContent;
 
-                PdfPTable pdfPTableHeaderOne = Useful.GetiTextSharpTableHeaderOne();
+                PdfPTable pdfPTableHeaderOne = Useful.GetiTextSharpTableHeaderOne(timeZoneInfoName);
                 documentPDF.Add(pdfPTableHeaderOne);
                 
                 PdfPTable pdfPTableHeaderTwo = Useful.GetiTextSharpTableHeaderTwo();
@@ -229,7 +230,7 @@ namespace Business.DAO
                 PdfPTable pdfPTableTitle = Useful.GetiTextSharpTitle();
                 pdfPTableTitle.WriteSelectedRows(0, -1, documentPDF.LeftMargin + 41, documentPDF.Top - 50, pdfContentByte);
 
-                PdfPTable pdfPTableDateTime = Useful.GetiTextSharpDateTime();
+                PdfPTable pdfPTableDateTime = Useful.GetiTextSharpDateTime(timeZoneInfoName);
                 pdfPTableDateTime.WriteSelectedRows(0, -1, documentPDF.LeftMargin + 640, documentPDF.Top - 5, pdfContentByte);
 
                 PdfPTable pdfPTablePageNumber = Useful.GetiTextSharpTablePageNumber(1);
@@ -237,18 +238,20 @@ namespace Business.DAO
 
                 documentPDF.Add(new Phrase("\n"));
 
-                PdfPTable pdfPTableDescription = Useful.GetiTextSharpTableDescription("Role", TotalRecords());
+                long totalRecords = TotalRecords();
+
+                PdfPTable pdfPTableDescription = Useful.GetiTextSharpTableDescription("Role", totalRecords);
                 documentPDF.Add(pdfPTableDescription);
 
                 documentPDF.Add(new Phrase("\n"));
                 
                 int index = 1;
                 int size = GetPDFRoleSizeMaximunOfRecordsByPage();
-                long length = TotalRecords() / size;
+                long length = totalRecords / size;
                 List<Entity.Role> roles = List();
                 for (int i = 0; i <= length; i++)
                 {
-                    List<Entity.Role> rolesByPage = roles.Skip(size * (index - 1)).Take(size).ToList(); ;
+                    List<Entity.Role> rolesByPage = roles.Skip(size * (index - 1)).Take(size).ToList();
 
                     if (rolesByPage.Count() == 0)
                         break;

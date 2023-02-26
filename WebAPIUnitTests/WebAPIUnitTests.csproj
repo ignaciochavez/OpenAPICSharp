@@ -83,8 +83,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CheckControllerTests.cs" />
-    <Compile Include="ExampleControllerTests.cs" />
-    <Compile Include="HeroeControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

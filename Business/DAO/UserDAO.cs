@@ -18,7 +18,6 @@ namespace Business.DAO
 {
     public class UserDAO : IUser
     {
-
         public UserDAO()
         {
 
@@ -26,7 +25,7 @@ namespace Business.DAO
 
         public Entity.User Select(UserSelectDTO userSelectDTO)
         {
-            var entity = ModelComic.ComicEntities.User.SqlQuery("SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[Role] WHERE [Id] = @Id", new SqlParameter("Id", userSelectDTO.Id), new SqlParameter("TimeZoneInfoName", userSelectDTO.TimeZoneInfoName)).FirstOrDefault();
+            var entity = ModelComic.ComicEntities.User.SqlQuery("SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE [Id] = @Id", new SqlParameter("Id", userSelectDTO.Id), new SqlParameter("TimeZoneInfoName", userSelectDTO.TimeZoneInfoName)).FirstOrDefault();
             Entity.User user = (entity != null) ? new Entity.User(entity.Id, entity.Rut, entity.Name, entity.LastName, entity.BirthDate, entity.Active, entity.Registered, entity.ContactId, entity.RoleId) : null;
             return user;
         }
@@ -121,9 +120,9 @@ namespace Business.DAO
             whereClause += ((!string.IsNullOrEmpty(userSearchDTO.Rut)) ? ((whereClause.Length > 0) ? " AND [Rut] LIKE '%' + @Rut + '%'" : "[Rut] LIKE '%' + @Rut + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrEmpty(userSearchDTO.Name)) ? ((whereClause.Length > 0) ? " AND [Name] LIKE '%' + @Name + '%'" : "[Name] LIKE '%' + @Name + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrEmpty(userSearchDTO.LastName)) ? ((whereClause.Length > 0) ? " AND [LastName] LIKE '%' + @LastName + '%'" : "[LastName] LIKE '%' + @LastName + '%'") : string.Empty);
-            whereClause += ((Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate) && userSearchDTO.BirthDate < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND [BirthDate] = @BirthDate" : "[BirthDate] = @BirthDate") : string.Empty);
+            whereClause += ((userSearchDTO.BirthDate != null && Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate) && userSearchDTO.BirthDate < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND [BirthDate] LIKE '%' + CONVERT(VARCHAR(10), @BirthDate, 23) + '%'" : "[BirthDate] LIKE '%' + CONVERT(VARCHAR(10), @BirthDate, 23) + '%'") : string.Empty);
             whereClause += ((userSearchDTO.Active != null) ? ((whereClause.Length > 0) ? " AND [Active] = @Active" : "[Active] = @Active") : string.Empty);
-            whereClause += ((Useful.ValidateDateTimeOffset(userSearchDTO.Registered) && userSearchDTO.Registered < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)" : "CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)") : string.Empty);
+            whereClause += ((userSearchDTO.Registered != null && Useful.ValidateDateTimeOffset(userSearchDTO.Registered) && userSearchDTO.Registered < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)" : "CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)") : string.Empty);
             whereClause += ((userSearchDTO.ContactId > 0) ? ((whereClause.Length > 0) ? " AND [ContactId] = @ContactId" : "[ContactId] = @ContactId") : string.Empty);
             whereClause += ((userSearchDTO.RoleId > 0) ? ((whereClause.Length > 0) ? " AND [RoleId] = @RoleId" : "[RoleId] = @RoleId") : string.Empty);
             string paginatedClause = $"ORDER BY [Id] ASC OFFSET {(userSearchDTO.ListPaginatedDTO.PageIndex - 1) * userSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {userSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
@@ -151,7 +150,7 @@ namespace Business.DAO
             parameters.Add(new SqlParameter("@TimeZoneInfoName", userSearchDTO.TimeZoneInfoName));
 
             List<Entity.User> list = new List<Entity.User>();
-            List<User> entities = ModelComic.ComicEntities.User.SqlQuery($"SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[Role] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            List<User> entities = ModelComic.ComicEntities.User.SqlQuery($"SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
             foreach (var item in entities)
             {
                 Entity.User user = new Entity.User(item.Id, item.Rut, item.Name, item.LastName, item.BirthDate, item.Active, item.Registered, item.ContactId, item.RoleId);
@@ -208,8 +207,8 @@ namespace Business.DAO
                 SLStyle sLStyleBodyDegrade = Useful.GetSpreadsheetLightStyleCellTableBodyDegrade(sLDocument);
                 
                 int index = 10;
-                var roles = List(timeZoneInfoName);
-                foreach (var item in roles)
+                var users = List(timeZoneInfoName);
+                foreach (var item in users)
                 {
                     if ((index % 2) == 0)
                     {
@@ -323,7 +322,7 @@ namespace Business.DAO
                 List<Entity.User> users = List(timeZoneInfoName);
                 for (int i = 0; i <= length; i++)
                 {
-                    List<Entity.User> usersByPage = users.Skip(size * (index - 1)).Take(size).ToList(); ;
+                    List<Entity.User> usersByPage = users.Skip(size * (index - 1)).Take(size).ToList();
 
                     if (usersByPage.Count() == 0)
                         break;
@@ -342,7 +341,7 @@ namespace Business.DAO
                         documentPDF.Add(new Phrase("\n\n"));
                     }
 
-                    PdfPTable pdfPTable = new PdfPTable(2);
+                    PdfPTable pdfPTable = new PdfPTable(9);
                     pdfPTable.HorizontalAlignment = 1;
 
                     PdfPCell pdfPCellId = Useful.GetiTextSharpCellTableHeader("Id");

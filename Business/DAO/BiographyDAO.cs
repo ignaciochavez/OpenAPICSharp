@@ -298,7 +298,7 @@ namespace Business.DAO
                         documentPDF.Add(new Phrase("\n\n"));
                     }
 
-                    PdfPTable pdfPTable = new PdfPTable(4);
+                    PdfPTable pdfPTable = new PdfPTable(6);
                     pdfPTable.HorizontalAlignment = 1;
 
                     PdfPCell pdfPCellId = Useful.GetiTextSharpCellTableHeader("Id");

@@ -39,4 +39,21 @@ namespace Business.DTO
             PageSize = pageSize;
         }
     }
+
+    public class UsefulTimeZoneInfo
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public UsefulTimeZoneInfo()
+        {
+
+        }
+
+        public UsefulTimeZoneInfo(string id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+    }
 }

@@ -13,6 +13,7 @@ using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SpreadsheetLight.Drawing;
 using System.Globalization;
+using Business.DTO;
 
 namespace Business.Tool
 {
@@ -35,6 +36,34 @@ namespace Business.Tool
             byte[] imageBytes = System.IO.File.ReadAllBytes(path);
             string base64String = Convert.ToBase64String(imageBytes);
             return String.Format("data:image/png;base64,{0}", base64String);
+        }
+
+        public static string GetImageToBase64String(string path)
+        {
+            byte[] imageBytes = File.ReadAllBytes(path);
+            string base64String = Convert.ToBase64String(imageBytes);
+            if (path.ToLower().Contains(".bmp"))
+                return String.Format("data:image/bmp;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".emf"))
+                return String.Format("data:image/emf;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".exif"))
+                return String.Format("data:image/exif;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".gif"))
+                return String.Format("data:image/gif;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".icon"))
+                return String.Format("data:image/icon;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".jpeg"))
+                return String.Format("data:image/jpeg;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".jpg"))
+                return String.Format("data:image/jpg;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".png"))
+                return String.Format("data:image/png;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".tiff"))
+                return String.Format("data:image/tiff;base64,{0}", base64String);
+            else if (path.ToLower().Contains(".wmf"))
+                return String.Format("data:image/wmf;base64,{0}", base64String);
+            else
+                throw new Exception("Formato de imagen no es el permitido");
         }
 
         public static int GetPageSizeMaximun()
@@ -73,9 +102,6 @@ namespace Business.Tool
             return rutDigit;
         }
 
-
-
-
         public static string GetEmailContact()
         {
             return GetAppSettings("EmailContact");
@@ -91,7 +117,7 @@ namespace Business.Tool
             return "OpenAPI";
         }
 
-        public static string GetImagePath()
+        public static string GetApplicationImagePath()
         {
             return $"{GetApplicationDirectory()}Contents\\api-200.png";
         }
@@ -103,17 +129,55 @@ namespace Business.Tool
             return pascalCaseWords;
         }
 
+        public static List<UsefulTimeZoneInfo> GetTimeZoneInfo()
+        {
+            List<UsefulTimeZoneInfo> list = new List<UsefulTimeZoneInfo>();
+            IReadOnlyCollection<TimeZoneInfo> tz = TimeZoneInfo.GetSystemTimeZones();
+            foreach (var item in tz)
+            {
+                UsefulTimeZoneInfo timeZoneInfo = new UsefulTimeZoneInfo(item.Id, item.ToString());
+                list.Add(timeZoneInfo);
+            }
+            return list;
+        }
+
+        public static string GetFormatImgBase64String(string imgBase64String)
+        {
+            if (imgBase64String.ToLower().Contains("data:image/bmp;base64"))
+                return "bmp";
+            else if (imgBase64String.ToLower().Contains("data:image/emf;base64"))
+                return "emf";
+            else if (imgBase64String.ToLower().Contains("data:image/exif;base64"))
+                return "exif";
+            else if (imgBase64String.ToLower().Contains("data:image/gif;base64"))
+                return "gif";
+            else if (imgBase64String.ToLower().Contains("data:image/icon;base64"))
+                return "icon";
+            else if (imgBase64String.ToLower().Contains("data:image/jpeg;base64"))
+                return "jpeg";
+            else if (imgBase64String.ToLower().Contains("data:image/jpg;base64"))
+                return "jpg";
+            else if (imgBase64String.ToLower().Contains("data:image/png;base64"))
+                return "png";
+            else if (imgBase64String.ToLower().Contains("data:image/tiff;base64"))
+                return "tiff";
+            else if (imgBase64String.ToLower().Contains("data:image/wmf;base64"))
+                return "wmf";
+            else
+                throw new Exception("Formato de imgBase64String no es el permitido");
+        }
+
         #region SpreadSheetLight
-        public static SLDocument GetSpreadsheetLightBase()
+        public static SLDocument GetSpreadsheetLightBase(string nameSheet, string timeZoneInfoName)
         {
             SLDocument sLDocument = new SLDocument();
-            sLDocument.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Role");
+            sLDocument.RenameWorksheet(SLDocument.DefaultFirstSheetName, nameSheet);
 
             SLStyle sLStyleTitles = sLDocument.CreateStyle();
             sLStyleTitles.Alignment.Horizontal = HorizontalAlignmentValues.Center;
 
             sLDocument.MergeWorksheetCells("D3", "H3");
-            sLDocument.SetCellValue("D3", $"© Copyright IgnacioChavez {DateTime.Now.ToString("yyyy")}. Todos los derechos reservados");
+            sLDocument.SetCellValue("D3", $"© Copyright IgnacioChavez {ConvertDateTimeOffsetToTimeZone(DateTimeOffset.UtcNow, timeZoneInfoName).ToString("yyyy")}. Todos los derechos reservados");
             sLDocument.SetCellStyle("D3", sLStyleTitles);
             sLDocument.MergeWorksheetCells("D4", "H4");
             sLDocument.SetCellValue("D4", Useful.GetEmailContact());
@@ -122,7 +186,7 @@ namespace Business.Tool
             sLDocument.SetCellValue("D5", Useful.GetPhoneContact());
             sLDocument.SetCellStyle("D5", sLStyleTitles);
 
-            SLPicture sLPicture = new SLPicture(Useful.GetImagePath());
+            SLPicture sLPicture = new SLPicture(GetApplicationImagePath());
             sLPicture.SetPosition(2, 1);
             sLPicture.ResizeInPixels(80, 80);
             sLDocument.InsertPicture(sLPicture);
@@ -140,7 +204,7 @@ namespace Business.Tool
             sLStyleDateTime.SetFont("Calibri", 10);
             sLStyleDateTime.SetFontColor(System.Drawing.ColorTranslator.FromHtml("#8E97A0"));
             sLDocument.MergeWorksheetCells("J3", "L3");
-            sLDocument.SetCellValue("J3", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sszzz")}");
+            sLDocument.SetCellValue("J3", $"{ConvertDateTimeOffsetToTimeZone(DateTimeOffset.UtcNow, timeZoneInfoName).ToString("yyyy-MM-dd HH:mm:sszzz")}");
             sLDocument.SetCellStyle("J3", sLStyleDateTime);
 
             return sLDocument;
@@ -150,7 +214,7 @@ namespace Business.Tool
         {
             SLStyle sLStyleHeaderTable = sLDocument.CreateStyle();
             sLStyleHeaderTable.Font.Bold = true;
-            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFont(GetSpreadsheetLightFontSegoeUI(), 10);
             sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
             return sLStyleHeaderTable;
         }
@@ -161,7 +225,7 @@ namespace Business.Tool
             sLStyleHeaderTable.Border.BottomBorder.BorderStyle = BorderStyleValues.DashDot;
             sLStyleHeaderTable.Border.BottomBorder.Color = System.Drawing.ColorTranslator.FromHtml("#dee2e6");
             sLStyleHeaderTable.Font.Bold = true;
-            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFont(GetSpreadsheetLightFontSegoeUI(), 10);
             sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
             return sLStyleHeaderTable;
         }
@@ -174,7 +238,7 @@ namespace Business.Tool
             System.Drawing.Color backgroundColor = System.Drawing.ColorTranslator.FromHtml("#DADDE0");
             sLStyleHeaderTable.SetPatternFill(PatternValues.Solid, backgroundColor, backgroundColor);
             sLStyleHeaderTable.Font.Bold = true;
-            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFont(GetSpreadsheetLightFontSegoeUI(), 10);
             sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
             return sLStyleHeaderTable;
         }
@@ -185,7 +249,7 @@ namespace Business.Tool
             sLStyleHeaderTable.Border.BottomBorder.BorderStyle = BorderStyleValues.DashDot;
             sLStyleHeaderTable.Border.BottomBorder.Color = System.Drawing.ColorTranslator.FromHtml("#dee2e6");
             sLStyleHeaderTable.Font.Bold = false;
-            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFont(GetSpreadsheetLightFontSegoeUI(), 10);
             sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
             return sLStyleHeaderTable;
         }
@@ -198,19 +262,24 @@ namespace Business.Tool
             System.Drawing.Color backgroundColor = System.Drawing.ColorTranslator.FromHtml("#DADDE0");
             sLStyleHeaderTable.SetPatternFill(PatternValues.Solid, backgroundColor, backgroundColor);
             sLStyleHeaderTable.Font.Bold = false;
-            sLStyleHeaderTable.SetFont("Segoe UI", 10);
+            sLStyleHeaderTable.SetFont(GetSpreadsheetLightFontSegoeUI(), 10);
             sLStyleHeaderTable.SetFontColor(System.Drawing.Color.Black);
             return sLStyleHeaderTable;
+        }
+
+        private static string GetSpreadsheetLightFontSegoeUI()
+        {
+            return "Segoe UI";
         }
         #endregion
 
         #region iTextSharp
-        public static PdfPTable GetiTextSharpTableHeaderOne()
+        public static PdfPTable GetiTextSharpTableHeaderOne(string timeZoneInfoName)
         {
             PdfPTable pdfPTableHeaderOne = new PdfPTable(3);
             pdfPTableHeaderOne.SetWidths(new int[] { 100, 56, 190 });
 
-            iTextSharp.text.Font fontTableOne = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            iTextSharp.text.Font fontTableOne = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontCalibri()).BaseFont, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             PdfPCell pdfPCellCopyright = new PdfPCell(new Phrase("© Copyright", fontTableOne));
             pdfPCellCopyright.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
             pdfPCellCopyright.BorderWidth = 0;
@@ -219,7 +288,7 @@ namespace Business.Tool
             PdfPCell pdfPCellIgnacioChavez = new PdfPCell(new Phrase("IgnacioChavez", fontTableOneIgnacioChavez));
             pdfPCellIgnacioChavez.BorderWidth = 0;
 
-            PdfPCell pdfPCellAllRightsReserved = new PdfPCell(new Phrase("2023. Todos los derechos reservados", fontTableOne));
+            PdfPCell pdfPCellAllRightsReserved = new PdfPCell(new Phrase($"{ConvertDateTimeOffsetToTimeZone(DateTimeOffset.UtcNow, timeZoneInfoName).ToString("yyyy")}. Todos los derechos reservados", fontTableOne));
             pdfPCellAllRightsReserved.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
             pdfPCellAllRightsReserved.BorderWidth = 0;
 
@@ -233,7 +302,7 @@ namespace Business.Tool
         {
             PdfPTable pdfPTableHeaderTwo = new PdfPTable(1);
 
-            iTextSharp.text.Font fontTableTwo = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            iTextSharp.text.Font fontTableTwo = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontCalibri()).BaseFont, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             PdfPCell pdfPCellEmail = new PdfPCell(new Phrase($"{Useful.GetEmailContact()}", fontTableTwo));
             pdfPCellEmail.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
             pdfPCellEmail.BorderWidth = 0;
@@ -249,7 +318,7 @@ namespace Business.Tool
 
         public static Image GetiTextSharpImageLogo()
         {
-            iTextSharp.text.Image imageLogo = iTextSharp.text.Image.GetInstance(Useful.GetImagePath());
+            iTextSharp.text.Image imageLogo = iTextSharp.text.Image.GetInstance(Useful.GetApplicationImagePath());
             imageLogo.ScaleAbsoluteWidth(50);
             imageLogo.ScaleAbsoluteHeight(50);
             imageLogo.BorderWidth = 0;
@@ -262,7 +331,7 @@ namespace Business.Tool
             pdfPTableTitle.TotalWidth = 40;
             pdfPTableTitle.SetWidths(new int[] { 40 });
 
-            iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontCalibri()).BaseFont, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             PdfPCell pdfPCellTitle = new PdfPCell(new Phrase("OpenAPICSharp", fontTitle));
             pdfPCellTitle.BorderWidth = 0;
             pdfPCellTitle.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
@@ -271,14 +340,14 @@ namespace Business.Tool
             return pdfPTableTitle;
         }
 
-        public static PdfPTable GetiTextSharpDateTime()
+        public static PdfPTable GetiTextSharpDateTime(string timeZoneInfoName)
         {
             PdfPTable pdfPTableDateTime = new PdfPTable(1);
             pdfPTableDateTime.TotalWidth = 140;
             pdfPTableDateTime.SetWidths(new int[] { 140 });
 
-            iTextSharp.text.Font fontDateTime = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 10, iTextSharp.text.Font.BOLD, new BaseColor(System.Drawing.ColorTranslator.FromHtml("#8E97A0")));
-            PdfPCell pdfPCellDateTime = new PdfPCell(new Phrase($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sszzz")}", fontDateTime));
+            iTextSharp.text.Font fontDateTime = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontCalibri()).BaseFont, 10, iTextSharp.text.Font.BOLD, new BaseColor(System.Drawing.ColorTranslator.FromHtml("#8E97A0")));
+            PdfPCell pdfPCellDateTime = new PdfPCell(new Phrase($"{ConvertDateTimeOffsetToTimeZone(DateTimeOffset.UtcNow, timeZoneInfoName).ToString("yyyy-MM-dd HH:mm:sszzz")}", fontDateTime));
             pdfPCellDateTime.BorderWidth = 0;
             pdfPCellDateTime.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
             pdfPTableDateTime.AddCell(pdfPCellDateTime);
@@ -291,7 +360,7 @@ namespace Business.Tool
             pdfPTableNumberPage.TotalWidth = 20;
             pdfPTableNumberPage.SetWidths(new int[] { 20 });
 
-            iTextSharp.text.Font fontNumberPage = new iTextSharp.text.Font(FontFactory.GetFont("Calibri").BaseFont, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font fontNumberPage = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontCalibri()).BaseFont, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             PdfPCell pdfPCellNumberPage = new PdfPCell(new Phrase($"{number.ToString()}", fontNumberPage));
             pdfPCellNumberPage.BorderWidth = 0;
             pdfPCellNumberPage.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
@@ -309,10 +378,10 @@ namespace Business.Tool
             pdfPTableDescription.AddCell(pdfPCellDescription);
             return pdfPTableDescription;
         }
-
+                
         public static PdfPCell GetiTextSharpCellTableHeader(string name)
         {
-            iTextSharp.text.Font fontHeaderTable = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font fontHeaderTable = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontSegoeUI()).BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             PdfPCell pdfPCell = new PdfPCell(new Phrase(name, fontHeaderTable));
             pdfPCell.BorderWidthTop = 1;
             pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
@@ -325,7 +394,7 @@ namespace Business.Tool
 
         public static PdfPCell GetiTextSharpCellIdTableBody(string value)
         {
-            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontSegoeUI()).BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
             pdfPCell.BorderWidthTop = 1;
             pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
@@ -337,7 +406,7 @@ namespace Business.Tool
 
         public static PdfPCell GetiTextSharpCellIdTableBodyDegrade(string value)
         {
-            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontSegoeUI()).BaseFont, 11, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
             pdfPCell.BorderWidthTop = 1;
             pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
@@ -350,7 +419,7 @@ namespace Business.Tool
 
         public static PdfPCell GetiTextSharpCellTableBody(string value)
         {
-            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontSegoeUI()).BaseFont, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
             pdfPCell.BorderWidthTop = 1;
             pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
@@ -362,7 +431,7 @@ namespace Business.Tool
 
         public static PdfPCell GetiTextSharpCellTableBodyDegrade(string value)
         {
-            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont("Segoe UI").BaseFont, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            iTextSharp.text.Font fontBody = new iTextSharp.text.Font(FontFactory.GetFont(GetiTextSharpFontSegoeUI()).BaseFont, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             PdfPCell pdfPCell = new PdfPCell(new Phrase(value, fontBody));
             pdfPCell.BorderWidthTop = 1;
             pdfPCell.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
@@ -371,6 +440,39 @@ namespace Business.Tool
             pdfPCell.BorderWidthRight = 0;
             pdfPCell.BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#DADDE0"));
             return pdfPCell;
+        }
+
+        public static PdfPCell GetiTextSharpCellImagen(Image image)
+        {
+            PdfPCell pdfPCellImage = new PdfPCell(image);
+            pdfPCellImage.BorderWidthTop = 1;
+            pdfPCellImage.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCellImage.BorderWidthBottom = 0;
+            pdfPCellImage.BorderWidthLeft = 0;
+            pdfPCellImage.BorderWidthRight = 0;
+            return pdfPCellImage;
+        }
+
+        public static PdfPCell GetiTextSharpCellImagenDegrade(Image image)
+        {
+            PdfPCell pdfPCellImage = new PdfPCell(image);
+            pdfPCellImage.BorderWidthTop = 1;
+            pdfPCellImage.BorderColorTop = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#dee2e6"));
+            pdfPCellImage.BorderWidthBottom = 0;
+            pdfPCellImage.BorderWidthLeft = 0;
+            pdfPCellImage.BorderWidthRight = 0;
+            pdfPCellImage.BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#DADDE0"));
+            return pdfPCellImage;
+        }
+
+        private static string GetiTextSharpFontCalibri()
+        {
+            return "Calibri";
+        }
+
+        private static string GetiTextSharpFontSegoeUI()
+        {
+            return "Segoe UI";
         }
         #endregion
 
@@ -433,8 +535,8 @@ namespace Business.Tool
 
         public static bool ValidateIsImageBase64String(string base64String)
         {
-            if (!base64String.Contains("data:image/bmp;base64") && !base64String.Contains("data:image/emf;base64") && !base64String.Contains("data:image/exif;base64") && !base64String.Contains("data:image/gif;base64") 
-                && !base64String.Contains("data:image/icon;base64") && !base64String.Contains("data:image/jpeg;base64") && !base64String.Contains("data:image/jpg;base64") && !base64String.Contains("data:image/png;base64") 
+            if (!base64String.Contains("data:image/bmp;base64") && !base64String.Contains("data:image/emf;base64") && !base64String.Contains("data:image/exif;base64") && !base64String.Contains("data:image/gif;base64")
+                && !base64String.Contains("data:image/icon;base64") && !base64String.Contains("data:image/jpeg;base64") && !base64String.Contains("data:image/jpg;base64") && !base64String.Contains("data:image/png;base64")
                 && !base64String.Contains("data:image/tiff;base64") && !base64String.Contains("data:image/wmf;base64"))
             {
                 return false;
@@ -443,6 +545,12 @@ namespace Business.Tool
             {
                 return true;
             }
+        }
+
+        public static bool ValidateTimeZoneInfo(string timeZoneInfoName)
+        {
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneInfoName);
+            return (timeZoneInfo != null);
         }
 
         #endregion
@@ -463,8 +571,40 @@ namespace Business.Tool
             return sb.ToString();
         }
 
+        public static DateTimeOffset ConvertDateTimeOffsetToTimeZone(DateTimeOffset dateTimeOffset, string timeZoneInfoName)
+        {
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneInfoName);
+            return TimeZoneInfo.ConvertTime(dateTimeOffset, timeZoneInfo);
+        }
+
         #endregion
 
+        #region Save
+
+        public static string SaveImage(string imgBase64String, string nameHero)
+        {
+            string path = $"{GetApplicationDirectory()}Contents\\Img\\{nameHero}.{GetFormatImgBase64String(imgBase64String)}";
+            byte[] image = Convert.FromBase64String(ReplaceConventionImageFromBase64String(imgBase64String));
+
+            if (File.Exists(@path))
+                DeleteFile(@path);
+
+            File.WriteAllBytes(@path, image);
+            path = path.Replace(GetApplicationDirectory(), "");
+            return path;
+        }
+
+        #endregion
+
+        #region Delete
+
+        public static void DeleteFile(string path)
+        {
+            File.Delete(@path);
+        }
+
+        #endregion
+        
         #region Replace
         public static string ReplaceConventionImageFromBase64String(string base64String)
         {

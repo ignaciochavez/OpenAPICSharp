@@ -316,11 +316,6 @@
             <Parameter Name="Phone" Mode="In" Type="String" />
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="SPListBiography" ReturnType="Collection(ComicModel.SPListBiography_Result)" />
-          <FunctionImport Name="SPListBiographyPaginated" ReturnType="Collection(ComicModel.SPListBiographyPaginated_Result)">
-            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="SPListContact" ReturnType="Collection(ComicModel.SPListContact_Result)" />
           <FunctionImport Name="SPListContactPaginated" ReturnType="Collection(ComicModel.SPListContactPaginated_Result)">
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
@@ -385,12 +380,17 @@
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPListUser" ReturnType="Collection(ComicModel.SPListUser_Result)">
-            <Parameter Name="TimeZoneInfoName" Mode="In" Type="String" />
+          <Parameter Name="TimeZoneInfoName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SPListUserPaginated" ReturnType="Collection(ComicModel.SPListUserPaginated_Result)">
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="TimeZoneInfoName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SPListBiography" ReturnType="Collection(ComicModel.SPListBiography_Result)" />
+          <FunctionImport Name="SPListBiographyPaginated" ReturnType="Collection(ComicModel.SPListBiographyPaginated_Result)">
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Biography">
@@ -513,22 +513,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="SPListBiography_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="FullName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Gender" Nullable="false" MaxLength="1" />
-          <Property Type="DateTime" Name="Appearance" Nullable="false" />
-          <Property Type="String" Name="Alias" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="Alias1" Nullable="false" MaxLength="200" />
-        </ComplexType>
-        <ComplexType Name="SPListBiographyPaginated_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="FullName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Gender" Nullable="false" MaxLength="1" />
-          <Property Type="DateTime" Name="Appearance" Nullable="false" />
-          <Property Type="String" Name="Alias" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="Alias1" Nullable="false" MaxLength="200" />
-        </ComplexType>
         <ComplexType Name="SPListContact_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
@@ -640,6 +624,22 @@
           <Property Type="Int32" Name="ContactId" Nullable="false" />
           <Property Type="Int32" Name="RoleId" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="SPListBiography_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="1" />
+          <Property Type="DateTime" Name="Appearance" Nullable="false" />
+          <Property Type="String" Name="Alias" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Publisher" Nullable="false" MaxLength="25" />
+        </ComplexType>
+        <ComplexType Name="SPListBiographyPaginated_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="1" />
+          <Property Type="DateTime" Name="Appearance" Nullable="false" />
+          <Property Type="String" Name="Alias" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Publisher" Nullable="false" MaxLength="25" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -720,30 +720,6 @@
           <FunctionImportMapping FunctionImportName="SPDeleteUser" FunctionName="ComicModel.Store.SPDeleteUser" />
           <FunctionImportMapping FunctionImportName="SPInsertHero" FunctionName="ComicModel.Store.SPInsertHero" />
           <FunctionImportMapping FunctionImportName="SPInsertUser" FunctionName="ComicModel.Store.SPInsertUser" />
-          <FunctionImportMapping FunctionImportName="SPListBiography" FunctionName="ComicModel.Store.SPListBiography">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ComicModel.SPListBiography_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Alias1" ColumnName="Alias1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SPListBiographyPaginated" FunctionName="ComicModel.Store.SPListBiographyPaginated">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ComicModel.SPListBiographyPaginated_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="Alias1" ColumnName="Alias1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SPListContact" FunctionName="ComicModel.Store.SPListContact">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ComicModel.SPListContact_Result">
@@ -906,6 +882,30 @@
                 <ScalarProperty Name="Registered" ColumnName="Registered" />
                 <ScalarProperty Name="ContactId" ColumnName="ContactId" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListBiography" FunctionName="ComicModel.Store.SPListBiography">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListBiography_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SPListBiographyPaginated" FunctionName="ComicModel.Store.SPListBiographyPaginated">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ComicModel.SPListBiographyPaginated_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Appearance" ColumnName="Appearance" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
