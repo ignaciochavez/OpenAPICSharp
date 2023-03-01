@@ -38,6 +38,12 @@ namespace Business.DAO
             return hero;
         }
 
+        public bool Exist(int id)
+        {
+            bool exist = ModelComic.ComicEntities.Hero.Any(o => o.Id == id);
+            return exist;
+        }
+
         public bool ExistByName(string name)
         {
             bool exist = ModelComic.ComicEntities.Hero.Any(o => o.Name == Useful.GetTitleCaseWords(name.Trim()));

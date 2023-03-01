@@ -99,6 +99,8 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
                 else if (biographyInsertDTO.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
+                else if (biographyInsertDTO.Gender.ToLower() != "m" && biographyInsertDTO.Gender.ToLower() != "f")
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
 
                 if (biographyInsertDTO.Appearance == null)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
@@ -109,8 +111,8 @@ namespace WebAPI.Controllers
 
                 if (!string.IsNullOrWhiteSpace(biographyInsertDTO.Alias))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
-                else if (biographyInsertDTO.Alias.Trim().Length > 200)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "200"));
+                else if (biographyInsertDTO.Alias.Trim().Length > 500)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
                 if (!string.IsNullOrWhiteSpace(biographyInsertDTO.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
@@ -179,6 +181,8 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
                 else if (biography.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
+                else if (biography.Gender.ToLower() != "m" && biography.Gender.ToLower() != "f")
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
 
                 if (biography.Appearance == null)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
@@ -189,8 +193,8 @@ namespace WebAPI.Controllers
 
                 if (!string.IsNullOrWhiteSpace(biography.Alias))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
-                else if (biography.Alias.Trim().Length > 200)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "200"));
+                else if (biography.Alias.Trim().Length > 500)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
                 if (!string.IsNullOrWhiteSpace(biography.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
@@ -373,32 +377,22 @@ namespace WebAPI.Controllers
 
                 if (biographySearchDTO.Id < 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "Id").Replace("{1}", "0"));
-
-                if (!string.IsNullOrWhiteSpace(biographySearchDTO.FullName))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "FullName"));
-                else if (biographySearchDTO.FullName.Trim().Length > 50)
+                
+                if (!string.IsNullOrWhiteSpace(biographySearchDTO.FullName) && biographySearchDTO.FullName.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "FullName").Replace("{1}", "50"));
-
-                if (!string.IsNullOrWhiteSpace(biographySearchDTO.Gender))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
-                else if (biographySearchDTO.Gender.Trim().Length > 1)
+                
+                if (!string.IsNullOrWhiteSpace(biographySearchDTO.Gender) && biographySearchDTO.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
-
-                if (biographySearchDTO.Appearance == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
-                if (!Useful.ValidateDateTimeOffset(biographySearchDTO.Appearance))
+                
+                if (biographySearchDTO.Appearance != null && !Useful.ValidateDateTimeOffset(biographySearchDTO.Appearance))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
-                else if (biographySearchDTO.Appearance > DateTimeOffset.Now)
+                else if (biographySearchDTO.Appearance != null && biographySearchDTO.Appearance > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
+                
+                if (!string.IsNullOrWhiteSpace(biographySearchDTO.Alias) && biographySearchDTO.Alias.Trim().Length > 500)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
-                if (!string.IsNullOrWhiteSpace(biographySearchDTO.Alias))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
-                else if (biographySearchDTO.Alias.Trim().Length > 200)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "200"));
-
-                if (!string.IsNullOrWhiteSpace(biographySearchDTO.Publisher))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
-                else if (biographySearchDTO.Publisher.Trim().Length > 25)
+                if (!string.IsNullOrWhiteSpace(biographySearchDTO.Publisher) && biographySearchDTO.Publisher.Trim().Length > 25)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Publisher").Replace("{1}", "25"));
                 
                 if (biographySearchDTO.Id == 0 && string.IsNullOrWhiteSpace(biographySearchDTO.FullName) && string.IsNullOrWhiteSpace(biographySearchDTO.Gender) && biographySearchDTO.Appearance == null

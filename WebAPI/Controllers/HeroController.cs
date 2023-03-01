@@ -97,8 +97,8 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(heroInsertDTO.Description))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Description"));
-                else if (heroInsertDTO.Description.Trim().Length > 255)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "255"));
+                else if (heroInsertDTO.Description.Trim().Length > 500)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "500"));
 
                 if (string.IsNullOrWhiteSpace(heroInsertDTO.ImageBase64String))
                 {
@@ -201,8 +201,8 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(heroUpdateDTO.Description))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Description"));
-                else if (heroUpdateDTO.Description.Trim().Length > 255)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "255"));
+                else if (heroUpdateDTO.Description.Trim().Length > 500)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "500"));
 
                 if (string.IsNullOrWhiteSpace(heroUpdateDTO.ImageBase64String))
                 {
@@ -232,6 +232,10 @@ namespace WebAPI.Controllers
                     messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
+
+                bool existHero = HeroImpl.Exist(heroUpdateDTO.Id);
+                if (!existHero)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Hero").Replace("{1}", "Id"));
 
                 bool existByNameAndNotSameEntity = HeroImpl.ExistByNameAndNotSameEntity(new HeroExistByNameAndNotSameEntityDTO(heroUpdateDTO.Id, heroUpdateDTO.Name));
                 if (existByNameAndNotSameEntity)
@@ -425,8 +429,8 @@ namespace WebAPI.Controllers
                 if (!string.IsNullOrWhiteSpace(heroSearchDTO.Name) && heroSearchDTO.Name.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Name").Replace("{1}", "50"));
 
-                if (!string.IsNullOrWhiteSpace(heroSearchDTO.Description) && heroSearchDTO.Description.Trim().Length > 255)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "255"));
+                if (!string.IsNullOrWhiteSpace(heroSearchDTO.Description) && heroSearchDTO.Description.Trim().Length > 500)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Description").Replace("{1}", "500"));
                 
                 if (heroSearchDTO.BiographyId < 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "BiographyId").Replace("{1}", "0"));

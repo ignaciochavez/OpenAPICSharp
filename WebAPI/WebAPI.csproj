@@ -137,6 +137,7 @@
     <Content Include="Contents\CSS\style.css" />
     <EmbeddedResource Include="Contents\CSS\swagger.css" />
     <Content Include="Contents\JS\useful.js" />
+    <Content Include="Contents\Img\*.*" />
     <Content Include="Contents\Useful\Messages.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -153,6 +154,7 @@
     <Compile Include="Configurations\WebApiConfig.cs" />
     <Compile Include="Controllers\BiographyController.cs" />
     <Compile Include="Controllers\CheckController.cs" />
+    <Compile Include="Controllers\ComicController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HeroController.cs" />
     <Compile Include="Controllers\PowerStatsController.cs" />
@@ -175,9 +177,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contents\Img\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj">
       <Project>{C83BBAEA-0727-43FD-88E9-F7B312570539}</Project>

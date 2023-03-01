@@ -252,19 +252,6 @@ namespace DataSource.Comic
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectHero_Result>("SPSelectHero", heroIdParameter);
         }
     
-        public virtual ObjectResult<SPSelectUser_Result> SPSelectUser(Nullable<int> userId, string timeZoneInfoName)
-        {
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
-                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
-                new ObjectParameter("TimeZoneInfoName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectUser_Result>("SPSelectUser", userIdParameter, timeZoneInfoNameParameter);
-        }
-    
         public virtual int SPUpdateHero(Nullable<int> heroId, string name, string description, string imagePath, Nullable<int> biographyId, string fullName, string gender, Nullable<System.DateTime> appearance, string alias, string publisher, Nullable<int> powerStatsId, Nullable<int> intelligence, Nullable<int> strength, Nullable<int> speed, Nullable<int> durability, Nullable<int> power, Nullable<int> combat)
         {
             var heroIdParameter = heroId.HasValue ?
@@ -429,6 +416,19 @@ namespace DataSource.Comic
                 new ObjectParameter("PageSize", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPListBiographyPaginated_Result>("SPListBiographyPaginated", pageIndexParameter, pageSizeParameter);
+        }
+    
+        public virtual ObjectResult<SPSelectUser_Result> SPSelectUser(Nullable<int> userId, string timeZoneInfoName)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var timeZoneInfoNameParameter = timeZoneInfoName != null ?
+                new ObjectParameter("TimeZoneInfoName", timeZoneInfoName) :
+                new ObjectParameter("TimeZoneInfoName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SPSelectUser_Result>("SPSelectUser", userIdParameter, timeZoneInfoNameParameter);
         }
     }
 }

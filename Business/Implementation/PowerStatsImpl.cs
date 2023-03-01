@@ -11,56 +11,54 @@ namespace Business.Implementation
 {
     public static class PowerStatsImpl
     {
-        private static PowerStatsDAO powerStatsDAO = new PowerStatsDAO();
-
         public static PowerStats Select(int id)
         {
-            return powerStatsDAO.Select(id);
+            return PowerStatsDAO.Instance.Select(id);
         }
 
         public static bool ExistById(int id)
         {
-            return powerStatsDAO.ExistById(id);
+            return PowerStatsDAO.Instance.ExistById(id);
         }
 
         public static int Insert(PowerStatsInsertDTO powerStatsInsertDTO)
         {
-            return powerStatsDAO.Insert(powerStatsInsertDTO);
+            return PowerStatsDAO.Instance.Insert(powerStatsInsertDTO);
         }
 
         public static bool Update(PowerStats powerStats)
         {
-            return powerStatsDAO.Update(powerStats);
+            return PowerStatsDAO.Instance.Update(powerStats);
         }
 
         public static bool Delete(int id)
         {
-            return powerStatsDAO.Delete(id);
+            return PowerStatsDAO.Instance.Delete(id);
         }
 
         public static List<PowerStats> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
-            return powerStatsDAO.ListPaginated(listPaginatedDTO);
+            return PowerStatsDAO.Instance.ListPaginated(listPaginatedDTO);
         }
 
         public static long TotalRecords()
         {
-            return powerStatsDAO.TotalRecords();
+            return PowerStatsDAO.Instance.TotalRecords();
         }
 
         public static List<PowerStats> Search(PowerStatsSearchDTO powerStatsSearchDTO)
         {
-            return powerStatsDAO.Search(powerStatsSearchDTO);
+            return PowerStatsDAO.Instance.Search(powerStatsSearchDTO);
         }
 
         public static FileDTO Excel(string timeZoneInfoName)
         {
-            return powerStatsDAO.Excel(timeZoneInfoName);
+            return PowerStatsDAO.Instance.Excel(timeZoneInfoName);
         }
 
         public static FileDTO PDF(string timeZoneInfoName)
         {
-            return powerStatsDAO.PDF(timeZoneInfoName);
+            return PowerStatsDAO.Instance.PDF(timeZoneInfoName);
         }
     }
 }

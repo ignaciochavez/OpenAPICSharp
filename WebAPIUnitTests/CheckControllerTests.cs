@@ -10,14 +10,15 @@ namespace WebAPIUnitTests
 {
     [TestClass]
     public class CheckControllerTests
-    {                
+    {
+        CheckController checkController = new CheckController();
+        
         /// <summary>
         /// Verificar que el metodo api/check/check funciona correctamente
         /// </summary>
         [TestMethod]
         public void CheckControllerCheckMethodIsCorrect()
         {
-            CheckController checkController = new CheckController();
             NegotiatedContentResult<MessageVO> checkMethod = checkController.Check() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkMethod);
             Assert.AreEqual(HttpStatusCode.OK, checkMethod.StatusCode);
@@ -30,7 +31,6 @@ namespace WebAPIUnitTests
         [TestMethod]
         public void CheckControllerCheckAuthMethodIsCorrect()
         {
-            CheckController checkController = new CheckController();
             NegotiatedContentResult<MessageVO> checkAuthMethod = checkController.CheckAuth() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkAuthMethod);
             Assert.AreEqual(HttpStatusCode.OK, checkAuthMethod.StatusCode);

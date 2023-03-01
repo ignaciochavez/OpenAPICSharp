@@ -271,6 +271,10 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
+                bool existUser = UserImpl.Exist(userUpdateDTO.Id);
+                if (!existUser)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "User").Replace("{1}", "Id"));
+
                 bool existUserByRutAndNotSameEntity = UserImpl.ExistByRutAndNotSameEntity(new UserExistByRutAndNotSameEntityDTO(userUpdateDTO.Id, userUpdateDTO.Rut));
                 if (existUserByRutAndNotSameEntity)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "User").Replace("{1}", "Rut").Replace("{2}", "User"));

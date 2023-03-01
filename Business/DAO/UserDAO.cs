@@ -18,6 +18,14 @@ namespace Business.DAO
 {
     public class UserDAO : IUser
     {
+        public static UserDAO Instance
+        {
+            get
+            {
+                return new UserDAO();
+            }
+        }
+
         public UserDAO()
         {
 
@@ -28,6 +36,12 @@ namespace Business.DAO
             var entity = ModelComic.ComicEntities.User.SqlQuery("SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE [Id] = @Id", new SqlParameter("Id", userSelectDTO.Id), new SqlParameter("TimeZoneInfoName", userSelectDTO.TimeZoneInfoName)).FirstOrDefault();
             Entity.User user = (entity != null) ? new Entity.User(entity.Id, entity.Rut, entity.Name, entity.LastName, entity.BirthDate, entity.Active, entity.Registered, entity.ContactId, entity.RoleId) : null;
             return user;
+        }
+
+        public bool Exist(int id)
+        {
+            bool exist = ModelComic.ComicEntities.User.Any(o => o.Id == id);
+            return exist;
         }
 
         public bool ExistByRut(string rut)
@@ -375,7 +389,7 @@ namespace Business.DAO
                             pdfPCellLastName = Useful.GetiTextSharpCellTableBodyDegrade(item.LastName);
                             pdfPCellBirthDate = Useful.GetiTextSharpCellTableBodyDegrade(item.BirthDate.ToString("yyyy-MM-dd"));
                             pdfPCellActive = Useful.GetiTextSharpCellTableBodyDegrade(((item.Active) ? "VERDADERO" : "FALSO"));
-                            pdfPCellRegistered = Useful.GetiTextSharpCellTableBodyDegrade(item.Registered.ToString("yyyy-MM-dd HH:mm:sszzz"));
+                            pdfPCellRegistered = Useful.GetiTextSharpCellTableBodyDegrade(Useful.ConvertDateTimeOffsetToTimeZone(item.Registered, timeZoneInfoName).ToString("yyyy-MM-dd HH:mm:sszzz"));
                             pdfPCellContactId = Useful.GetiTextSharpCellTableBodyDegrade(item.ContactId.ToString());
                             pdfPCellRoleId = Useful.GetiTextSharpCellTableBodyDegrade(item.RoleId.ToString());
                         }
@@ -387,7 +401,7 @@ namespace Business.DAO
                             pdfPCellLastName = Useful.GetiTextSharpCellTableBody(item.LastName);
                             pdfPCellBirthDate = Useful.GetiTextSharpCellTableBody(item.BirthDate.ToString("yyyy-MM-dd"));
                             pdfPCellActive = Useful.GetiTextSharpCellTableBody(((item.Active) ? "VERDADERO" : "FALSO"));
-                            pdfPCellRegistered = Useful.GetiTextSharpCellTableBody(item.Registered.ToString("yyyy-MM-dd HH:mm:sszzz"));
+                            pdfPCellRegistered = Useful.GetiTextSharpCellTableBody(Useful.ConvertDateTimeOffsetToTimeZone(item.Registered, timeZoneInfoName).ToString("yyyy-MM-dd HH:mm:sszzz"));
                             pdfPCellContactId = Useful.GetiTextSharpCellTableBody(item.ContactId.ToString());
                             pdfPCellRoleId = Useful.GetiTextSharpCellTableBody(item.RoleId.ToString());
                         }

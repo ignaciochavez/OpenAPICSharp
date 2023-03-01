@@ -16,6 +16,11 @@ namespace Business.Implementation
             return HeroDAO.Instance.Select(id);
         }
 
+        public static bool Exist(int id)
+        {
+            return HeroDAO.Instance.Exist(id);
+        }
+
         public static bool ExistByName(string name)
         {
             return HeroDAO.Instance.ExistByName(name);

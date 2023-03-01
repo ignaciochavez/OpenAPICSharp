@@ -11,65 +11,63 @@ namespace Business.Implementation
 {
     public static class RoleImpl
     {
-        private static RoleDAO roleDAO = new RoleDAO();
-
         public static Role Select(int id)
         {
-            return roleDAO.Select(id);
+            return RoleDAO.Instance.Select(id);
         }
 
         public static bool ExistById(int id)
         {
-            return roleDAO.ExistById(id);
+            return RoleDAO.Instance.ExistById(id);
         }
 
         public static bool ExistByName(string name)
         {
-            return roleDAO.ExistByName(name);
+            return RoleDAO.Instance.ExistByName(name);
         }
 
         public static int Insert(string name)
         {
-            return roleDAO.Insert(name);
+            return RoleDAO.Instance.Insert(name);
         }
 
         public static bool Update(Role role)
         {
-            return roleDAO.Update(role);
+            return RoleDAO.Instance.Update(role);
         }
 
         public static bool Delete(int id)
         {
-            return roleDAO.Delete(id);
+            return RoleDAO.Instance.Delete(id);
         }
         
         public static List<Role> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
-            return roleDAO.ListPaginated(listPaginatedDTO);
+            return RoleDAO.Instance.ListPaginated(listPaginatedDTO);
         }
 
         public static long TotalRecords()
         {
-            return roleDAO.TotalRecords();
+            return RoleDAO.Instance.TotalRecords();
         }
         public static List<Role> Search(RoleSearchDTO roleSearchDTO)
         {
-            return roleDAO.Search(roleSearchDTO);
+            return RoleDAO.Instance.Search(roleSearchDTO);
         }
 
         public static bool ExistByNameAndNotSameEntity(Role role)
         {
-            return roleDAO.ExistByNameAndNotSameEntity(role);
+            return RoleDAO.Instance.ExistByNameAndNotSameEntity(role);
         }
 
         public static FileDTO Excel(string timeZoneInfoName)
         {
-            return roleDAO.Excel(timeZoneInfoName);
+            return RoleDAO.Instance.Excel(timeZoneInfoName);
         }
 
         public static FileDTO PDF(string timeZoneInfoName)
         {
-            return roleDAO.PDF(timeZoneInfoName);
+            return RoleDAO.Instance.PDF(timeZoneInfoName);
         }
     }
 }

@@ -24,6 +24,6 @@ namespace DataSource.Comic
         public string Email { get; set; }
         public string Phone { get; set; }
         public Nullable<int> RoleId { get; set; }
-        public string Name1 { get; set; }
+        public string RoleName { get; set; }
     }
 }

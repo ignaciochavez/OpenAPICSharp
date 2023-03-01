@@ -75,12 +75,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\BiographyDAO.cs" />
+    <Compile Include="DAO\ComicDAO.cs" />
     <Compile Include="DAO\ContactDAO.cs" />
     <Compile Include="DAO\HeroDAO.cs" />
     <Compile Include="DAO\PowerStatsDAO.cs" />
     <Compile Include="DAO\RoleDAO.cs" />
     <Compile Include="DAO\UserDAO.cs" />
     <Compile Include="DTO\BiographyDTO.cs" />
+    <Compile Include="DTO\ComicDTO.cs" />
     <Compile Include="DTO\ContactDTO.cs" />
     <Compile Include="DTO\HeroDTO.cs" />
     <Compile Include="DTO\PowerStatsDTO.cs" />
@@ -88,18 +90,21 @@
     <Compile Include="DTO\UsefulDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Entity\Biography.cs" />
+    <Compile Include="Entity\Comic.cs" />
     <Compile Include="Entity\Contact.cs" />
     <Compile Include="Entity\Hero.cs" />
     <Compile Include="Entity\PowerStats.cs" />
     <Compile Include="Entity\Role.cs" />
     <Compile Include="Entity\User.cs" />
     <Compile Include="Implementation\BiographyImpl.cs" />
+    <Compile Include="Implementation\ComicImpl.cs" />
     <Compile Include="Implementation\ContactImpl.cs" />
     <Compile Include="Implementation\HeroImpl.cs" />
     <Compile Include="Implementation\PowerStatsImpl.cs" />
     <Compile Include="Implementation\RoleImpl.cs" />
     <Compile Include="Implementation\UserImpl.cs" />
     <Compile Include="Interface\IBiography.cs" />
+    <Compile Include="Interface\IComic.cs" />
     <Compile Include="Interface\IContact.cs" />
     <Compile Include="Interface\IHero.cs" />
     <Compile Include="Interface\IPowerStats.cs" />

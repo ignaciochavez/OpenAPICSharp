@@ -19,6 +19,14 @@ namespace Business.DAO
 {
     public class RoleDAO : IRole
     {
+        public static RoleDAO Instance
+        {
+            get
+            {
+                return new RoleDAO();
+            }
+        }
+
         public RoleDAO()
         {
 

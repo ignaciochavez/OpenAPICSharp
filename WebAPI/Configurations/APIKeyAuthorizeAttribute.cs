@@ -13,7 +13,7 @@ namespace WebAPI
     /// APIKeyAuthAttribute
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class APIKeyAuthAttribute : AuthorizationFilterAttribute
+    public class APIKeyAuthorizeAttribute : AuthorizationFilterAttribute
     {
         private MessageVO messageVO = new MessageVO();
         private ContentHTML contentHTML = new ContentHTML();

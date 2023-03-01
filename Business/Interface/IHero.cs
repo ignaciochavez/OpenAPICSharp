@@ -11,6 +11,7 @@ namespace Business.Interface
     public interface IHero
     {
         Hero Select(int id);
+        bool Exist(int id);
         bool ExistByName(string name);
         int Insert(HeroInsertDTO heroInsertDTO);
         bool Update(HeroUpdateDTO heroUpdateDTO);

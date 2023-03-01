@@ -18,6 +18,14 @@ namespace Business.DAO
 {
     public class ContactDAO : IContact
     {
+        public static ContactDAO Instance
+        {
+            get
+            {
+                return new ContactDAO();
+            }
+        }
+
         public ContactDAO()
         {
 

@@ -18,6 +18,14 @@ namespace Business.DAO
 {
     public class BiographyDAO : IBiography
     {
+        public static BiographyDAO Instance
+        {
+            get
+            {
+                return new BiographyDAO();
+            }
+        }
+
         public BiographyDAO()
         {
 
@@ -40,7 +48,7 @@ namespace Business.DAO
         {
             Biography biography = new Biography();
             biography.FullName = biographyInsertDTO.FullName;
-            biography.Gender = biographyInsertDTO.Gender;
+            biography.Gender = biographyInsertDTO.Gender.ToUpper();
             biography.Appearance = biographyInsertDTO.Appearance;
             biography.Alias = biographyInsertDTO.Alias;
             biography.Publisher = biographyInsertDTO.Publisher;
@@ -55,7 +63,7 @@ namespace Business.DAO
             if (entity != null)
             {
                 entity.FullName = biography.FullName;
-                entity.Gender = biography.Gender;
+                entity.Gender = biography.Gender.ToUpper();
                 entity.Appearance = biography.Appearance;
                 entity.Alias = biography.Alias;
                 entity.Publisher = biography.Publisher;

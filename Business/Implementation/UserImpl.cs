@@ -11,60 +11,64 @@ namespace Business.Implementation
 {
     public static class UserImpl
     {
-        private static UserDAO userDAO = new UserDAO();
         public static User Select(UserSelectDTO userSelectDTO)
         {
-            return userDAO.Select(userSelectDTO);
+            return UserDAO.Instance.Select(userSelectDTO);
+        }
+
+        public static bool Exist(int id)
+        {
+            return UserDAO.Instance.Exist(id);
         }
 
         public static bool ExistByRut(string rut)
         {
-            return userDAO.ExistByRut(rut);
+            return UserDAO.Instance.ExistByRut(rut);
         }
 
         public static int Insert(UserInsertDTO userInsertDTO)
         {
-            return userDAO.Insert(userInsertDTO);
+            return UserDAO.Instance.Insert(userInsertDTO);
         }
 
         public static bool Update(UserUpdateDTO userUpdateDTO)
         {
-            return userDAO.Update(userUpdateDTO);
+            return UserDAO.Instance.Update(userUpdateDTO);
         }
 
         public static bool Delete(int id)
         {
-            return userDAO.Delete(id);
+            return UserDAO.Instance.Delete(id);
         }
         
         public static List<User> ListPaginated(UserListPaginatedDTO userListPaginatedDTO)
         {
-            return userDAO.ListPaginated(userListPaginatedDTO);
+            return UserDAO.Instance.ListPaginated(userListPaginatedDTO);
         }
 
         public static long TotalRecords()
         {
-            return userDAO.TotalRecords();
+            return UserDAO.Instance.TotalRecords();
         }
 
         public static List<User> Search(UserSearchDTO userSearchDTO)
         {
-            return userDAO.Search(userSearchDTO);
+            return UserDAO.Instance.Search(userSearchDTO);
         }
 
         public static bool ExistByRutAndNotSameEntity(UserExistByRutAndNotSameEntityDTO userExistByRutAndNotSameEntityDTO)
         {
-            return userDAO.ExistByRutAndNotSameEntity(userExistByRutAndNotSameEntityDTO);
+            return UserDAO.Instance.ExistByRutAndNotSameEntity(userExistByRutAndNotSameEntityDTO);
         }
 
         public static FileDTO Excel(string timeZoneInfoName)
         {
-            return userDAO.Excel(timeZoneInfoName);
+            return UserDAO.Instance.Excel(timeZoneInfoName);
         }
 
         public static FileDTO PDF(string timeZoneInfoName)
         {
-            return userDAO.PDF(timeZoneInfoName);
+            return UserDAO.Instance.PDF(timeZoneInfoName);
         }
     }
 }

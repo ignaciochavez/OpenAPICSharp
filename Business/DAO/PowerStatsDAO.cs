@@ -18,6 +18,14 @@ namespace Business.DAO
 {
     public class PowerStatsDAO : IPowerStats
     {
+        public static PowerStatsDAO Instance
+        {
+            get
+            {
+                return new PowerStatsDAO();
+            }
+        }
+
         public PowerStatsDAO()
         {
 

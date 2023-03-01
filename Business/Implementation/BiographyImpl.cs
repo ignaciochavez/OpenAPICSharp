@@ -11,56 +11,54 @@ namespace Business.Implementation
 {
     public static class BiographyImpl
     {
-        private static BiographyDAO biographyDAO = new BiographyDAO();
-
         public static Biography Select(int id)
         {
-            return biographyDAO.Select(id);
+            return BiographyDAO.Instance.Select(id);
         }
 
         public static bool ExistById(int id)
         {
-            return biographyDAO.ExistById(id);
+            return BiographyDAO.Instance.ExistById(id);
         }
 
         public static int Insert(BiographyInsertDTO biographyInsertDTO)
         {
-            return biographyDAO.Insert(biographyInsertDTO);
+            return BiographyDAO.Instance.Insert(biographyInsertDTO);
         }
 
         public static bool Update(Biography biography)
         {
-            return biographyDAO.Update(biography);
+            return BiographyDAO.Instance.Update(biography);
         }
 
         public static bool Delete(int id)
         {
-            return biographyDAO.Delete(id);
+            return BiographyDAO.Instance.Delete(id);
         }
 
         public static List<Biography> ListPaginated(ListPaginatedDTO listPaginatedDTO)
         {
-            return biographyDAO.ListPaginated(listPaginatedDTO);
+            return BiographyDAO.Instance.ListPaginated(listPaginatedDTO);
         }
 
         public static long TotalRecords()
         {
-            return biographyDAO.TotalRecords();
+            return BiographyDAO.Instance.TotalRecords();
         }
 
         public static List<Biography> Search(BiographySearchDTO biographySearchDTO)
         {
-            return biographyDAO.Search(biographySearchDTO);
+            return BiographyDAO.Instance.Search(biographySearchDTO);
         }
 
         public static FileDTO Excel(string timeZoneInfoName)
         {
-            return biographyDAO.Excel(timeZoneInfoName);
+            return BiographyDAO.Instance.Excel(timeZoneInfoName);
         }
 
         public static FileDTO PDF(string timeZoneInfoName)
         {
-            return biographyDAO.PDF(timeZoneInfoName);
+            return BiographyDAO.Instance.PDF(timeZoneInfoName);
         }
     }
 }

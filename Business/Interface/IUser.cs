@@ -11,6 +11,8 @@ namespace Business.Interface
     public interface IUser
     {
         User Select(UserSelectDTO userSelectDTO);
+        bool Exist(int id);
+        bool ExistByRut(string rut);
         int Insert(UserInsertDTO userInsertDTO);
         bool Update(UserUpdateDTO userUpdateDTO);
         bool Delete(int id);
