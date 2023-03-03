@@ -26,14 +26,26 @@ namespace WebAPIUnitTests
         }
 
         /// <summary>
-        /// Verificar que el metodo api/check/checkauth funciona correctamente
+        /// Verificar que el metodo api/check/checkapikeyauthorize funciona correctamente
         /// </summary>
         [TestMethod]
-        public void CheckControllerCheckAuthMethodIsCorrect()
+        public void CheckControllerCheckAPIKeyAuthorizeMethodIsCorrect()
         {
-            NegotiatedContentResult<MessageVO> checkAuthMethod = checkController.CheckAuth() as NegotiatedContentResult<MessageVO>;
+            NegotiatedContentResult<MessageVO> checkAuthMethod = checkController.CheckAPIKeyAuthorize() as NegotiatedContentResult<MessageVO>;
             Assert.IsNotNull(checkAuthMethod);
             Assert.AreEqual(HttpStatusCode.OK, checkAuthMethod.StatusCode);
+            checkController.Dispose();
+        }
+
+        /// <summary>
+        /// Verificar que el metodo api/check/checktokenauthorize funciona correctamente
+        /// </summary>
+        [TestMethod]
+        public void CheckControllerCheckTokenAuthorizeMethodIsCorrect()
+        {
+            NegotiatedContentResult<MessageVO> checkTokenAuthorizeMethod = checkController.CheckTokenAuthorize() as NegotiatedContentResult<MessageVO>;
+            Assert.IsNotNull(checkTokenAuthorizeMethod);
+            Assert.AreEqual(HttpStatusCode.OK, checkTokenAuthorizeMethod.StatusCode);
             checkController.Dispose();
         }
     }
