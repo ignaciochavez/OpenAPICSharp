@@ -46,41 +46,52 @@ namespace Business.DAO
 
         public int Insert(BiographyInsertDTO biographyInsertDTO)
         {
+            int isInsert = 0;
             Biography biography = new Biography();
-            biography.FullName = biographyInsertDTO.FullName;
-            biography.Gender = biographyInsertDTO.Gender.ToUpper();
+            biography.FullName = Useful.GetTitleCaseWords(biographyInsertDTO.FullName.Trim());
+            biography.Gender = biographyInsertDTO.Gender.Trim().ToUpper();
             biography.Appearance = biographyInsertDTO.Appearance;
-            biography.Alias = biographyInsertDTO.Alias;
-            biography.Publisher = biographyInsertDTO.Publisher;
-            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            biography.Alias = biographyInsertDTO.Alias.Trim();
+            biography.Publisher = biographyInsertDTO.Publisher.Trim();
+            using (var context = ModelComic.ComicEntities)
+            {
+                context.Biography.Add(biography);
+                isInsert = context.SaveChanges();
+            }
             return (isInsert > 0) ? biography.Id : 0;
         }
 
         public bool Update(Entity.Biography biography)
         {
             int isUpdate = 0;
-            Biography entity = ModelComic.ComicEntities.Biography.FirstOrDefault(o => o.Id == biography.Id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                entity.FullName = biography.FullName;
-                entity.Gender = biography.Gender.ToUpper();
-                entity.Appearance = biography.Appearance;
-                entity.Alias = biography.Alias;
-                entity.Publisher = biography.Publisher;
-                isUpdate = ModelComic.ComicEntities.SaveChanges();
-            }
+                Biography entity = context.Biography.FirstOrDefault(o => o.Id == biography.Id);
+                if (entity != null)
+                {
+                    entity.FullName = Useful.GetTitleCaseWords(biography.FullName.Trim());
+                    entity.Gender = biography.Gender.Trim().ToUpper();
+                    entity.Appearance = biography.Appearance;
+                    entity.Alias = biography.Alias.Trim();
+                    entity.Publisher = biography.Publisher.Trim();
+                    isUpdate = context.SaveChanges();
+                }
+            }            
             return (isUpdate > 0);
         }
 
         public bool Delete(int id)
         {
             int isDelete = 0;
-            Biography entity = ModelComic.ComicEntities.Biography.FirstOrDefault(o => o.Id == id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                ModelComic.ComicEntities.Biography.Remove(entity);
-                isDelete = ModelComic.ComicEntities.SaveChanges();
-            }
+                Biography entity = context.Biography.FirstOrDefault(o => o.Id == id);
+                if (entity != null)
+                {
+                    context.Biography.Remove(entity);
+                    isDelete = context.SaveChanges();
+                }
+            }            
             return (isDelete > 0);
         }
 
@@ -120,7 +131,7 @@ namespace Business.DAO
             whereClause = ((biographySearchDTO.Id > 0) ? "[Id] = @Id" : string.Empty);
             whereClause += ((!string.IsNullOrWhiteSpace(biographySearchDTO.FullName)) ? ((whereClause.Length > 0) ? " AND [FullName] LIKE '%' + @FullName + '%'" : "[FullName] LIKE '%' + @FullName + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrWhiteSpace(biographySearchDTO.Gender)) ? ((whereClause.Length > 0) ? " AND [Gender] LIKE '%' + @Gender + '%'" : "[Gender] LIKE '%' + @Gender + '%'") : string.Empty);
-            whereClause += ((biographySearchDTO.Appearance != null && Useful.ValidateDateTimeOffset(biographySearchDTO.Appearance) && biographySearchDTO.Appearance < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND [Appearance] LIKE '%' + CONVERT(VARCHAR(10), @Appearance, 23) + '%'" : "[Appearance] LIKE '%' + CONVERT(VARCHAR(10), @Appearance, 23) + '%'") : string.Empty);
+            whereClause += ((Useful.ValidateDateTime(biographySearchDTO.Appearance)) ? ((whereClause.Length > 0) ? " AND [Appearance] LIKE '%' + CONVERT(VARCHAR(10), @Appearance, 23) + '%'" : "[Appearance] LIKE '%' + CONVERT(VARCHAR(10), @Appearance, 23) + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrWhiteSpace(biographySearchDTO.Alias)) ? ((whereClause.Length > 0) ? " AND [Alias] LIKE '%' + @Alias + '%'" : "[Alias] LIKE '%' + @Alias + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrWhiteSpace(biographySearchDTO.Publisher)) ? ((whereClause.Length > 0) ? " AND [Publisher] LIKE '%' + @Publisher + '%'" : "[Publisher] LIKE '%' + @Publisher + '%'") : string.Empty);
             string paginatedClause = $"ORDER BY [Id] DESC OFFSET {(biographySearchDTO.ListPaginatedDTO.PageIndex - 1) * biographySearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {biographySearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
@@ -132,7 +143,7 @@ namespace Business.DAO
                 parameters.Add(new SqlParameter("FullName", biographySearchDTO.FullName));
             if (!string.IsNullOrWhiteSpace(biographySearchDTO.Gender))
                 parameters.Add(new SqlParameter("Gender", biographySearchDTO.Gender));
-            if (biographySearchDTO.Appearance != null && Useful.ValidateDateTimeOffset(biographySearchDTO.Appearance) && biographySearchDTO.Appearance < DateTimeOffset.Now)
+            if (Useful.ValidateDateTime(biographySearchDTO.Appearance))
                 parameters.Add(new SqlParameter("Appearance", biographySearchDTO.Appearance.Date));
             if (!string.IsNullOrWhiteSpace(biographySearchDTO.Alias))
                 parameters.Add(new SqlParameter("Alias", biographySearchDTO.Alias));
@@ -140,7 +151,7 @@ namespace Business.DAO
                 parameters.Add(new SqlParameter("Publisher", biographySearchDTO.Publisher));
 
             List<Entity.Biography> list = new List<Entity.Biography>();
-            List<Biography> entities = ModelComic.ComicEntities.Biography.SqlQuery($"SELECT [Id], [FullName], [Gender], [Appearance], [Alias], [Publisher] FROM [dbo].[PowerStats] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            List<Biography> entities = ModelComic.ComicEntities.Biography.SqlQuery($"SELECT [Id], [FullName], [Gender], [Appearance], [Alias], [Publisher] FROM [dbo].[Biography] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
             foreach (var item in entities)
             {
                 Entity.Biography entity = new Entity.Biography(item.Id, item.FullName, item.Gender, item.Appearance, item.Alias, item.Publisher);

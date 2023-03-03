@@ -1,4 +1,5 @@
-﻿using Business.Tool;
+﻿using Business.Implementation;
+using Business.Tool;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace WebAPI.Configurations
+namespace WebAPI
 {
     /// <summary>
     /// TokenAuthorizeAttribute
@@ -71,8 +72,37 @@ namespace WebAPI.Configurations
                         IssuerSigningKey = symmetricSecurityKey
                     };
 
-                    Thread.CurrentPrincipal = jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-                    HttpContext.Current.User = jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+                    jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+                    
+                    var user = UserImpl.SelectByRut(TokenConfig.GetRutUserToken(actionContext));
+                    if (user == null)
+                    {
+                        messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
+                    }
+                    else
+                    {
+                        var role = RoleImpl.Select(user.RoleId);
+                        if (role == null)
+                        {
+                            messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
+                            actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
+                        }
+                        else
+                        {
+                            string url = actionContext.Request.RequestUri.AbsolutePath.ToLower();
+                            if (url.Contains("insert") && role.Name.ToLower() == "editor" || url.Contains("delete") && role.Name.ToLower() == "editor")
+                            {
+                                messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
+                                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
+                            }
+                            else if (url.Contains("insert") && role.Name.ToLower() == "user" || url.Contains("update") && role.Name.ToLower() == "user" || url.Contains("delete") && role.Name.ToLower() == "user")
+                            {
+                                messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
+                                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
+                            }
+                        }
+                    }
                 }
             }
             catch (SecurityTokenValidationException)

@@ -46,48 +46,60 @@ namespace Business.DAO
 
         public bool ExistByName(string name)
         {
-            bool exist = ModelComic.ComicEntities.Hero.Any(o => o.Name == Useful.GetTitleCaseWords(name.Trim()));
+            bool exist = ModelComic.ComicEntities.Hero.Any(o => o.Name == name.Trim());
             return exist;
         }
 
         public int Insert(HeroInsertDTO heroInsertDTO)
         {
+            int isInsert = 0;
             Hero hero = new Hero();
             hero.Name = Useful.GetTitleCaseWords(heroInsertDTO.Name.Trim());
             hero.Description = heroInsertDTO.Description.Trim();
             hero.ImagePath = Useful.SaveImage(heroInsertDTO.ImageBase64String.Trim(), heroInsertDTO.Name);
             hero.BiographyId = heroInsertDTO.BiographyId;
             hero.PowerStatsId = heroInsertDTO.PowerStatsId;
-            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            using (var context = ModelComic.ComicEntities)
+            {
+                context.Hero.Add(hero);
+                isInsert = context.SaveChanges();
+            }
             return (isInsert > 0) ? hero.Id : 0;
         }
 
         public bool Update(HeroUpdateDTO heroUpdateDTO)
         {
             int isUpdate = 0;
-            Hero entity = ModelComic.ComicEntities.Hero.FirstOrDefault(o => o.Id == heroUpdateDTO.Id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                entity.Name = Useful.GetTitleCaseWords(heroUpdateDTO.Name.Trim());
-                entity.Description = heroUpdateDTO.Description.Trim();
-                entity.ImagePath = Useful.SaveImage(heroUpdateDTO.ImageBase64String.Trim(), heroUpdateDTO.Name);
-                entity.BiographyId = heroUpdateDTO.BiographyId;
-                entity.PowerStatsId = heroUpdateDTO.PowerStatsId;
-                isUpdate = ModelComic.ComicEntities.SaveChanges();
-            }
+                Hero entity = context.Hero.FirstOrDefault(o => o.Id == heroUpdateDTO.Id);
+                if (entity != null)
+                {
+                    Useful.DeleteFile($"{Useful.GetApplicationDirectory()}{entity.ImagePath}");
+                    entity.Name = Useful.GetTitleCaseWords(heroUpdateDTO.Name.Trim());
+                    entity.Description = heroUpdateDTO.Description.Trim();                    
+                    entity.ImagePath = Useful.SaveImage(heroUpdateDTO.ImageBase64String.Trim(), heroUpdateDTO.Name);
+                    entity.BiographyId = heroUpdateDTO.BiographyId;
+                    entity.PowerStatsId = heroUpdateDTO.PowerStatsId;
+                    isUpdate = context.SaveChanges();
+                }
+            }            
             return (isUpdate > 0);
         }
 
         public bool Delete(int id)
         {
             int isDelete = 0;
-            Hero entity = ModelComic.ComicEntities.Hero.FirstOrDefault(o => o.Id == id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                ModelComic.ComicEntities.Hero.Remove(entity);
-                Useful.DeleteFile($"{Useful.GetApplicationDirectory()}{entity.ImagePath}");
-                isDelete = ModelComic.ComicEntities.SaveChanges();
-            }
+                Hero entity = context.Hero.FirstOrDefault(o => o.Id == id);
+                if (entity != null)
+                {
+                    Useful.DeleteFile($"{Useful.GetApplicationDirectory()}{entity.ImagePath}");
+                    context.Hero.Remove(entity);
+                    isDelete = context.SaveChanges();
+                }
+            }            
             return (isDelete > 0);
         }
 
@@ -156,7 +168,13 @@ namespace Business.DAO
 
         public bool ExistByNameAndNotSameEntity(HeroExistByNameAndNotSameEntityDTO heroExistByNameAndNotSameEntityDTO)
         {
-            bool exist = ModelComic.ComicEntities.Hero.Any(o => o.Id != heroExistByNameAndNotSameEntityDTO.Id && o.Name == heroExistByNameAndNotSameEntityDTO.Name);
+            bool exist = false;
+            if (ModelComic.ComicEntities.Hero.Any(o => o.Id == heroExistByNameAndNotSameEntityDTO.Id))
+            {
+                List<Hero> list = ModelComic.ComicEntities.Hero.Where(o => o.Name == heroExistByNameAndNotSameEntityDTO.Name).ToList();
+                if (list != null && list.Count > 0)
+                    exist = list.Any(o => o.Id != heroExistByNameAndNotSameEntityDTO.Id);
+            }
             return exist;
         }
 

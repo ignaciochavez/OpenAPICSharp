@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataSource.Comic
 {
-    public static class ModelComic
+    public class ModelComic
     {
         public static ComicEntities ComicEntities
         {

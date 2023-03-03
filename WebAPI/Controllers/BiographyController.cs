@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -66,7 +65,7 @@ namespace WebAPI.Controllers
         ///     {
         ///        "FullName": "Ignacio Chavez",
         ///        "Gender": "M",
-        ///        "Appearance": 2023-02-18T00:00:00.0000000-03:00,
+        ///        "Appearance": 2023-02-18T00:00:00.0000000+00:00,
         ///        "Alias": "Nacho",
         ///        "Publisher": "Marvel Comics"
         ///     }
@@ -90,31 +89,29 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                if (!string.IsNullOrWhiteSpace(biographyInsertDTO.FullName))
+                if (string.IsNullOrWhiteSpace(biographyInsertDTO.FullName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "FullName"));
                 else if (biographyInsertDTO.FullName.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "FullName").Replace("{1}", "50"));
 
-                if (!string.IsNullOrWhiteSpace(biographyInsertDTO.Gender))
+                if (string.IsNullOrWhiteSpace(biographyInsertDTO.Gender))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
                 else if (biographyInsertDTO.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
                 else if (biographyInsertDTO.Gender.ToLower() != "m" && biographyInsertDTO.Gender.ToLower() != "f")
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
-
-                if (biographyInsertDTO.Appearance == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
-                if (!Useful.ValidateDateTimeOffset(biographyInsertDTO.Appearance))
+                
+                if (!Useful.ValidateDateTime(biographyInsertDTO.Appearance))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
-                else if (biographyInsertDTO.Appearance > DateTimeOffset.Now)
+                else if (biographyInsertDTO.Appearance > DateTime.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
 
-                if (!string.IsNullOrWhiteSpace(biographyInsertDTO.Alias))
+                if (string.IsNullOrWhiteSpace(biographyInsertDTO.Alias))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
                 else if (biographyInsertDTO.Alias.Trim().Length > 500)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
-                if (!string.IsNullOrWhiteSpace(biographyInsertDTO.Publisher))
+                if (string.IsNullOrWhiteSpace(biographyInsertDTO.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
                 else if (biographyInsertDTO.Publisher.Trim().Length > 25)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Publisher").Replace("{1}", "25"));
@@ -125,7 +122,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = BiographyImpl.Insert(biographyInsertDTO);
+                int insert = BiographyImpl.Insert(biographyInsertDTO);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -143,9 +140,9 @@ namespace WebAPI.Controllers
         ///
         ///     {
         ///        "Id": 1,
-        ///        "FullName": "Ignacio Chavez",
+        ///        "FullName": "Ignacio Chavez Update",
         ///        "Gender": "M",
-        ///        "Appearance": 2023-02-18T00:00:00.0000000-03:00,
+        ///        "Appearance": 2023-02-18T00:00:00.0000000+00:00,
         ///        "Alias": "Nacho",
         ///        "Publisher": "Marvel Comics"
         ///     }
@@ -172,31 +169,29 @@ namespace WebAPI.Controllers
                 if (biography.Id <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "Id"));
 
-                if (!string.IsNullOrWhiteSpace(biography.FullName))
+                if (string.IsNullOrWhiteSpace(biography.FullName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "FullName"));
                 else if (biography.FullName.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "FullName").Replace("{1}", "50"));
 
-                if (!string.IsNullOrWhiteSpace(biography.Gender))
+                if (string.IsNullOrWhiteSpace(biography.Gender))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
                 else if (biography.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
                 else if (biography.Gender.ToLower() != "m" && biography.Gender.ToLower() != "f")
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
 
-                if (biography.Appearance == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
-                if (!Useful.ValidateDateTimeOffset(biography.Appearance))
+                if (!Useful.ValidateDateTime(biography.Appearance))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
-                else if (biography.Appearance > DateTimeOffset.Now)
+                else if (biography.Appearance > DateTime.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
 
-                if (!string.IsNullOrWhiteSpace(biography.Alias))
+                if (string.IsNullOrWhiteSpace(biography.Alias))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
                 else if (biography.Alias.Trim().Length > 500)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
-                if (!string.IsNullOrWhiteSpace(biography.Publisher))
+                if (string.IsNullOrWhiteSpace(biography.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
                 else if (biography.Publisher.Trim().Length > 25)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Publisher").Replace("{1}", "25"));
@@ -207,7 +202,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = BiographyImpl.Update(biography);
+                bool update = BiographyImpl.Update(biography);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -241,7 +236,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = BiographyImpl.Delete(id);
+                bool delete = BiographyImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -267,7 +262,7 @@ namespace WebAPI.Controllers
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Biography>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("ListPaginated")]
@@ -285,7 +280,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (listPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (listPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -295,8 +290,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = BiographyImpl.ListPaginated(listPaginatedDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Biography> entities = BiographyImpl.ListPaginated(listPaginatedDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -322,7 +317,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = BiographyImpl.TotalRecords();
+                long totalRecords = BiographyImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -342,7 +337,7 @@ namespace WebAPI.Controllers
         ///        "Id": 1,
         ///        "FullName": "Ignacio Chavez",
         ///        "Gender": "M",
-        ///        "Appearance": 2023-02-18T00:00:00.0000000-03:00,
+        ///        "Appearance": 2023-02-18T00:00:00.0000000+00:00,
         ///        "Alias": "Nacho",
         ///        "Publisher": "Marvel Comics",
         ///        "ListPaginatedDTO": {
@@ -383,10 +378,10 @@ namespace WebAPI.Controllers
                 
                 if (!string.IsNullOrWhiteSpace(biographySearchDTO.Gender) && biographySearchDTO.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
+                else if (!string.IsNullOrWhiteSpace(biographySearchDTO.Gender) && biographySearchDTO.Gender.ToLower() != "m" && biographySearchDTO.Gender.ToLower() != "f")
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
                 
-                if (biographySearchDTO.Appearance != null && !Useful.ValidateDateTimeOffset(biographySearchDTO.Appearance))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
-                else if (biographySearchDTO.Appearance != null && biographySearchDTO.Appearance > DateTimeOffset.Now)
+                if (Useful.ValidateDateTime(biographySearchDTO.Appearance) && biographySearchDTO.Appearance > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
                 
                 if (!string.IsNullOrWhiteSpace(biographySearchDTO.Alias) && biographySearchDTO.Alias.Trim().Length > 500)
@@ -395,7 +390,7 @@ namespace WebAPI.Controllers
                 if (!string.IsNullOrWhiteSpace(biographySearchDTO.Publisher) && biographySearchDTO.Publisher.Trim().Length > 25)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Publisher").Replace("{1}", "25"));
                 
-                if (biographySearchDTO.Id == 0 && string.IsNullOrWhiteSpace(biographySearchDTO.FullName) && string.IsNullOrWhiteSpace(biographySearchDTO.Gender) && biographySearchDTO.Appearance == null
+                if (biographySearchDTO.Id == 0 && string.IsNullOrWhiteSpace(biographySearchDTO.FullName) && string.IsNullOrWhiteSpace(biographySearchDTO.Gender) && !Useful.ValidateDateTime(biographySearchDTO.Appearance)
                     && string.IsNullOrWhiteSpace(biographySearchDTO.Alias) && string.IsNullOrWhiteSpace(biographySearchDTO.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id, FullName, Gender, Appearance, Alias y Publisher,").Replace("{1}", "n").Replace("{2}", "s"));
 
@@ -403,7 +398,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (biographySearchDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (biographySearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -413,8 +408,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = BiographyImpl.Search(biographySearchDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Biography> entities = BiographyImpl.Search(biographySearchDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -426,6 +421,14 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Metodo para retornar Excel
         /// </summary>
+        /// <remarks>
+        /// Request POST:
+        ///
+        ///     {
+        ///        "TimeZoneInfoName": "Pacific SA Standard Time"
+        ///     }
+        ///
+        /// </remarks>
         /// <param name="TimeZoneInfoName">TimeZoneInfoName</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
@@ -454,7 +457,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var excel = BiographyImpl.Excel(TimeZoneInfoName);
+                FileDTO excel = BiographyImpl.Excel(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -467,6 +470,14 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Metodo para retornar PDF
         /// </summary>
+        /// <remarks>
+        /// Request POST:
+        ///
+        ///     {
+        ///        "TimeZoneInfoName": "Pacific SA Standard Time"
+        ///     }
+        ///
+        /// </remarks>
         /// <param name="TimeZoneInfoName">TimeZoneInfoName</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
@@ -495,7 +506,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var pdf = BiographyImpl.PDF(TimeZoneInfoName);
+                FileDTO pdf = BiographyImpl.PDF(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

@@ -12,6 +12,11 @@ namespace Business.Implementation
 {
     public static class ComicImpl
     {
+        public static bool PingDataBase()
+        {
+            return ComicDAO.Instance.PingDataBase();
+        }
+
         public static bool DeleteHero(int id)
         {
             return ComicDAO.Instance.DeleteHero(id);

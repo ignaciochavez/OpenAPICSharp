@@ -147,7 +147,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\APIKeyAuthAttribute.cs" />
+    <Compile Include="Configurations\APIKeyAuthorizeAttribute.cs" />
     <Compile Include="Configurations\SwaggerConfig.cs" />
     <Compile Include="Configurations\TokenAuthorizeAttribute.cs" />
     <Compile Include="Configurations\TokenConfig.cs" />

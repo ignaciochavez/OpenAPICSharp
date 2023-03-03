@@ -16,6 +16,11 @@ namespace Business.Implementation
             return UserDAO.Instance.Select(userSelectDTO);
         }
 
+        public static User SelectByRut(string rut)
+        {
+            return UserDAO.Instance.SelectByRut(rut);
+        }
+
         public static bool Exist(int id)
         {
             return UserDAO.Instance.Exist(id);

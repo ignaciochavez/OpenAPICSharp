@@ -1,4 +1,5 @@
-﻿using Business.Tool;
+﻿using Business.Implementation;
+using Business.Tool;
 using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Collections.Generic;
@@ -27,18 +28,27 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>MessageVO</returns>    
         [HttpGet]
+        [AllowAnonymous]
         [SwaggerResponse(HttpStatusCode.OK, "Se ha verificado exitosamente", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Check")]
-        [AllowAnonymous]
         public IHttpActionResult Check()
         {
             try
             {
                 if (contentHTML.IsLoadDocumentHTML())
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
-                    return Content(HttpStatusCode.OK, messageVO);
+                    bool pingDataBase = ComicImpl.PingDataBase();
+                    if (pingDataBase)
+                    {
+                        messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
+                        return Content(HttpStatusCode.OK, messageVO);
+                    }
+                    else
+                    {
+                        messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("incorrectCheckMessage"));
+                        return Content(HttpStatusCode.BadRequest, messageVO);
+                    }
                 }
                 else
                 {
@@ -54,19 +64,46 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para verificar funcionalidad de autenticacion
+        /// Metodo para verificar funcionalidad de autenticacion de api key
         /// </summary>
         /// <remarks>
-        /// api/check/CheckAuth
+        /// api/check/CheckAPIKeyAuthorize
         /// </remarks>
         /// <returns>MessageVO</returns>  
         [HttpGet]
+        [APIKeyAuthorize]
         [SwaggerResponse(HttpStatusCode.OK, "Se ha verificado exitosamente", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
-        [Route("CheckAuth")]
-        [APIKeyAuth]
-        public IHttpActionResult CheckAuth()
+        [Route("CheckAPIKeyAuthorize")]        
+        public IHttpActionResult CheckAPIKeyAuthorize()
+        {
+            try
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("checkTitle"), contentHTML.GetInnerTextById("correctCheckMessage"));
+                return Content(HttpStatusCode.OK, messageVO);
+            }
+            catch (Exception ex)
+            {
+                messageVO.SetMessage(0, contentHTML.GetInnerTextById("exceptionTitle"), ex.GetOriginalException().Message);
+                return Content(HttpStatusCode.InternalServerError, messageVO);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para verificar funcionalidad de autenticacion de token
+        /// </summary>
+        /// <remarks>
+        /// api/check/CheckTokenAuthorize
+        /// </remarks>
+        /// <returns>MessageVO</returns>  
+        [HttpGet]
+        [TokenAuthorize]
+        [SwaggerResponse(HttpStatusCode.OK, "Se ha verificado exitosamente", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
+        [Route("CheckTokenAuthorize")]
+        public IHttpActionResult CheckTokenAuthorize()
         {
             try
             {

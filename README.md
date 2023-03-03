@@ -1,6 +1,8 @@
 # OpenAPICSharp 🚀
 
-El presente proyecto es un ejemplo de API con C# utilizando Swagger
+El presente proyecto es un ejemplo de API con .NET C# utilizando Swagger (Open API)
+
+El proyecto WebAPIUnitTests usa la db ComicTest y el proyecto WebAPI usa la db Comic. Puede cambiarla a gusto para hacer pruebas manteniedo la db original sin cambios
 
 ## Tecnologias 📌
 
@@ -10,9 +12,9 @@ Visual studio 2015 .NET C#
 
 ### Pre-requisitos 📋
 
-Tener codigo fuente de solucion
+Tener instalada la db Comic y la db ComicTest: https://github.com/ignaciochavez/SQLServer
 
-Tener instalado Open Xml SDK 2.5 .msi (https://github.com/OfficeDev/Open-XML-SDK/releases/tag/v2.5)
+Tener instalado Open Xml SDK 2.5 .msi en el servidor donde se ejecutara la aplicacion: https://github.com/OfficeDev/Open-XML-SDK/releases/tag/v2.5
 
 Tener IIS instalado
 
@@ -20,15 +22,21 @@ Habilitar Sitio web IIS
 
 ### Instalación 🔧
 
-Publicar solucion desde visual studio y mover compilado a carpeta que leera el IIS
+Instalar la db Comic para su uso
 
-Copiar archivo WebAPI.XML ubicado en la carpeta bin del proyecto WebAPI de la solución visual studio 2015, y pegar el archivo en la carpeta bin del compilado a implementar (si no existe el archivo, se genera al recompilar solucion desde visual studio)
+Configurar cadena de conexión en archivo web.config:
 
-Habilitar directorio y sitio web IIS
+```
+data source=NombreEquipo\NombreDB;initial catalog=Comic
+```
+
+Publicar el proyecto WebAPI desde visual studio 
+
+Mover compilado a carpeta que leera el IIS
+
+Habilitar directorio, sitio web IIS y SQL Server con usuario que tenga permisos del servidor
 
 ## Ejecutando las pruebas ⚙️
-
-Ejecutar pruebas unitarias desde visual studio para verificar correcto funcionamiento
 
 Una vez publicado el proyecto, abrir el sitio web IIS, redireccionar a la pagina index.html
 

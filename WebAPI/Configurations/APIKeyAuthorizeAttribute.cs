@@ -10,7 +10,7 @@ using System.Web.Http.Filters;
 namespace WebAPI
 {
     /// <summary>
-    /// APIKeyAuthAttribute
+    /// APIKeyAuthorizeAttribute
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class APIKeyAuthorizeAttribute : AuthorizationFilterAttribute
@@ -22,7 +22,7 @@ namespace WebAPI
         {
             apiKeyHeader = null;
             IEnumerable<string> headers;
-            if (!actionContext.Request.Headers.TryGetValues("API-KEY", out headers) || headers.Count() > 1)
+            if (!actionContext.Request.Headers.TryGetValues("Authorization", out headers) || headers.Count() > 1)
             {
                 return false;
             }
@@ -47,21 +47,11 @@ namespace WebAPI
                 }
                 else
                 {
-                    string[] authorization = apiKeyHeader.Split(' ');
-                    if (authorization[0] != "Bearer")
+                    string apiKey = Useful.GetAppSettings("APIKey");
+                    if (apiKey != apiKeyHeader)
                     {
                         messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
                         actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
-                    }
-                    else
-                    {
-                        string secretKey = Useful.GetAppSettings("SecretKey");
-                        string encryptApiKey = Useful.ConvertSHA256(authorization[1]);
-                        if (secretKey != encryptApiKey)
-                        {
-                            messageVO.SetMessage(0, contentHTML.GetInnerTextById("notAuthorizedTitle"), contentHTML.GetInnerTextById("notAuthorized"));
-                            actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, messageVO);
-                        }
                     }
                 }
                 base.OnAuthorization(actionContext);

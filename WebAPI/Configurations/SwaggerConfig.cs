@@ -67,9 +67,9 @@ namespace WebAPI
                         //    .Description("Basic HTTP Authentication");
                         //
                         // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
-                        c.ApiKey("API-KEY")
-                            .Description("API Key Authentication")
-                            .Name("API-KEY")
+                        c.ApiKey("Authorization")
+                            .Description("API Authorization")
+                            .Name("Authorization")
                             .In("header");
                         
                         //
@@ -252,7 +252,7 @@ namespace WebAPI
                         // "apiKeyIn" can either be "query" or "header"                                                
                         //
 
-                        c.EnableApiKeySupport("API-KEY", "header");
+                        c.EnableApiKeySupport("Authorization", "header");
                     });
         }
         /// <summary>

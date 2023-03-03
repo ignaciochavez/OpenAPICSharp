@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -47,7 +46,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = PowerStatsImpl.Select(id);
+                PowerStats entity = PowerStatsImpl.Select(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -115,7 +114,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
                 
-                var insert = PowerStatsImpl.Insert(powerStatsInsertDTO);
+                int insert = PowerStatsImpl.Insert(powerStatsInsertDTO);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -187,7 +186,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = PowerStatsImpl.Update(powerStats);
+                bool update = PowerStatsImpl.Update(powerStats);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -221,7 +220,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = PowerStatsImpl.Delete(id);
+                bool delete = PowerStatsImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -247,7 +246,7 @@ namespace WebAPI.Controllers
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<PowerStats>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("ListPaginated")]
@@ -265,7 +264,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (listPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (listPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -275,8 +274,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = PowerStatsImpl.ListPaginated(listPaginatedDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<PowerStats> entities = PowerStatsImpl.ListPaginated(listPaginatedDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -302,7 +301,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = PowerStatsImpl.TotalRecords();
+                long totalRecords = PowerStatsImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -337,7 +336,7 @@ namespace WebAPI.Controllers
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<PowerStats>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Search")]
@@ -385,7 +384,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (powerStatsSearchDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (powerStatsSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -395,8 +394,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = PowerStatsImpl.Search(powerStatsSearchDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<PowerStats> entities = PowerStatsImpl.Search(powerStatsSearchDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -436,7 +435,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var excel = PowerStatsImpl.Excel(TimeZoneInfoName);
+                FileDTO excel = PowerStatsImpl.Excel(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -477,7 +476,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var pdf = PowerStatsImpl.PDF(TimeZoneInfoName);
+                FileDTO pdf = PowerStatsImpl.PDF(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

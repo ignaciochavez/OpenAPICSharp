@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -47,7 +46,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = HeroImpl.Select(id);
+                Hero entity = HeroImpl.Select(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -66,7 +65,7 @@ namespace WebAPI.Controllers
         ///     {
         ///        "Name": "Ignacio Chavez",
         ///        "Description": "El heroe mas fuerte del planeta tierra",
-        ///        "ImageBase64String": "data:image/png;base64,asdf1234",
+        ///        "ImageBase64String": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAIAAACExCpEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFmICBAQABFwABeRzbuwAAAABJRU5ErkJggg==",
         ///        "BiographyId": 1,
         ///        "PowerStatsId": 1
         ///     }
@@ -133,12 +132,12 @@ namespace WebAPI.Controllers
                 if (existByName)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Hero").Replace("{1}", "Name"));
 
-                bool existContact = BiographyImpl.ExistById(heroInsertDTO.BiographyId);
-                if (!existContact)
+                bool existBiography = BiographyImpl.ExistById(heroInsertDTO.BiographyId);
+                if (!existBiography)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Biography").Replace("{1}", "BiographyId"));
 
-                bool existRole = PowerStatsImpl.ExistById(heroInsertDTO.PowerStatsId);
-                if (!existRole)
+                bool existPowerStats = PowerStatsImpl.ExistById(heroInsertDTO.PowerStatsId);
+                if (!existPowerStats)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "PowerStats").Replace("{1}", "PowerStatsId"));
 
                 if (messageVO.Messages.Count() > 0)
@@ -147,7 +146,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = HeroImpl.Insert(heroInsertDTO);
+                int insert = HeroImpl.Insert(heroInsertDTO);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -167,7 +166,7 @@ namespace WebAPI.Controllers
         ///        "Id": 1,
         ///        "Name": "Ignacio Chavez",
         ///        "Description": "El heroe mas fuerte del planeta tierra",
-        ///        "ImageBase64String": "data:image/png;base64,asdf1234",
+        ///        "ImageBase64String": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAIAAACExCpEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFmICBAQABFwABeRzbuwAAAABJRU5ErkJggg==",
         ///        "BiographyId": 1,
         ///        "PowerStatsId": 1
         ///     }
@@ -232,21 +231,17 @@ namespace WebAPI.Controllers
                     messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
-
-                bool existHero = HeroImpl.Exist(heroUpdateDTO.Id);
-                if (!existHero)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Hero").Replace("{1}", "Id"));
-
+                
                 bool existByNameAndNotSameEntity = HeroImpl.ExistByNameAndNotSameEntity(new HeroExistByNameAndNotSameEntityDTO(heroUpdateDTO.Id, heroUpdateDTO.Name));
                 if (existByNameAndNotSameEntity)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Hero").Replace("{1}", "Name").Replace("{2}", "Hero"));
 
-                bool existContact = BiographyImpl.ExistById(heroUpdateDTO.BiographyId);
-                if (!existContact)
+                bool existBiography = BiographyImpl.ExistById(heroUpdateDTO.BiographyId);
+                if (!existBiography)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Biography").Replace("{1}", "BiographyId"));
 
-                bool existRole = PowerStatsImpl.ExistById(heroUpdateDTO.PowerStatsId);
-                if (!existRole)
+                bool existPowerStats = PowerStatsImpl.ExistById(heroUpdateDTO.PowerStatsId);
+                if (!existPowerStats)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "PowerStats").Replace("{1}", "PowerStatsId"));
 
                 if (messageVO.Messages.Count() > 0)
@@ -255,7 +250,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = HeroImpl.Update(heroUpdateDTO);
+                bool update = HeroImpl.Update(heroUpdateDTO);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -289,7 +284,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = HeroImpl.Delete(id);
+                bool delete = HeroImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -333,7 +328,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (listPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (listPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -343,8 +338,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = HeroImpl.ListPaginated(listPaginatedDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Hero> entities = HeroImpl.ListPaginated(listPaginatedDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -370,7 +365,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = HeroImpl.TotalRecords();
+                long totalRecords = HeroImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -390,7 +385,7 @@ namespace WebAPI.Controllers
         ///        "Id": 1,
         ///        "Name": "Ignacio Chavez",
         ///        "Description": "El heroe mas fuerte del planeta tierra",
-        ///        "ImageBase64String": "data:image/png;base64,asdf1234",
+        ///        "ImageBase64String": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAIAAACExCpEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFmICBAQABFwABeRzbuwAAAABJRU5ErkJggg==",
         ///        "BiographyId": 1,
         ///        "PowerStatsId": 1,
         ///        "ListPaginatedDTO": {
@@ -404,7 +399,7 @@ namespace WebAPI.Controllers
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
-        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<User>))]
+        [SwaggerResponse(HttpStatusCode.OK, "El objeto ha sido retornado", typeof(List<Hero>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Parametros invalidos", typeof(MessageVO))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Error interno del servidor", typeof(MessageVO))]
         [Route("Search")]
@@ -446,7 +441,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (heroSearchDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (heroSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -456,8 +451,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = HeroImpl.Search(heroSearchDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Hero> entities = HeroImpl.Search(heroSearchDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -497,7 +492,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var excel = HeroImpl.Excel(TimeZoneInfoName);
+                FileDTO excel = HeroImpl.Excel(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -538,7 +533,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var pdf = HeroImpl.PDF(TimeZoneInfoName);
+                FileDTO pdf = HeroImpl.PDF(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

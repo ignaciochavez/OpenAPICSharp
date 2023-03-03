@@ -117,13 +117,13 @@
     <Compile Include="Tool\Useful.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DataSource\DataSource.csproj">
       <Project>{b8af2fdc-70a6-49d4-ba50-0c87a66baaaf}</Project>
       <Name>DataSource</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

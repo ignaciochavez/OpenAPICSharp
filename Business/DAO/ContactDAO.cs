@@ -47,35 +47,46 @@ namespace Business.DAO
 
         public int Insert(ContactInsertDTO contactInsertDTO)
         {
+            int isInsert = 0;
             Contact contact = new Contact();
             contact.Email = contactInsertDTO.Email.Trim().ToLower();
             contact.Phone = contactInsertDTO.Phone.Trim();
-            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            using (var context = ModelComic.ComicEntities)
+            {
+                context.Contact.Add(contact);
+                isInsert = context.SaveChanges();
+            }
             return (isInsert > 0) ? contact.Id : 0;
         }
 
         public bool Update(Entity.Contact contact)
         {
             int isUpdate = 0;
-            Contact entity = ModelComic.ComicEntities.Contact.FirstOrDefault(o => o.Id == contact.Id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                contact.Email = contact.Email.Trim().ToLower();
-                contact.Phone = contact.Phone.Trim();
-                isUpdate = ModelComic.ComicEntities.SaveChanges();
-            }
+                Contact entity = context.Contact.FirstOrDefault(o => o.Id == contact.Id);
+                if (entity != null)
+                {
+                    entity.Email = contact.Email.Trim().ToLower();
+                    entity.Phone = contact.Phone.Trim();
+                    isUpdate = context.SaveChanges();
+                }
+            }            
             return (isUpdate > 0);
         }
 
         public bool Delete(int id)
         {
             int isDelete = 0;
-            Contact entity = ModelComic.ComicEntities.Contact.FirstOrDefault(o => o.Id == id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                ModelComic.ComicEntities.Contact.Remove(entity);
-                isDelete = ModelComic.ComicEntities.SaveChanges();
-            }
+                Contact entity = context.Contact.FirstOrDefault(o => o.Id == id);
+                if (entity != null)
+                {
+                    context.Contact.Remove(entity);
+                    isDelete = context.SaveChanges();
+                }
+            }            
             return (isDelete > 0);
         }
 

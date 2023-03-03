@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -47,7 +46,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ContactImpl.Select(id);
+                Contact entity = ContactImpl.Select(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -89,8 +88,8 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(contactInsertDTO.Email))                
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Email"));
-                else if (contactInsertDTO.Email.Trim().Length > 15)                
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "15"));
+                else if (contactInsertDTO.Email.Trim().Length > 50)                
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "50"));
                 else if (!Useful.ValidateEmail(contactInsertDTO.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
 
@@ -107,7 +106,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = ContactImpl.Insert(contactInsertDTO);
+                int insert = ContactImpl.Insert(contactInsertDTO);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -118,7 +117,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Metodo para actualizar Role
+        /// Metodo para actualizar Contact
         /// </summary>
         /// <remarks>
         /// Request PUT:
@@ -153,8 +152,8 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(contact.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Email"));
-                else if (contact.Email.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "15"));
+                else if (contact.Email.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "50"));
                 else if (!Useful.ValidateEmail(contact.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
 
@@ -171,7 +170,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = ContactImpl.Update(contact);
+                bool update = ContactImpl.Update(contact);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -205,7 +204,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = ContactImpl.Delete(id);
+                bool delete = ContactImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -249,7 +248,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (listPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (listPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -259,8 +258,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = ContactImpl.ListPaginated(listPaginatedDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Contact> entities = ContactImpl.ListPaginated(listPaginatedDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -286,7 +285,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = ContactImpl.TotalRecords();
+                long totalRecords = ContactImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -341,9 +340,13 @@ namespace WebAPI.Controllers
 
                 if (!string.IsNullOrWhiteSpace(contactSearchDTO.Email) && contactSearchDTO.Email.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Email").Replace("{1}", "50"));
+                else if (!string.IsNullOrWhiteSpace(contactSearchDTO.Email) && !Useful.ValidateEmail(contactSearchDTO.Email))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
 
                 if (!string.IsNullOrWhiteSpace(contactSearchDTO.Phone) && contactSearchDTO.Phone.Trim().Length > 15)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterGreaterThan").Replace("{0}", "Phone").Replace("{1}", "15"));
+                else if (!string.IsNullOrWhiteSpace(contactSearchDTO.Phone) && !Useful.ValidatePhone(contactSearchDTO.Phone))
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Phone"));
 
                 if (contactSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(contactSearchDTO.Email) && string.IsNullOrWhiteSpace(contactSearchDTO.Phone))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id, Email y Phone,").Replace("{1}", "n").Replace("{2}", "s"));
@@ -352,7 +355,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (contactSearchDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (contactSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -362,8 +365,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = ContactImpl.Search(contactSearchDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Contact> entities = ContactImpl.Search(contactSearchDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -374,7 +377,7 @@ namespace WebAPI.Controllers
 
         /// <summary>
         /// Metodo para retornar Excel
-        /// </summary>+
+        /// </summary>
         /// <param name="TimeZoneInfoName">TimeZoneInfoName</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]

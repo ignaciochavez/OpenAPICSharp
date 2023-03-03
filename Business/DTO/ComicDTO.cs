@@ -75,7 +75,7 @@ namespace Business.DTO
 
         }
 
-        public ComicInsertUserDTO(string rut, string name, string lastName, DateTime birthDate, string password, bool active, string email, string phone, int roleId)
+        public ComicInsertUserDTO(string rut, string name, string lastName, DateTime birthDate, string password, bool? active, string email, string phone, int roleId)
         {
             Rut = rut;
             Name = name;
@@ -200,7 +200,7 @@ namespace Business.DTO
 
         }
 
-        public ComicUpdateUserDTO(int userId, string rut, string name, string lastName, DateTime birthDate, string password, bool active,  int contactId, string email, string phone, int roleId)
+        public ComicUpdateUserDTO(int userId, string rut, string name, string lastName, DateTime birthDate, string password, bool? active,  int contactId, string email, string phone, int roleId)
         {
             UserId = userId;
             Rut = rut;

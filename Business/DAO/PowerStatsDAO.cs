@@ -46,6 +46,7 @@ namespace Business.DAO
 
         public int Insert(PowerStatsInsertDTO powerStatsInsertDTO)
         {
+            int isInsert = 0;
             PowerStats powerStats = new PowerStats();
             powerStats.Intelligence = powerStatsInsertDTO.Intelligence;
             powerStats.Strength = powerStatsInsertDTO.Strength;
@@ -53,36 +54,46 @@ namespace Business.DAO
             powerStats.Durability = powerStatsInsertDTO.Durability;
             powerStats.Power = powerStatsInsertDTO.Power;
             powerStats.Combat = powerStatsInsertDTO.Combat;
-            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            using (var context = ModelComic.ComicEntities)
+            {
+                context.PowerStats.Add(powerStats);
+                isInsert = context.SaveChanges();
+            }
             return (isInsert > 0) ? powerStats.Id : 0;
         }
 
         public bool Update(Entity.PowerStats powerStats)
         {
             int isUpdate = 0;
-            PowerStats entity = ModelComic.ComicEntities.PowerStats.FirstOrDefault(o => o.Id == powerStats.Id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                entity.Intelligence = powerStats.Intelligence;
-                entity.Strength = powerStats.Strength;
-                entity.Speed = powerStats.Speed;
-                entity.Durability = powerStats.Durability;
-                entity.Power = powerStats.Power;
-                entity.Combat = powerStats.Combat;
-                isUpdate = ModelComic.ComicEntities.SaveChanges();
-            }
+                PowerStats entity = context.PowerStats.FirstOrDefault(o => o.Id == powerStats.Id);
+                if (entity != null)
+                {
+                    entity.Intelligence = powerStats.Intelligence;
+                    entity.Strength = powerStats.Strength;
+                    entity.Speed = powerStats.Speed;
+                    entity.Durability = powerStats.Durability;
+                    entity.Power = powerStats.Power;
+                    entity.Combat = powerStats.Combat;
+                    isUpdate = context.SaveChanges();
+                }
+            }            
             return (isUpdate > 0);
         }
 
         public bool Delete(int id)
         {
             int isDelete = 0;
-            PowerStats entity = ModelComic.ComicEntities.PowerStats.FirstOrDefault(o => o.Id == id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                ModelComic.ComicEntities.PowerStats.Remove(entity);
-                isDelete = ModelComic.ComicEntities.SaveChanges();
-            }
+                PowerStats entity = context.PowerStats.FirstOrDefault(o => o.Id == id);
+                if (entity != null)
+                {
+                    context.PowerStats.Remove(entity);
+                    isDelete = context.SaveChanges();
+                }
+            }            
             return (isDelete > 0);
         }
 
@@ -132,17 +143,17 @@ namespace Business.DAO
             if (powerStatsSearchDTO.Id > 0)
                 parameters.Add(new SqlParameter("Id", powerStatsSearchDTO.Id));
             if (powerStatsSearchDTO.Intelligence > 0)
-                parameters.Add(new SqlParameter("Intelligence", powerStatsSearchDTO.Intelligence));
+                parameters.Add(new SqlParameter("Intelligence", powerStatsSearchDTO.Intelligence.ToString()));
             if (powerStatsSearchDTO.Strength > 0)
-                parameters.Add(new SqlParameter("Strength", powerStatsSearchDTO.Strength));
+                parameters.Add(new SqlParameter("Strength", powerStatsSearchDTO.Strength.ToString()));
             if (powerStatsSearchDTO.Speed > 0)
-                parameters.Add(new SqlParameter("Speed", powerStatsSearchDTO.Speed));
+                parameters.Add(new SqlParameter("Speed", powerStatsSearchDTO.Speed.ToString()));
             if (powerStatsSearchDTO.Durability > 0)
-                parameters.Add(new SqlParameter("Durability", powerStatsSearchDTO.Durability));
+                parameters.Add(new SqlParameter("Durability", powerStatsSearchDTO.Durability.ToString()));
             if (powerStatsSearchDTO.Power > 0)
-                parameters.Add(new SqlParameter("Power", powerStatsSearchDTO.Power));
+                parameters.Add(new SqlParameter("Power", powerStatsSearchDTO.Power.ToString()));
             if (powerStatsSearchDTO.Combat > 0)
-                parameters.Add(new SqlParameter("Combat", powerStatsSearchDTO.Combat));
+                parameters.Add(new SqlParameter("Combat", powerStatsSearchDTO.Combat.ToString()));
 
             List<Entity.PowerStats> list = new List<Entity.PowerStats>();
             List<PowerStats> entities = ModelComic.ComicEntities.PowerStats.SqlQuery($"SELECT [Id], [Intelligence], [Strength], [Speed], [Durability], [Power], [Combat] FROM [dbo].[PowerStats] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -69,7 +68,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = UserImpl.Select(userSelectDTO);
+                User entity = UserImpl.Select(userSelectDTO);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -111,7 +110,7 @@ namespace WebAPI.Controllers
             {
                 if (userInsertDTO == null)
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ContactInsertDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "UserInsertDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
@@ -135,11 +134,11 @@ namespace WebAPI.Controllers
                 if (string.IsNullOrWhiteSpace(userInsertDTO.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
                 else if (userInsertDTO.Password.Length > 16)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "16"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
                 if (userInsertDTO.BirthDate == null)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "BirthDate"));
-                if (!Useful.ValidateDateTimeOffset(userInsertDTO.BirthDate))
+                if (!Useful.ValidateDateTime(userInsertDTO.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
                 else if (userInsertDTO.BirthDate > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
@@ -177,7 +176,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = UserImpl.Insert(userInsertDTO);
+                int insert = UserImpl.Insert(userInsertDTO);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -247,11 +246,11 @@ namespace WebAPI.Controllers
                 if (string.IsNullOrWhiteSpace(userUpdateDTO.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
                 else if (userUpdateDTO.Password.Length > 16)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "16"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
                 if (userUpdateDTO.BirthDate == null)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "BirthDate"));
-                if (!Useful.ValidateDateTimeOffset(userUpdateDTO.BirthDate))
+                if (!Useful.ValidateDateTime(userUpdateDTO.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
                 else if (userUpdateDTO.BirthDate > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
@@ -270,11 +269,7 @@ namespace WebAPI.Controllers
                     messageVO.SetIdTitle(1, contentHTML.GetInnerTextById("requeridTitle"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
-
-                bool existUser = UserImpl.Exist(userUpdateDTO.Id);
-                if (!existUser)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "User").Replace("{1}", "Id"));
-
+                
                 bool existUserByRutAndNotSameEntity = UserImpl.ExistByRutAndNotSameEntity(new UserExistByRutAndNotSameEntityDTO(userUpdateDTO.Id, userUpdateDTO.Rut));
                 if (existUserByRutAndNotSameEntity)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "User").Replace("{1}", "Rut").Replace("{2}", "User"));
@@ -293,7 +288,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = UserImpl.Update(userUpdateDTO);
+                bool update = UserImpl.Update(userUpdateDTO);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -327,7 +322,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = UserImpl.Delete(id);
+                bool delete = UserImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -386,7 +381,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (userListPaginatedDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (userListPaginatedDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -396,8 +391,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = UserImpl.ListPaginated(userListPaginatedDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<User> entities = UserImpl.ListPaginated(userListPaginatedDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -423,7 +418,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = UserImpl.TotalRecords();
+                long totalRecords = UserImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -457,7 +452,7 @@ namespace WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="userSearchDTO">Objeto ContactSearchDTO</param>
+        /// <param name="userSearchDTO">Objeto UserSearchDTO</param>
         /// <returns>Retorna el objeto</returns>
         [HttpPost]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "No Autorizado", typeof(MessageVO))]
@@ -494,14 +489,10 @@ namespace WebAPI.Controllers
                 if (!string.IsNullOrWhiteSpace(userSearchDTO.LastName) && userSearchDTO.LastName.Trim().Length > 45)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "45"));
                 
-                if (userSearchDTO.BirthDate != null && !Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
-                else if (userSearchDTO.BirthDate != null && userSearchDTO.BirthDate > DateTimeOffset.Now)
+                if (Useful.ValidateDateTime(userSearchDTO.BirthDate) && userSearchDTO.BirthDate > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
                 
-                if (userSearchDTO.Registered != null && !Useful.ValidateDateTimeOffset(userSearchDTO.Registered))
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Registered"));
-                else if (userSearchDTO.Registered != null && userSearchDTO.Registered > DateTimeOffset.Now)
+                if (Useful.ValidateDateTimeOffset(userSearchDTO.Registered) && userSearchDTO.Registered > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Registered"));
 
                 if (userSearchDTO.ContactId < 0)
@@ -511,7 +502,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parameterLessThan").Replace("{0}", "RoleId").Replace("{1}", "0"));
 
                 if (userSearchDTO.Id == 0 && string.IsNullOrWhiteSpace(userSearchDTO.Rut) && string.IsNullOrWhiteSpace(userSearchDTO.Name) && string.IsNullOrWhiteSpace(userSearchDTO.LastName)
-                    && userSearchDTO.BirthDate == null && userSearchDTO.Active == null && userSearchDTO.Registered == null && userSearchDTO.ContactId == 0 && userSearchDTO.RoleId == 0)
+                    && !Useful.ValidateDateTime(userSearchDTO.BirthDate) && userSearchDTO.Active == null && Useful.ValidateDateTimeOffset(userSearchDTO.Registered) && userSearchDTO.ContactId == 0 && userSearchDTO.RoleId == 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNotInitialized").Replace("{0}", "Id, Rut, Name, LastName, BirthDate, Active, Registered, ContactId y RoleId,").Replace("{1}", "n").Replace("{2}", "s"));
 
                 if (string.IsNullOrWhiteSpace(userSearchDTO.TimeZoneInfoName))
@@ -525,7 +516,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (userSearchDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (userSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -535,8 +526,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = UserImpl.Search(userSearchDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<User> entities = UserImpl.Search(userSearchDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -576,7 +567,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var excel = UserImpl.Excel(TimeZoneInfoName);
+                FileDTO excel = UserImpl.Excel(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -617,7 +608,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var pdf = UserImpl.PDF(TimeZoneInfoName);
+                FileDTO pdf = UserImpl.PDF(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -98,7 +97,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var insert = RoleImpl.Insert(Name);
+                int insert = RoleImpl.Insert(Name);
                 return Content(HttpStatusCode.OK, insert);
             }
             catch (Exception ex)
@@ -152,14 +151,14 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                bool existByRutAndNotSameEntity = RoleImpl.ExistByNameAndNotSameEntity(new Role(role.Id, role.Name));
-                if (existByRutAndNotSameEntity)
+                bool existByNameAndNotSameEntity = RoleImpl.ExistByNameAndNotSameEntity(new Role(role.Id, role.Name));
+                if (existByNameAndNotSameEntity)
                 {
                     messageVO.SetMessage(2, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("entityExistsByParameterAndIsNotTheSameEntity").Replace("{0}", "Role").Replace("{1}", "Name").Replace("{2}", "Role"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var update = RoleImpl.Update(role);
+                bool update = RoleImpl.Update(role);
                 return Content(HttpStatusCode.OK, update);
             }
             catch (Exception ex)
@@ -193,7 +192,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var delete = RoleImpl.Delete(id);
+                bool delete = RoleImpl.Delete(id);
                 return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
@@ -237,7 +236,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (listPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (listPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -247,8 +246,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = RoleImpl.ListPaginated(listPaginatedDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Role> entities = RoleImpl.ListPaginated(listPaginatedDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -274,7 +273,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var totalRecords = RoleImpl.TotalRecords();
+                long totalRecords = RoleImpl.TotalRecords();
                 return Content(HttpStatusCode.OK, totalRecords);
             }
             catch (Exception ex)
@@ -336,7 +335,7 @@ namespace WebAPI.Controllers
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
 
                 if (roleSearchDTO.ListPaginatedDTO.PageSize <= 0)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageIndex"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "PageSize"));
                 else if (roleSearchDTO.ListPaginatedDTO.PageSize > Useful.GetPageSizeMaximun())
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLength").Replace("{0}", "PageSize").Replace("{1}", Useful.GetPageSizeMaximun().ToString()));
 
@@ -346,8 +345,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entitys = RoleImpl.Search(roleSearchDTO);
-                return Content(HttpStatusCode.OK, entitys);
+                List<Role> entities = RoleImpl.Search(roleSearchDTO);
+                return Content(HttpStatusCode.OK, entities);
             }
             catch (Exception ex)
             {
@@ -387,7 +386,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var excel = RoleImpl.Excel(TimeZoneInfoName);
+                FileDTO excel = RoleImpl.Excel(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, excel);
             }
             catch (Exception ex)
@@ -428,7 +427,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var pdf = RoleImpl.PDF(TimeZoneInfoName);
+                FileDTO pdf = RoleImpl.PDF(TimeZoneInfoName);
                 return Content(HttpStatusCode.OK, pdf);
             }
             catch (Exception ex)

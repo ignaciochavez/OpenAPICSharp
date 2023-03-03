@@ -53,33 +53,45 @@ namespace Business.DAO
 
         public int Insert(string name)
         {
+            int isInsert = 0;
             Role role = new Role();
             role.Name = Useful.GetTitleCaseWords(name.Trim());
-            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            using (var context = ModelComic.ComicEntities)
+            {
+                context.Role.Add(role);
+                isInsert = context.SaveChanges();
+            }
             return (isInsert > 0) ? role.Id : 0;
         }
 
         public bool Update(Entity.Role role)
         {
             int isUpdate = 0;
-            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == role.Id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                entity.Name = Useful.GetTitleCaseWords(role.Name.Trim());
-                isUpdate = ModelComic.ComicEntities.SaveChanges();
+                Role entity = context.Role.FirstOrDefault(o => o.Id == role.Id);
+                if (entity != null)
+                {
+                    entity.Name = Useful.GetTitleCaseWords(role.Name.Trim());
+                    isUpdate = context.SaveChanges();
+                }
             }
+            
             return (isUpdate > 0);
         }
 
         public bool Delete(int id)
         {
             int isDelete = 0;
-            Role entity = ModelComic.ComicEntities.Role.FirstOrDefault(o => o.Id == id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                ModelComic.ComicEntities.Role.Remove(entity);
-                isDelete = ModelComic.ComicEntities.SaveChanges();
-            }
+                Role entity = context.Role.FirstOrDefault(o => o.Id == id);
+                if (entity != null)
+                {
+                    context.Role.Remove(entity);
+                    isDelete = context.SaveChanges();
+                }
+            }            
             return (isDelete > 0);
         }
 
@@ -139,7 +151,13 @@ namespace Business.DAO
 
         public bool ExistByNameAndNotSameEntity(Entity.Role role)
         {
-            bool exist = ModelComic.ComicEntities.Role.Any(o => o.Id != role.Id && o.Name == role.Name);
+            bool exist = false;
+            if (ModelComic.ComicEntities.Role.Any(o => o.Id == role.Id))
+            {
+                List<Role> list = ModelComic.ComicEntities.Role.Where(o => o.Name == role.Name).ToList();
+                if (list != null && list.Count() > 0)
+                    exist = list.Any(o => o.Id != role.Id);
+            }            
             return exist;
         }
 

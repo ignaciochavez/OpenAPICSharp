@@ -33,7 +33,14 @@ namespace Business.DAO
 
         public Entity.User Select(UserSelectDTO userSelectDTO)
         {
-            var entity = ModelComic.ComicEntities.User.SqlQuery("SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE [Id] = @Id", new SqlParameter("Id", userSelectDTO.Id), new SqlParameter("TimeZoneInfoName", userSelectDTO.TimeZoneInfoName)).FirstOrDefault();
+            var entity = ModelComic.ComicEntities.User.SqlQuery("SELECT [Id], [Rut], [Name], [LastName], [BirthDate], NULL AS Password, [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE [Id] = @Id", new SqlParameter("Id", userSelectDTO.Id), new SqlParameter("TimeZoneInfoName", userSelectDTO.TimeZoneInfoName)).FirstOrDefault();
+            Entity.User user = (entity != null) ? new Entity.User(entity.Id, entity.Rut, entity.Name, entity.LastName, entity.BirthDate, entity.Active, entity.Registered, entity.ContactId, entity.RoleId) : null;
+            return user;
+        }
+
+        public Entity.User SelectByRut(string rut)
+        {
+            var entity = ModelComic.ComicEntities.User.FirstOrDefault(o => o.Rut == rut);
             Entity.User user = (entity != null) ? new Entity.User(entity.Id, entity.Rut, entity.Name, entity.LastName, entity.BirthDate, entity.Active, entity.Registered, entity.ContactId, entity.RoleId) : null;
             return user;
         }
@@ -52,6 +59,7 @@ namespace Business.DAO
 
         public int Insert(UserInsertDTO userInsertDTO)
         {
+            int isInsert = 0;
             User user = new User();
             user.Rut = userInsertDTO.Rut.Trim().ToUpper();
             user.Name = Useful.GetTitleCaseWords(userInsertDTO.Name.Trim());
@@ -62,38 +70,48 @@ namespace Business.DAO
             user.Registered = DateTimeOffset.UtcNow;
             user.ContactId = userInsertDTO.ContactId;
             user.RoleId = userInsertDTO.RoleId;
-            int isInsert = ModelComic.ComicEntities.SaveChanges();
+            using (var context = ModelComic.ComicEntities)
+            {
+                context.User.Add(user);
+                isInsert = context.SaveChanges();
+            }
             return (isInsert > 0) ? user.Id : 0;
         }
 
         public bool Update(UserUpdateDTO userUpdateDTO)
         {
             int isUpdate = 0;
-            User entity = ModelComic.ComicEntities.User.FirstOrDefault(o => o.Id == userUpdateDTO.Id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                entity.Rut = userUpdateDTO.Rut.Trim().ToUpper();
-                entity.Name = Useful.GetTitleCaseWords(userUpdateDTO.Name.Trim());
-                entity.LastName = Useful.GetTitleCaseWords(userUpdateDTO.LastName.Trim());
-                entity.BirthDate = userUpdateDTO.BirthDate;
-                entity.Password = Useful.ConvertSHA256(userUpdateDTO.Password);
-                entity.Active = userUpdateDTO.Active.Value;
-                entity.ContactId = userUpdateDTO.ContactId;
-                entity.RoleId = userUpdateDTO.RoleId;
-                isUpdate = ModelComic.ComicEntities.SaveChanges();
-            }
+                User entity = context.User.FirstOrDefault(o => o.Id == userUpdateDTO.Id);
+                if (entity != null)
+                {
+                    entity.Rut = userUpdateDTO.Rut.Trim().ToUpper();
+                    entity.Name = Useful.GetTitleCaseWords(userUpdateDTO.Name.Trim());
+                    entity.LastName = Useful.GetTitleCaseWords(userUpdateDTO.LastName.Trim());
+                    entity.BirthDate = userUpdateDTO.BirthDate;
+                    entity.Password = Useful.ConvertSHA256(userUpdateDTO.Password);
+                    entity.Active = userUpdateDTO.Active.Value;
+                    entity.ContactId = userUpdateDTO.ContactId;
+                    entity.RoleId = userUpdateDTO.RoleId;
+                    isUpdate = context.SaveChanges();
+                }
+            }            
             return (isUpdate > 0);
         }
 
         public bool Delete(int id)
         {
             int isDelete = 0;
-            User entity = ModelComic.ComicEntities.User.FirstOrDefault(o => o.Id == id);
-            if (entity != null)
+            using (var context = ModelComic.ComicEntities)
             {
-                ModelComic.ComicEntities.User.Remove(entity);
-                isDelete = ModelComic.ComicEntities.SaveChanges();
-            }
+                User entity = context.User.FirstOrDefault(o => o.Id == id);
+                if (entity != null)
+                {
+                    context.User.Remove(entity);
+                    isDelete = context.SaveChanges();
+                }
+            }            
             return (isDelete > 0);
         }
 
@@ -134,9 +152,9 @@ namespace Business.DAO
             whereClause += ((!string.IsNullOrEmpty(userSearchDTO.Rut)) ? ((whereClause.Length > 0) ? " AND [Rut] LIKE '%' + @Rut + '%'" : "[Rut] LIKE '%' + @Rut + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrEmpty(userSearchDTO.Name)) ? ((whereClause.Length > 0) ? " AND [Name] LIKE '%' + @Name + '%'" : "[Name] LIKE '%' + @Name + '%'") : string.Empty);
             whereClause += ((!string.IsNullOrEmpty(userSearchDTO.LastName)) ? ((whereClause.Length > 0) ? " AND [LastName] LIKE '%' + @LastName + '%'" : "[LastName] LIKE '%' + @LastName + '%'") : string.Empty);
-            whereClause += ((userSearchDTO.BirthDate != null && Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate) && userSearchDTO.BirthDate < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND [BirthDate] LIKE '%' + CONVERT(VARCHAR(10), @BirthDate, 23) + '%'" : "[BirthDate] LIKE '%' + CONVERT(VARCHAR(10), @BirthDate, 23) + '%'") : string.Empty);
+            whereClause += ((Useful.ValidateDateTime(userSearchDTO.BirthDate)) ? ((whereClause.Length > 0) ? " AND [BirthDate] LIKE '%' + CONVERT(VARCHAR(10), @BirthDate, 23) + '%'" : "[BirthDate] LIKE '%' + CONVERT(VARCHAR(10), @BirthDate, 23) + '%'") : string.Empty);
             whereClause += ((userSearchDTO.Active != null) ? ((whereClause.Length > 0) ? " AND [Active] = @Active" : "[Active] = @Active") : string.Empty);
-            whereClause += ((userSearchDTO.Registered != null && Useful.ValidateDateTimeOffset(userSearchDTO.Registered) && userSearchDTO.Registered < DateTimeOffset.Now) ? ((whereClause.Length > 0) ? " AND CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)" : "CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)") : string.Empty);
+            whereClause += ((Useful.ValidateDateTimeOffset(userSearchDTO.Registered)) ? ((whereClause.Length > 0) ? " AND CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)" : "CONVERT(VARCHAR(10), [Registered], 23) = CONVERT(VARCHAR(10), @Registered, 23)") : string.Empty);
             whereClause += ((userSearchDTO.ContactId > 0) ? ((whereClause.Length > 0) ? " AND [ContactId] = @ContactId" : "[ContactId] = @ContactId") : string.Empty);
             whereClause += ((userSearchDTO.RoleId > 0) ? ((whereClause.Length > 0) ? " AND [RoleId] = @RoleId" : "[RoleId] = @RoleId") : string.Empty);
             string paginatedClause = $"ORDER BY [Id] ASC OFFSET {(userSearchDTO.ListPaginatedDTO.PageIndex - 1) * userSearchDTO.ListPaginatedDTO.PageSize} ROWS FETCH NEXT {userSearchDTO.ListPaginatedDTO.PageSize} ROWS ONLY";
@@ -150,11 +168,11 @@ namespace Business.DAO
                 parameters.Add(new SqlParameter("Name", Useful.GetTitleCaseWords(userSearchDTO.Name.Trim())));
             if (!string.IsNullOrWhiteSpace(userSearchDTO.LastName))
                 parameters.Add(new SqlParameter("LastName", Useful.GetTitleCaseWords(userSearchDTO.LastName.Trim())));
-            if (Useful.ValidateDateTimeOffset(userSearchDTO.BirthDate) && userSearchDTO.BirthDate < DateTimeOffset.Now)
+            if (Useful.ValidateDateTime(userSearchDTO.BirthDate))
                 parameters.Add(new SqlParameter("BirthDate", userSearchDTO.BirthDate.Date));
             if (userSearchDTO.Active != null)
                 parameters.Add(new SqlParameter("Active", userSearchDTO.Active));
-            if (Useful.ValidateDateTimeOffset(userSearchDTO.Registered) && userSearchDTO.Registered < DateTimeOffset.Now)
+            if (Useful.ValidateDateTimeOffset(userSearchDTO.Registered))
                 parameters.Add(new SqlParameter("Registered", userSearchDTO.Registered.Date));
             if (userSearchDTO.ContactId > 0)
                 parameters.Add(new SqlParameter("ContactId", userSearchDTO.ContactId));
@@ -164,7 +182,7 @@ namespace Business.DAO
             parameters.Add(new SqlParameter("@TimeZoneInfoName", userSearchDTO.TimeZoneInfoName));
 
             List<Entity.User> list = new List<Entity.User>();
-            List<User> entities = ModelComic.ComicEntities.User.SqlQuery($"SELECT [Id], [Rut], [Name], [LastName], [BirthDate], [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
+            List<User> entities = ModelComic.ComicEntities.User.SqlQuery($"SELECT [Id], [Rut], [Name], [LastName], [BirthDate], NULL AS Password, [Active], ([dbo].[FNDateTimeOffset]([Registered], @TimeZoneInfoName)) AS Registered, [ContactId], [RoleId] FROM [dbo].[User] WHERE {whereClause} {paginatedClause}", parameters.ToArray()).ToList();
             foreach (var item in entities)
             {
                 Entity.User user = new Entity.User(item.Id, item.Rut, item.Name, item.LastName, item.BirthDate, item.Active, item.Registered, item.ContactId, item.RoleId);
@@ -176,7 +194,13 @@ namespace Business.DAO
 
         public bool ExistByRutAndNotSameEntity(UserExistByRutAndNotSameEntityDTO userExistByRutAndNotSameEntityDTO)
         {
-            bool exist = ModelComic.ComicEntities.User.Any(o => o.Id != userExistByRutAndNotSameEntityDTO.Id && o.Rut == userExistByRutAndNotSameEntityDTO.Rut);
+            bool exist = false;
+            if (ModelComic.ComicEntities.User.Any(o => o.Id == userExistByRutAndNotSameEntityDTO.Id))
+            {
+                List<User> list = ModelComic.ComicEntities.User.Where(o => o.Rut == userExistByRutAndNotSameEntityDTO.Rut).ToList();
+                if (list != null && list.Count() > 0)
+                    exist = list.Any(o => o.Id != userExistByRutAndNotSameEntityDTO.Id);
+            }            
             return exist;
         }
 

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebAPI.Configurations;
 
 namespace WebAPI.Controllers
 {
@@ -47,8 +46,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.DeleteHero(id);
-                return Content(HttpStatusCode.OK, entity);
+                bool delete = ComicImpl.DeleteHero(id);
+                return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
             {
@@ -82,8 +81,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.DeleteUser(id);
-                return Content(HttpStatusCode.OK, entity);
+                bool delete = ComicImpl.DeleteUser(id);
+                return Content(HttpStatusCode.OK, delete);
             }
             catch (Exception ex)
             {
@@ -101,10 +100,10 @@ namespace WebAPI.Controllers
         ///     {
         ///        "Name": "Star-Lord",
         ///        "Description": "Poderes y habilidades. Star-Lord es un maestro estratega y solucionador de problemas que es un experto en combate cuerpo a cuerpo, varias armas de fuego humanas y alienígenas y técnicas de batalla . Tiene un amplio conocimiento de varias costumbres, sociedades y culturas alienígenas, y un conocimiento considerable sobre abstracciones cósmicas, como Oblivion.",
-        ///        "ImageBase64String": "data:image/bmp;base64,1234asdf",
+        ///        "ImageBase64String": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAIAAACExCpEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFmICBAQABFwABeRzbuwAAAABJRU5ErkJggg==",
         ///        "FullName": "Peter Jason Quill",
         ///        "Gender": "M",
-        ///        "Appearance": 1976-01-01T00:00:00.0000000-03:00,
+        ///        "Appearance": 1976-01-01T00:00:00.0000000-00:00,
         ///        "Alias": "Starlord",
         ///        "Publisher": "Marvel Comics",
         ///        "Intelligence": 69,
@@ -162,31 +161,29 @@ namespace WebAPI.Controllers
 
                 }
 
-                if (!string.IsNullOrWhiteSpace(comicInsertHeroDTO.FullName))
+                if (string.IsNullOrWhiteSpace(comicInsertHeroDTO.FullName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "FullName"));
                 else if (comicInsertHeroDTO.FullName.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "FullName").Replace("{1}", "50"));
 
-                if (!string.IsNullOrWhiteSpace(comicInsertHeroDTO.Gender))
+                if (string.IsNullOrWhiteSpace(comicInsertHeroDTO.Gender))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
                 else if (comicInsertHeroDTO.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
                 else if (comicInsertHeroDTO.Gender.ToLower() != "m" && comicInsertHeroDTO.Gender.ToLower() != "f")
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
 
-                if (comicInsertHeroDTO.Appearance == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
-                if (!Useful.ValidateDateTimeOffset(comicInsertHeroDTO.Appearance))
+                if (!Useful.ValidateDateTime(comicInsertHeroDTO.Appearance))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
                 else if (comicInsertHeroDTO.Appearance > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
 
-                if (!string.IsNullOrWhiteSpace(comicInsertHeroDTO.Alias))
+                if (string.IsNullOrWhiteSpace(comicInsertHeroDTO.Alias))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
                 else if (comicInsertHeroDTO.Alias.Trim().Length > 500)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
-                if (!string.IsNullOrWhiteSpace(comicInsertHeroDTO.Publisher))
+                if (string.IsNullOrWhiteSpace(comicInsertHeroDTO.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
                 else if (comicInsertHeroDTO.Publisher.Trim().Length > 25)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Publisher").Replace("{1}", "25"));
@@ -222,8 +219,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.InsertHero(comicInsertHeroDTO);
-                return Content(HttpStatusCode.OK, entity);
+                bool insertHero = ComicImpl.InsertHero(comicInsertHeroDTO);
+                return Content(HttpStatusCode.OK, insertHero);
             }
             catch (Exception ex)
             {
@@ -242,7 +239,7 @@ namespace WebAPI.Controllers
         ///        "Rut": "1-9",
         ///        "Name": "Joaquin",
         ///        "LastName": "Phoenix",
-        ///        "BirthDate": 1974-10-28T00:00:00.0000000-03:00,
+        ///        "BirthDate": 1974-10-28T00:00:00.0000000+00:00,
         ///        "Password": "123456",
         ///        "Active": true,
         ///        "Email": "joaquin.phoenix@gmail.com",
@@ -290,11 +287,9 @@ namespace WebAPI.Controllers
                 if (string.IsNullOrWhiteSpace(comicInsertUserDTO.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
                 else if (comicInsertUserDTO.Password.Length > 16)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "16"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
-                if (comicInsertUserDTO.BirthDate == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "BirthDate"));
-                if (!Useful.ValidateDateTimeOffset(comicInsertUserDTO.BirthDate))
+                if (!Useful.ValidateDateTime(comicInsertUserDTO.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
                 else if (comicInsertUserDTO.BirthDate > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
@@ -304,8 +299,8 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(comicInsertUserDTO.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Email"));
-                else if (comicInsertUserDTO.Email.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "15"));
+                else if (comicInsertUserDTO.Email.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "50"));
                 else if (!Useful.ValidateEmail(comicInsertUserDTO.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
 
@@ -339,8 +334,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.InsertUser(comicInsertUserDTO);
-                return Content(HttpStatusCode.OK, entity);
+                bool insertUser = ComicImpl.InsertUser(comicInsertUserDTO);
+                return Content(HttpStatusCode.OK, insertUser);
             }
             catch (Exception ex)
             {
@@ -390,7 +385,7 @@ namespace WebAPI.Controllers
                 if (string.IsNullOrWhiteSpace(comicLoginDTO.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
                 else if (comicLoginDTO.Password.Length > 16)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "16"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
                 if (messageVO.Messages.Count() > 0)
                 {
@@ -400,11 +395,8 @@ namespace WebAPI.Controllers
 
                 var login = ComicImpl.Login(comicLoginDTO);
                 if (login.Id != 3)
-                {
-                    messageVO = login;
-                    return Content(HttpStatusCode.BadRequest, messageVO);
-                }
-
+                    return Content(HttpStatusCode.BadRequest, login);
+                
                 string token = TokenConfig.GenerateToken(comicLoginDTO.Rut);
                 return Content(HttpStatusCode.OK, token);
 
@@ -441,7 +433,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.SelectHero(id);
+                SelectHero entity = ComicImpl.SelectHero(id);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -498,7 +490,7 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.SelectUser(comicSelectUserDTO);
+                SelectUser entity = ComicImpl.SelectUser(comicSelectUserDTO);
                 return Content(HttpStatusCode.OK, entity);
             }
             catch (Exception ex)
@@ -518,11 +510,11 @@ namespace WebAPI.Controllers
         ///        "HeroId": 1,
         ///        "Name": "Star-Lord",
         ///        "Description": "Poderes y habilidades. Star-Lord es un maestro estratega y solucionador de problemas que es un experto en combate cuerpo a cuerpo, varias armas de fuego humanas y alienígenas y técnicas de batalla . Tiene un amplio conocimiento de varias costumbres, sociedades y culturas alienígenas, y un conocimiento considerable sobre abstracciones cósmicas, como Oblivion.",
-        ///        "ImageBase64String": "data:image/bmp;base64,1234asdf",
+        ///        "ImageBase64String": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAIAAACExCpEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFmICBAQABFwABeRzbuwAAAABJRU5ErkJggg==",
         ///        "BiographyId": 1,
         ///        "FullName": "Peter Jason Quill",
         ///        "Gender": "M",
-        ///        "Appearance": 1976-01-01T00:00:00.0000000-03:00,
+        ///        "Appearance": 1976-01-01T00:00:00.0000000+00:00,
         ///        "Alias": "Starlord",
         ///        "Publisher": "Marvel Comics",
         ///        "PowerStatsId": 1,
@@ -550,7 +542,7 @@ namespace WebAPI.Controllers
             {
                 if (comicUpdateHeroDTO == null)
                 {
-                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ComicInsertHeroDTO"));
+                    messageVO.SetMessage(0, contentHTML.GetInnerTextById("requeridTitle"), contentHTML.GetInnerTextById("nullObject").Replace("{0}", "ComicUpdateHeroDTO"));
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
@@ -587,31 +579,29 @@ namespace WebAPI.Controllers
                 if (comicUpdateHeroDTO.BiographyId <= 0)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersAtZero").Replace("{0}", "BiographyId"));
                 
-                if (!string.IsNullOrWhiteSpace(comicUpdateHeroDTO.FullName))
+                if (string.IsNullOrWhiteSpace(comicUpdateHeroDTO.FullName))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "FullName"));
                 else if (comicUpdateHeroDTO.FullName.Trim().Length > 50)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "FullName").Replace("{1}", "50"));
 
-                if (!string.IsNullOrWhiteSpace(comicUpdateHeroDTO.Gender))
+                if (string.IsNullOrWhiteSpace(comicUpdateHeroDTO.Gender))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Gender"));
                 else if (comicUpdateHeroDTO.Gender.Trim().Length > 1)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Gender").Replace("{1}", "1"));
                 else if (comicUpdateHeroDTO.Gender.ToLower() != "m" && comicUpdateHeroDTO.Gender.ToLower() != "f")
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("formatMustBe").Replace("{0}", "Gender").Replace("{1}", "M o F"));
 
-                if (comicUpdateHeroDTO.Appearance == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "Appearance"));
-                if (!Useful.ValidateDateTimeOffset(comicUpdateHeroDTO.Appearance))
+                if (!Useful.ValidateDateTime(comicUpdateHeroDTO.Appearance))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "Appearance"));
                 else if (comicUpdateHeroDTO.Appearance > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "Appearance"));
 
-                if (!string.IsNullOrWhiteSpace(comicUpdateHeroDTO.Alias))
+                if (string.IsNullOrWhiteSpace(comicUpdateHeroDTO.Alias))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Alias"));
                 else if (comicUpdateHeroDTO.Alias.Trim().Length > 500)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Alias").Replace("{1}", "500"));
 
-                if (!string.IsNullOrWhiteSpace(comicUpdateHeroDTO.Publisher))
+                if (string.IsNullOrWhiteSpace(comicUpdateHeroDTO.Publisher))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Publisher"));
                 else if (comicUpdateHeroDTO.Publisher.Trim().Length > 25)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Publisher").Replace("{1}", "25"));
@@ -651,12 +641,12 @@ namespace WebAPI.Controllers
                 if (existByNameAndNotSameEntity)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityExistByParameter").Replace("{0}", "Hero").Replace("{1}", "Name").Replace("{2}", "Hero"));
 
-                bool existContact = BiographyImpl.ExistById(comicUpdateHeroDTO.BiographyId);
-                if (!existContact)
+                bool existBiography = BiographyImpl.ExistById(comicUpdateHeroDTO.BiographyId);
+                if (!existBiography)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "Biography").Replace("{1}", "BiographyId"));
 
-                bool existRole = PowerStatsImpl.ExistById(comicUpdateHeroDTO.PowerStatsId);
-                if (!existRole)
+                bool existPowerStats = PowerStatsImpl.ExistById(comicUpdateHeroDTO.PowerStatsId);
+                if (!existPowerStats)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("entityNotExistByParameter").Replace("{0}", "PowerStats").Replace("{1}", "PowerStatsId"));
 
                 if (messageVO.Messages.Count() > 0)
@@ -665,8 +655,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.UpdateHero(comicUpdateHeroDTO);
-                return Content(HttpStatusCode.OK, entity);
+                bool updateHero = ComicImpl.UpdateHero(comicUpdateHeroDTO);
+                return Content(HttpStatusCode.OK, updateHero);
             }
             catch (Exception ex)
             {
@@ -686,7 +676,7 @@ namespace WebAPI.Controllers
         ///        "Rut": "1-9",
         ///        "Name": "Joaquin",
         ///        "LastName": "Phoenix",
-        ///        "BirthDate": 1974-10-28T00:00:00.0000000-03:00,
+        ///        "BirthDate": 1974-10-28T00:00:00.0000000+00:00,
         ///        "Password": "123456",
         ///        "Active": true,
         ///        "ContactId": 1,
@@ -738,11 +728,9 @@ namespace WebAPI.Controllers
                 if (string.IsNullOrWhiteSpace(comicUpdateUserDTO.Password))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Password"));
                 else if (comicUpdateUserDTO.Password.Length > 16)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "LastName").Replace("{1}", "16"));
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Password").Replace("{1}", "16"));
 
-                if (comicUpdateUserDTO.BirthDate == null)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("parametersNull").Replace("{0}", "BirthDate"));
-                if (!Useful.ValidateDateTimeOffset(comicUpdateUserDTO.BirthDate))
+                if (!Useful.ValidateDateTime(comicUpdateUserDTO.BirthDate))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParametersNoInitialized").Replace("{0}", "BirthDate"));
                 else if (comicUpdateUserDTO.BirthDate > DateTimeOffset.Now)
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("dateTimeParameterGreaterThanTheCurrentDate").Replace("{0}", "BirthDate"));
@@ -755,8 +743,8 @@ namespace WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(comicUpdateUserDTO.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("emptyParameters").Replace("{0}", "Email"));
-                else if (comicUpdateUserDTO.Email.Trim().Length > 15)
-                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "15"));
+                else if (comicUpdateUserDTO.Email.Trim().Length > 50)
+                    messageVO.Messages.Add(contentHTML.GetInnerTextById("maximunParameterLengthCharacter").Replace("{0}", "Email").Replace("{1}", "50"));
                 else if (!Useful.ValidateEmail(comicUpdateUserDTO.Email))
                     messageVO.Messages.Add(contentHTML.GetInnerTextById("invalidFormatParameters").Replace("{0}", "Email"));
 
@@ -798,8 +786,8 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, messageVO);
                 }
 
-                var entity = ComicImpl.UpdateUser(comicUpdateUserDTO);
-                return Content(HttpStatusCode.OK, entity);
+                bool updateUser = ComicImpl.UpdateUser(comicUpdateUserDTO);
+                return Content(HttpStatusCode.OK, updateUser);
             }
             catch (Exception ex)
             {

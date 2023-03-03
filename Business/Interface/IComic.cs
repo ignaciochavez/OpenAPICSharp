@@ -11,6 +11,7 @@ namespace Business.Interface
 {
     public interface IComic
     {
+        bool PingDataBase();
         bool DeleteHero(int id);
         bool DeleteUser(int id);
         bool InsertHero(ComicInsertHeroDTO comicInsertHeroDTO);

@@ -488,6 +488,14 @@ namespace Business.Tool
                 return true;
         }
 
+        public static bool ValidateDateTime(DateTime dateTime)
+        {
+            if (dateTime == DateTime.MinValue)
+                return false;
+            else
+                return true;
+        }
+
         public static bool ValidateEmail(string email)
         {
             string expresion = GetAppSettings("IsEmail");
@@ -549,7 +557,8 @@ namespace Business.Tool
 
         public static bool ValidateTimeZoneInfo(string timeZoneInfoName)
         {
-            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneInfoName);
+            List<UsefulTimeZoneInfo> listTimeZoneInfo = GetTimeZoneInfo();
+            UsefulTimeZoneInfo timeZoneInfo = listTimeZoneInfo.FirstOrDefault(o=> o.Id == timeZoneInfoName);
             return (timeZoneInfo != null);
         }
 
